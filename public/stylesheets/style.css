@@ -8,12 +8,25 @@ body {
 a {
   color: #00b7ff;
 }
+
+.nav-collapse li{
+	margin-right: 10px;
+}
 .main-container {
-	margin-top: -9px;
+	margin-top:-8px;
 	background-color: rgba(255,255,255,0.8);
 	box-shadow: 0 0 10px ;
 	border-bottom-left-radius: 25px;
 	border-bottom-right-radius: 25px;
+}
+
+.header{
+	margin-top: 30px;
+	text-align: center;
+}
+
+#titre{
+	font-size: x-large;
 }
 .log_form{
 	margin-top: 95px;
@@ -25,6 +38,9 @@ a {
 	text-align: center;
 	padding-bottom: 10%;
 }
+.log_form legend{
+	text-align: center;
+}
 
 .logos{
 	height:400px;
@@ -32,12 +48,40 @@ a {
 .logos img{
 	position: absolute;
 	width:100px;
+
+	
 }
 
 #logo-rotate{	
+	animation: myfirst 30s linear 1s infinite;
+	-webkit-animation: myfirst 30s linear 1s infinite; /* Safari and Chrome */
+	
 	margin-top:80px;
 	min-width:125px;
 	margin-left:-12px;
+}
+
+@keyframes myfirst
+{
+	
+from {
+	transform: rotate(0deg);
+	-ms-transform: rotate(0deg); /* IE 9 */
+	}
+to {
+	transform: rotate(360deg);
+	-ms-transform: rotate(360deg); /* IE 9 */
+	}
+}
+
+@-webkit-keyframes myfirst /* Safari and Chrome */
+{
+from {
+	-webkit-transform: rotate(0deg); 
+	}
+to {
+	-webkit-transform: rotate(360deg); /* Safari and Chrome */
+	}
 }
 
 #logo-cuot{
@@ -97,6 +141,8 @@ a {
 
 .logo-function {
 	border-radius: 50px;
+
+
 	min-width: 100px;
 	max-width: 100px;
 

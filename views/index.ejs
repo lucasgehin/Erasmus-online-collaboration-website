@@ -26,19 +26,41 @@
 		            <span class="icon-bar"></span>
 		            <span class="icon-bar"></span>
 		          </a>
-		          <a class="brand" id="titre" href="#top">ERASMUS Online Collaboration Website</a>
+		          
 		          <div class="nav-collapse">
 		            <ul class="nav">
-		              <li><a id="sign-up-link" href="#signup">Sign up</a></li>
-		              <li><a id="about-link" href="#">About</a></li>
-		              <li><a id="contact-link" href="#contact">Contact</a></li>
+		              <li>
+		              	<button type="button" class="btn btn-success" id="sign-up-link">
+		              		<span class="icon-pencil icon-white"></span>
+		              		Sign up
+		              	</button>
+		              </li>
+
+		              <li>
+		              	<button class="btn btn-info" id="about-link">
+		              		<span class="icon-info-sign icon-white"></span>
+		              		About
+		              	</button>
+
+		              </li>
+		              <li>
+		              	<button id="contact-link" class="btn btn-info">
+		              		<span class="icon-envelope icon-white"></span>
+		              		Contact
+		              	</button>
+		              </li>
 		            </ul>
 		          </div>
 		        </div>
 		      </div>
 		    </div>
 
-		    <div class="row">&nbsp;</div>
+		    <div class="row-fluid header">
+		    	<div class="span8" id="titre">
+		    		ERASMUS Online Collaboration Website
+		    	</div>
+		    	
+		    </div>
 		    <div class="row-fluid" >
 
 
@@ -62,7 +84,10 @@
 							      <input type="password" required id="password-field" placeholder="Password" />
 							    </label>
 							    						    
-							    <input class="btn btn-primary" type="submit" value="Sign in" />
+							    <button type="button" class="btn btn-primary" />
+							    <span class="icon-check icon-white"></span>
+							    Sign in
+								</button>
 							  </fieldset>
 							
 		  				</form>
@@ -323,45 +348,35 @@
 
     $(window).on("load",function(){
 
-    	$(".logos img").on("mouseenter",function(){
+    	$(".logos img[id!='logo-rotate']").on("mouseover",function(){
     		if( ! $(this).is(":animated") ){
     			$(this).effect("shake",{
     				distance: 1,
     				times: 3
     			});
-    		}
-    		
+    		}    		
     	});
 
     	$(".logo-function").on("mouseenter",function(){
     		$(this).animate({
-    			"border-radius": '-=25'
-    		});
+			   "border-top-left-radius": "-=25",
+			   "border-top-right-radius": "-=25",
+			   "border-bottom-left-radius": "-=25",
+			   "border-bottom-right-radius": "-=25",
+			});
     	});
     	$(".logo-function").on("mouseleave",function(){
     		$(this).animate({
-    			"border-radius": '+=25'
-    		});
+			   "border-top-left-radius": "+=25",
+			   "border-top-right-radius": "+=25",
+			   "border-bottom-left-radius": "+=25",
+			   "border-bottom-right-radius": "+=25",
+			});
     	});
 
-    	setTimeout(function(){
-    		function rotate(){
-    			$("#logo-rotate").rotate({
-			            duration:10000,
-			            angle: 0, 
-			            animateTo:360,
-			            callback: function(){
-			            	start_shake_logos();
-			            	rotate();
-			            },
-			            easing: function (x,t,b,c,d){ 
-          					return c*(t/d)+b;
-      					}
-			    });
-    		}
-    		rotate();
-    		    	
-    	}, 1000);
+    	setInterval(function(){
+    			start_shake_logos();    		    	
+    	}, 15000);
 
     	var liste_logos=[
     		{id:"#logo-ipl"},
@@ -397,7 +412,7 @@
     });
     	
 
-	var slide_time = 1000;
+	var slide_time = 600;
 	$("#titre").on("click",function(e){
 		e.preventDefault();
 		e.stopPropagation();
@@ -406,19 +421,20 @@
 			scrollTop: top
 		},slide_time);
 	});
+
 	$("#about-link").on("click",function(e){
-		e.preventDefault();
-		e.stopPropagation();
+		//alert("about");
+		
 		var top = $("#about").offset().top - 50;
-		$("body").animate({
+		$("html,body").animate({
 			scrollTop: top
 		}, slide_time);
+		
 	});
 	$("#contact-link").on("click",function(e){
-		e.preventDefault();
-		e.stopPropagation();
+		
 		var top = $(".contact").eq(0).offset().top;
-		$("body").animate({
+		$("html,body").animate({
 			scrollTop: top
 		}, slide_time);
 	});
