@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html ng-app >
   <head>
     <title><%= title %></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
@@ -12,6 +12,7 @@
 
     <script type="text/javascript" src="/javascripts/angular.js"></script>
     <!--<script type="text/javascript" src="/javascripts/angular.min.js"></script>-->
+
 
   </head>
   <body>
@@ -56,7 +57,7 @@
 		    </div>
 
 		    <div class="row-fluid header">
-		    	<div class="span8" id="titre">
+		    	<div class="span12" id="titre">
 		    		ERASMUS Online Collaboration Website
 		    	</div>
 		    	
@@ -69,22 +70,24 @@
 		  		<div class="span6">
 
 		  			<div class="row">
-		  				<form class="span10 offset1 log_form">
+		  				<form class="span10 offset1 log_form" ng-controller="Sign_in">
 		  					
 							  <fieldset>
 							  	<legend>Sign in</legend>
 							  	
 							    <label for="userame-field">
 							      
-							      <input type="text" required id="userame-field" placeholder="Username"  />
+							      <input ng-model="username" type="text" required  id="userame-field" placeholder="Username"  />
 							    </label>
 							    
 							    <label for="password-field">
 							    	
-							      <input type="password" required id="password-field" placeholder="Password" />
+							      <input ng-model="password" type="password" required id="password-field" placeholder="Password" />
 							    </label>
-							    						    
-							    <button type="button" class="btn btn-primary" />
+							    				
+							    <p style="color:{{message_color}}; text-align:left; margin-left: 88px;">{{message}}</p>
+
+							    <button ng-click="connect()" disabled="{{fields_not_empty()}}" type="button"  class="btn btn-primary" />
 							    <span class="icon-check icon-white"></span>
 							    Sign in
 								</button>
@@ -100,7 +103,7 @@
 					<div class="row">
 
 						<div class="span1 offset5">
-							<a  target="_blanck" href="http://www.en.pk.edu.pl/">
+							<a  target="_blanck" href="http://www.en.pk.edu.pl/" rel="tooltip"  data-original-title="Cracow University Of Technology">
 							<img id="logo-cuot"
 							src="/images/logos/cuot.png"
 							alt="logo cuot">
@@ -111,7 +114,7 @@
 
 					<div class="row">
 						<div class="span1">
-							<a  target="_blanck" href="http://www.metropolia.fi/en/">
+							<a  target="_blanck" href="http://www.metropolia.fi/en/" rel="tooltip"  data-original-title="Metropolia University of Applied Sciences">
 
 							<img id="logo-metropolia"
 							 src="/images/logos/metropolia.png"
@@ -120,7 +123,7 @@
 							</a>
 						</div>
 						<div class="span1 offset6">
-							<a  target="_blanck" href="http://www.ipleiria.pt/">
+							<a  target="_blanck" href="http://www.ipleiria.pt/" rel="tooltip"  data-original-title="INSTITUTO POLITÉCNICO DE LEIRIA">
 
 							<img id="logo-ipl"
 							 src="/images/logos/ipl.png"
@@ -132,12 +135,12 @@
 					
 					<div class="row">
 						<div class="span1 offset5">
-							<a  target="_blanck" href="http://www.esn.org/">
+							<a  target="_blanck" href="http://www.esn.org/" rel="tooltip"  data-original-title="ERASMUS Student Network">
 								<img id="logo-rotate" src="/images/logos/esn.png" alt="eramsus logo">
 							</a>
 						</div>
 						<div class="span1 offset5">
-							<a  target="_blanck" href="http://www.unimi.it/">
+							<a  target="_blanck" href="http://www.unimi.it/" rel="tooltip"  data-original-title="UNIVERSITÀ DEGLI STUDI DI MILANO">
 								<img 
 								id="logo-unimi" 
 								src="/images/logos/unimi.png" 
@@ -149,7 +152,7 @@
 					<div class="row">
 						
 						<div class="span1">
-							<a  target="_blanck" href="http://www.gcu.ac.uk/">
+							<a  target="_blanck" href="http://www.gcu.ac.uk/" rel="tooltip"  data-original-title="Glasgow Caledonian University">
 							<img id="logo-gcu"
 							 src="/images/logos/gcu.png"
 							 alt="logo gcu"
@@ -157,7 +160,7 @@
 							</a>
 						</div>
 						<div class="span1 offset6">
-							<a target="_blank" href="http://www.univ-lorraine.fr/">
+							<a target="_blank" href="http://www.univ-lorraine.fr/" rel="tooltip"  data-original-title="Université de Lorraine">
 								<img id="logo-udl"
 								 src="/images/logos/udl.png"
 								 alt="logo udl"
@@ -169,7 +172,7 @@
 					
 					<div class="row">
 						<div class="span1 offset5">
-							<a target="_blank" href="http://www.inholland.nl/inhollandcom/">
+							<a target="_blank" href="http://www.inholland.nl/inhollandcom/" rel="tooltip"  data-original-title="Inholland University of Applied Sciences">
 							<img id="logo-inh" src="/images/logos/inh.png"
 							alt="logo inh"
 							>
@@ -344,107 +347,12 @@
 
     <script type="text/javascript" src="/javascripts/jquery-ui-1.10.3.custom.min-only-shake.js"></script>
 
-    <script type="text/javascript">
-
-    $(window).on("load",function(){
-
-    	$(".logos img[id!='logo-rotate']").on("mouseover",function(){
-    		if( ! $(this).is(":animated") ){
-    			$(this).effect("shake",{
-    				distance: 1,
-    				times: 3
-    			});
-    		}    		
-    	});
-
-    	$(".logo-function").on("mouseenter",function(){
-    		$(this).animate({
-			   "border-top-left-radius": "-=25",
-			   "border-top-right-radius": "-=25",
-			   "border-bottom-left-radius": "-=25",
-			   "border-bottom-right-radius": "-=25",
-			});
-    	});
-    	$(".logo-function").on("mouseleave",function(){
-    		$(this).animate({
-			   "border-top-left-radius": "+=25",
-			   "border-top-right-radius": "+=25",
-			   "border-bottom-left-radius": "+=25",
-			   "border-bottom-right-radius": "+=25",
-			});
-    	});
-
-    	
-
-    	var liste_logos=[
-    		{id:"#logo-ipl"},
-    		{id:"#logo-inh"},
-    		{id:"#logo-metropolia"},
-    		{id:"#logo-udl"},
-    		{id:"#logo-gcu"},
-    		{id:"#logo-cuot"},
-    		{id:"#logo-unimi"},
-    	];
-
-    	
-    	function shake_logo( id, time ){
-    		setTimeout(function(){
-
-    			$(id).effect("shake",{
-    				distance: 1,
-    				times: 3
-    			});			    
-
-    		}, time*100);
-
-    	}
-
-    	function start_shake_logos(){
-	    	for (var i = 0; i < liste_logos.length; i++) {
-	    		var logo = liste_logos[i];
-	    		shake_logo( logo.id, i+1);
-	    	};
-
-    	}
-    	start_shake_logos();
-
-    	setInterval(function(){
-    			start_shake_logos();    		    	
-    	}, 10000);
-    });
-    	
-
-	var slide_time = 600;
-	$("#titre").on("click",function(e){
-		e.preventDefault();
-		e.stopPropagation();
-		var top = 0;
-		$("html, body").animate({
-			scrollTop: top
-		},slide_time);
-	});
-
-	$("#about-link").on("click",function(e){
-		//alert("about");
-		
-		var top = $("#about").offset().top - 50;
-		$("html,body").animate({
-			scrollTop: top
-		}, slide_time);
-		
-	});
-	$("#contact-link").on("click",function(e){
-		
-		var top = $(".contact").eq(0).offset().top;
-		$("html,body").animate({
-			scrollTop: top
-		}, slide_time);
-	});
 
 
+    <!-- Chargement de nos scripts finaux -->
 
-
-    </script>
-
+    <script type="text/javascript" src="/javascripts/index/main.js"></script>
+    <script type="text/javascript" src="/javascripts/index/controllers.js"></script>
+   
   </body>
 </html>
