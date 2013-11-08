@@ -12,18 +12,94 @@ a {
 	margin-top: -9px;
 	background-color: rgba(255,255,255,0.8);
 	box-shadow: 0 0 10px ;
-	border-bottom-left-radius: 10px;
-	border-bottom-right-radius: 10px;
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
 }
 .log_form{
-	margin-top: 20%;
+	margin-top: 95px;
 	border: 1px white solid;
 	border-radius: 10px;
 	box-shadow: 0 0 10px;
 
 	background-color: rgba(255,255,255,0.5);
-
 	text-align: center;
-
 	padding-bottom: 10%;
+}
+
+.logos{
+	height:400px;
+}
+.logos img{
+	position: absolute;
+	width:100px;
+}
+
+#logo-rotate{	
+	margin-top:80px;
+	width:125px;
+	margin-left:-12px;
+}
+
+#logo-cuot{
+
+}
+#logo-metropolia{
+	min-width:125px;
+	margin-top: 22px;
+	margin-left: 40px;
+}
+#logo-ipl{
+	min-width:110px;
+	margin-top: 5px;
+	margin-left: 50px;
+}
+
+#logo-unimi{
+	margin-top:90px;
+	margin-left:-75px;
+	min-width: 100px;
+}
+#logo-gcu{
+	min-width:145px;
+	margin-top:112px;
+	margin-left:30px;
+}
+#logo-udl{
+	min-width:120px;
+	margin-top:160px;
+	margin-left:42px;
+}
+#logo-inh{
+	margin-top:167px;
+	min-width:150px;
+	margin-left:-28px;
+}
+
+.logos-container{
+	font-size: large;	
+	line-height: 150%;
+	margin-top:100px;
+	margin-bottom: 100px;
+	
+	
+}
+.logos-container > .span4 {
+	text-align: center;	
+	
+	margin: 0;
+}
+.logos-container > .span4:nth-child(2) {
+	text-align: center;	
+	border-left: 1px gray solid;
+	border-right: 1px gray solid;
+}
+
+
+.logo-function {
+	border-radius: 20px;
+	max-width: 100px;
+
+
+	box-shadow: 0 0 10px ;	
+	
 }
