@@ -12,8 +12,8 @@ a {
 	margin-top: -9px;
 	background-color: rgba(255,255,255,0.8);
 	box-shadow: 0 0 10px ;
-	border-bottom-left-radius: 20px;
-	border-bottom-right-radius: 20px;
+	border-bottom-left-radius: 25px;
+	border-bottom-right-radius: 25px;
 }
 .log_form{
 	margin-top: 95px;
@@ -36,7 +36,7 @@ a {
 
 #logo-rotate{	
 	margin-top:80px;
-	width:125px;
+	min-width:125px;
 	margin-left:-12px;
 }
 
@@ -96,10 +96,26 @@ a {
 
 
 .logo-function {
-	border-radius: 20px;
+	border-radius: 50px;
+	min-width: 100px;
 	max-width: 100px;
 
 
 	box-shadow: 0 0 10px ;	
 	
+}
+
+
+.contact{
+	color: white;
+	text-shadow: 0 0 2px black;
+	text-align: center;
+	background-color: #333;
+	
+
+}
+
+.border-bottom-round{
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
 }
