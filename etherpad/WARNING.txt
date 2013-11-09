@@ -1,0 +1,16 @@
+Tout ce qui est dans ce dossier ne conscerne QUE Etherpad !!
+
+Il est donc INTERDIT, sous peine de faille de sécuritée de :
+
+- Utiliser l'executable ./node.exe ou tout autre script
+- stocker, creer, modifier des fichiers ici ( sauf si ce sont des fichiers de conf )
+
+
+
+Cette version est la version packagée WINDOWS mais elle marche aussi sous linux.
+
+
+
+Ce dossier doit rester une bulle et ne dois être touché que pour configurer EtherPad.
+
+-GG-
