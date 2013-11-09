@@ -5,7 +5,11 @@
 
 
 (function() {
-  var app, express, http, httpProxy, path, proxy, routes, server, user;
+  var app, docs_server_emulated, express, http, http_proxy, path, proxy, routes, server, user;
+
+  http = require('http');
+
+  http_proxy = require('http-proxy');
 
   express = require('express');
 
@@ -13,13 +17,13 @@
 
   user = require('./routes/user');
 
-  http = require('http');
-
   path = require('path');
 
-  httpProxy = require('http-proxy');
-
   app = express();
+
+  server = http.createServer(app);
+
+  proxy = new http_proxy.RoutingProxy();
 
   app.set('port', process.env.PORT || 3000);
 
@@ -41,6 +45,15 @@
 
   app.use(express["static"](path.join(__dirname, 'public')));
 
+  docs_server_emulated = function(req, res, callback) {
+    return proxy.proxyRequest(req, res, {
+      host: 'localhost',
+      port: 9001
+    });
+  };
+
+  app.use(express.vhost("docs.ipviope.tk", docs_server_emulated));
+
   if ('development' === app.get('env')) {
     app.use(express.errorHandler());
   }
@@ -49,25 +62,8 @@
 
   app.get('/users', user.list);
 
-  server = http.createServer(app);
-
   server.listen(app.get('port'), function() {
     return console.log('Express server listening on port ' + app.get('port'));
-  });
-
-  /*
-   Create a proxy server with custom application logic
-  */
-
-
-  proxy = httpProxy.createProxyServer({});
-
-  app.get("/etherpad", function(req, res) {
-    var target;
-    target = {
-      'target': "http://localhost:9001"
-    };
-    return proxy.web(req, res, target);
   });
 
 }).call(this);
