@@ -6,16 +6,17 @@
 
 ###
 
-proxy_port = 3000
+proxy_port = 80
 
 
 options = {
 
-	'hostnameOnly' : true,
+	
 	router : {
-		
-		'docs.ipviope.tk':"127.0.0.1:9001"
-		"ipviope.tk":"127.0.0.1:3001"
+
+		"ipviope.tk":"localhost:3001"		# root
+		"docs.ipviope.tk":"localhost:9001"	# EtherPad
+		"crous.ipviope.tk":"localhost:81" # Apache 
 	}
 }
 
