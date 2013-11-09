@@ -3,15 +3,19 @@
  Module dependencies.
 ###
 
+http = require 'http'
+http_proxy = require 'http-proxy' 
 express = require 'express'
+
 routes = require './routes'
 user = require './routes/user'
-http = require 'http'
 path = require 'path'
 
-httpProxy = require 'http-proxy' 
 
 app = express()
+server = http.createServer app
+
+proxy = new http_proxy.RoutingProxy()
 
 # all environments
 app.set 'port', process.env.PORT || 3000
@@ -25,6 +29,22 @@ app.use app.router
 app.use require('stylus').middleware(__dirname + '/public')
 app.use express.static(path.join(__dirname, 'public'))
 
+
+# VHOST rules
+
+
+docs_server_emulated = (req, res, callback)->
+	proxy.proxyRequest req, res, {
+		host:'localhost',
+		port: 9001
+	}
+
+
+
+
+app.use express.vhost("docs.ipviope.tk", docs_server_emulated)
+
+
 # development only
 if 'development' is app.get 'env'
   app.use express.errorHandler()
@@ -33,28 +53,8 @@ if 'development' is app.get 'env'
 app.get '/', routes.index
 app.get '/users', user.list
 
-server = http.createServer app 
+	
+
 
 server.listen app.get('port'), ()->
   console.log 'Express server listening on port ' + app.get('port')
-
-
-
-
-    
-
-###
- Create a proxy server with custom application logic
-###
-
-proxy = httpProxy.createProxyServer {}
-
-# Done
-
-
-app.get "/etherpad", (req, res)->
-	target = 
-		'target':"http://localhost:9001"
-	
-	proxy.web req, res, target
-
