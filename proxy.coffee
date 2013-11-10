@@ -9,11 +9,8 @@
 proxy_port = 80
 
 
-options = {
-
-	
+options = {	
 	router : {
-
 		"ipviope.tk":"localhost:3001"		# root
 		"docs.ipviope.tk":"localhost:9001"	# EtherPad
 		"crous.ipviope.tk":"localhost:81" # Apache 
