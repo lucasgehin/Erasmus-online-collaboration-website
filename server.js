@@ -5,25 +5,23 @@
 
 
 (function() {
-  var app, express, http, http_proxy, path, proxy, routes, server, user;
+  var DB, app, express, http, path, routes, server, users;
 
   http = require('http');
-
-  http_proxy = require('http-proxy');
 
   express = require('express');
 
   routes = require('./routes');
 
-  user = require('./routes/user');
-
   path = require('path');
+
+  DB = require("./connect_database");
+
+  users = require('./modules/users/users');
 
   app = express();
 
   server = http.createServer(app);
-
-  proxy = new http_proxy.RoutingProxy();
 
   app.set('port', process.env.PORT || 3001);
 
@@ -39,6 +37,10 @@
 
   app.use(express.methodOverride());
 
+  app.use(express.cookieParser('your secret here'));
+
+  app.use(express.session());
+
   app.use(app.router);
 
   app.use(require('stylus').middleware(__dirname + '/public'));
@@ -49,12 +51,23 @@
     app.use(express.errorHandler());
   }
 
-  app.get('/', routes.index);
+  app.get('/', routes.login);
 
-  app.get('/users', user.list);
+  app.get('/home', routes.home);
+
+  /*
+   Connection des utilisateurs en AJAX car :
+   	- Moins lourd
+   	- Plus sûr tant que l'utilisateur n'est pas authentifié
+   	- Mois de risque de DDOS, websocket est trop puissant
+   	- Plus rapide car WebSocket peut mettre du temps s'initialiser au travers des pare-feux
+  */
+
+
+  app.post('/', users.connect);
 
   server.listen(app.get('port'), function() {
-    return console.log('Express server listening on port ' + app.get('port'));
+    return console.log('IpVIOPE server listening on port ' + app.get('port'));
   });
 
 }).call(this);
