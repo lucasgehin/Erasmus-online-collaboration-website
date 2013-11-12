@@ -5,7 +5,7 @@
 
 
 (function() {
-  var DB, app, express, http, path, routes, server, users;
+  var DB, app, express, home, http, io, path, routes, server, users;
 
   http = require('http');
 
@@ -15,13 +15,19 @@
 
   path = require('path');
 
+  io = require("socket.io");
+
   DB = require("./connect_database");
 
   users = require('./modules/users/users');
 
+  home = require('./modules/home_page/home');
+
   app = express();
 
   server = http.createServer(app);
+
+  io = io.listen(server);
 
   app.set('port', process.env.PORT || 3001);
 
@@ -69,5 +75,12 @@
   server.listen(app.get('port'), function() {
     return console.log('IpVIOPE server listening on port ' + app.get('port'));
   });
+
+  /* 
+  	Initialisation des modules
+  */
+
+
+  home.init(io);
 
 }).call(this);

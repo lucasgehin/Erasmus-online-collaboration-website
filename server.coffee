@@ -9,19 +9,22 @@ express = require 'express'
 routes = require './routes'
 path = require 'path'
 
+io = require "socket.io"
+
 
 
 # Nos modules
 
 DB = require "./connect_database" 
-
 users = require './modules/users/users'
+home = require './modules/home_page/home'
 
 
 # Initialisation
 
 app = express()
 server = http.createServer app
+io = io.listen server
 
 
 # all environments
@@ -65,3 +68,11 @@ app.post '/' , users.connect
 
 server.listen app.get('port'), ()->
 	console.log 'IpVIOPE server listening on port ' + app.get('port')
+
+
+
+### 
+	Initialisation des modules
+###
+
+home.init io  # Give the socket IO instance to home

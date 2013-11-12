@@ -68,8 +68,43 @@ connect = (request, response) ->
 		DB.query query, params , next
 	catch e
 		console.warn e
+
+
+get_users_list = ( callback )->
+
+	# create query
+	query = """
+				SELECT username
+				 FROM users;
+				 
+			"""
+	
+
+	# treat query 
+	next = ( erreur, lignes, champs)->
+		
+
+
+		
+
+		if erreur
+			console.warn erreur
+		else
+			callback ( lignes )
+
+
+	# execute  query
+	try		
+		DB.query query, [] , next
+	catch e
+		console.warn e
+
+
+
 	
 
 # Exports
 
 exports.connect = connect
+exports.get_users_list = get_users_list
+

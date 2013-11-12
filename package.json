@@ -12,6 +12,7 @@
     "http-proxy":"*",
     "mysql":"*",
     "etherpad-lite-client": "latest",
-    "underscore":"*"
+    "underscore":"*",
+    "socket.io": "*"
   }
 }

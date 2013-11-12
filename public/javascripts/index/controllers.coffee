@@ -1,8 +1,8 @@
 @Sign_in = ($scope, $http) ->
 	
 	#Models
-	$scope.username = ""
-	$scope.password = ""
+	$scope.username = "test_user"
+	$scope.password = "test_pass"
 	$scope.message = " "
 	$scope.message_color = "black"
 	# Values
@@ -11,6 +11,12 @@
 	message_verify = "Checking"
 	message_error_connect = "Connection failed"
 
+	$scope.init = ()->
+		$scope.username = "test_user"
+		$scope.password = "test_pass"
+		$scope.$apply()
+
+	
 
 	# Functions
 	$scope.fields_not_empty = ()->
