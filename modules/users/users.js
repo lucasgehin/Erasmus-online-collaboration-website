@@ -27,6 +27,8 @@
           */
 
           request.session.connected = true;
+          request.session.username = lignes[0].username;
+          request.session.user_id = lignes[0].id;
         }
       }
       retour = {

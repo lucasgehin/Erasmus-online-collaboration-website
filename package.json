@@ -11,6 +11,7 @@
     "stylus": "*",
     "http-proxy":"*",
     "mysql":"*",
-    "validator": "*"
+    "etherpad-lite-client": "latest",
+    "underscore":"*"
   }
 }

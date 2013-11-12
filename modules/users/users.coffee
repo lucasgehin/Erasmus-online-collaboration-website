@@ -51,6 +51,9 @@ connect = (request, response) ->
 				###
 
 				request.session.connected = true
+				request.session.username = lignes[0].username
+				request.session.user_id = lignes[0].id
+
 
 		retour =
 			'message': message 
@@ -61,11 +64,9 @@ connect = (request, response) ->
 
 
 	# execute  query
-	try
-		# ...
+	try		
 		DB.query query, params , next
 	catch e
-		# ...
 		console.warn e
 	
 
