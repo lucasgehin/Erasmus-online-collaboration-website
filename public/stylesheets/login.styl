@@ -1,0 +1,160 @@
+// define
+radius-bottom(arg)
+	border-bottom-left-radius arg
+	border-bottom-right-radius arg
+
+// CSS
+body 
+	padding 50px
+	font 14px "Lucida Grande", Helvetica, Arial, sans-serif
+	background-image url("/images/backgrounds/main-rzd.jpg")
+	background-size cover
+
+	> .container 
+		margin-top 0px
+		background-color rgba(255,255,255,0.75)
+		box-shadow 0 0 10px 
+		radius-bottom 25px
+		
+
+a
+	color #00b7ff
+
+
+.navbar li
+	margin-right 10px
+
+
+marge = 60px 0 60px 0
+.page-header
+	margin marge
+	text-align center
+	h1
+		padding-bottom 30px
+		font-weight normal
+		text-shadow 0 0 1px rgba(100,100,100,0.3)
+		small
+			text-shadow none
+
+
+
+.log_form
+	margin-top 95px
+	border 1px white solid
+	border-radius 10px
+	box-shadow 0 0 10px
+	background-color rgba(255,255,255,0.5)
+	text-align center
+	padding-bottom 10%
+
+.log_form legend
+	text-align center
+
+.logos
+	height 400px
+.logos img
+	position absolute
+	
+
+ 
+animation()
+	vendor('animation', arguments)
+vendor(prop, args)
+	-webkit-{prop} args
+	-moz-{prop} args
+	-o-{prop} args
+	{prop} args
+
+transform-rotate()
+	-webkit-transform: rotate(arguments)
+	-moz-transform: rotate(arguments)
+	-o-transform: rotate(arguments)
+	-ms-transform: rotate(arguments)
+	transform: rotate(arguments)
+
+@keyframes rotation_anim
+	from
+		transform-rotate(0deg)		
+	to
+		transform-rotate(360deg)
+		
+
+#logo-rotate	
+	animation rotation_anim 30s linear 1s infinite
+	
+	
+	margin-top 140px
+	margin-left 188px
+	min-width 125px
+	max-width 125px
+
+	
+
+#logo-cuot
+	max-width 100px
+	margin-left 200px
+
+
+#logo-metropolia
+	min-width 125px
+	margin-top 42px
+	margin-left 40px
+
+#logo-ipl
+	min-width 110px
+	margin-top 25px
+	margin-left 280px
+
+#logo-unimi
+	margin-top 130px
+	margin-left 320px
+	min-width 100px
+
+#logo-gcu
+	min-width 145px
+	margin-top 192px
+	margin-left 30px
+
+#logo-udl
+	min-width 120px
+	margin-top 222px
+	margin-left 282px
+
+#logo-inh
+	min-width 150px
+	margin-top 287px
+	margin-left 178px
+
+
+marge-logos-container = 100px 0 100px 0
+.logos-container
+	font-size large	
+	line-height 150%
+	margin marge-logos-container
+	
+	
+
+.logos-container > .col-xs-4 
+	text-align center	
+	margin 0
+
+.logos-container > .col-xs-4:nth-child(2) 
+	text-align center	
+	border-left 1px gray solid
+	border-right 1px gray solid
+
+
+
+.logo-function 
+	border-radius 50px
+	min-width 100px
+	max-width 100px
+	box-shadow 0 0 10px 	
+
+.contact
+	color white
+	text-shadow 0 0 2px black
+	text-align center
+	background-color #333
+	radius-bottom 20px
+

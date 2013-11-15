@@ -20,7 +20,7 @@
       ret = "disabled";
       if ($scope.username && $scope.password) {
         if ($scope.username.length !== 0 || $scope.password.length !== 0) {
-          ret = "";
+          ret = "false";
         }
       }
       return ret;

@@ -3,83 +3,78 @@ html(ng-app)
 	head
 		title= title
 		meta(charset="UTF-8")
-		link(rel='stylesheet', href='/stylesheets/style.css')
-		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap-responsive.css')
+		link(rel='stylesheet', href='/stylesheets/login.css')		
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')    
-		script(type='text/javascript', src='/javascripts/angular.js')
 	
 	body
-		.main-container.container.border-bottom
-			.navbar.navbar-fixed-top.navbar-inverse
-				.navbar-inner
-					.container
-						a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
-							span.icon-bar
-							span.icon-bar
-							span.icon-bar
-						.nav-collapse
-							ul.nav
-								li
-									button#sign-up-link.btn.btn-success(type='button')
-										span.icon-pencil.icon-white
-										| Sign up
-								li
-									button#about-link.btn.btn-info
-										span.icon-info-sign.icon-white
-										| About
-								li
-									button#contact-link.btn.btn-info
-										span.icon-envelope.icon-white
-										| Contact
-			.row-fluid.header
-				#titre.span12.
-					ERASMUS Online Collaboration Website
+		.navbar.navbar-fixed-top.navbar-inverse
+			.collapse.navbar-collapse											
+					ul.nav.navbar-nav
+							li
+								button#sign-up-link.btn.btn-success.navbar-btn
+									span.glyphicon.glyphicon-pencil
+									|  Sign up
+							li
+								button#about-link.btn.btn-info.navbar-btn
+									span.glyphicon.glyphicon-info-sign
+									|  About
+							li
+								button#contact-link.btn.btn-info.navbar-btn
+									span.glyphicon.glyphicon-envelope
+									|  Contact
+		.container.border-bottom
 			.row-fluid
-				.span6
+				.page-header.col-xs-12
+					h1 ERASMUS Online Collaboration Website
+						small  &emsp;Work, Share, Learn
+			.row
+				.col-xs-6
 					.row
-						form.span10.offset1.log_form(ng-controller='Sign_in')
-							fieldset
-								legend Sign in
-								label(for='userame-field')
-									input#userame-field(ng-model='username', type='text', required='required', placeholder='Username')
-								label(for='password-field')
-									input#password-field(ng-model='password', type='password', required='required', placeholder='Password')
-								p {{message}}
-								button.btn.btn-primary(ng-click='connect()', disabled='{{fields_not_empty()}}', type='submit')
-									span.icon-check.icon-white
-									s| Sign in
-				.logos.span6
+						.col-xs-10.col-offset-2
+							form.log_form(ng-controller='Sign_in', name="login")
+								fieldset
+									legend Sign in
+									label(for='userame-field')
+										input#userame-field.form-control(ng-model='username', type='text', required='required', placeholder='Username')
+									br
+									label(for='password-field')
+										input#password-field.form-control(ng-model='password', type='password', required='required', placeholder='Password')
+									p(style="color:{{message_color}}"){{message}}
+									button.btn.btn-primary(ng-click='connect()', ng-disabled="login.$invalid", type='submit')
+										span.icon-check.icon-white
+										| Sign in
+				.logos.col-xs-6
 						.row
-							.span1.offset5
+							.col-xs-1.col-offset-5
 								a(target='_blank', href='http://www.en.pk.edu.pl/', rel='tooltip', data-original-title='Cracow University Of Technology')
-									img#logo-cuot(src='/images/logos/cuot.png', alt='logo cuot')
+									img#logo-cuot(src='/images/logos/cuot.png', alt='')
 						.row
-							.span1
+							.col-xs-1
 								a(target='_blank', href='http://www.metropolia.fi/en/', rel='tooltip', data-original-title='Metropolia University of Applied Sciences')
 									img#logo-metropolia(src='/images/logos/metropolia.png', alt='logo metropolia')
-							.span1.offset6
+							.col-xs-1.col-offset-6
 								a(target='_blank', href='http://www.ipleiria.pt/', rel='tooltip', data-original-title='INSTITUTO POLITÉCNICO DE LEIRIA')
-									img#logo-ipl(src='/images/logos/ipl.png', alt='logo ipl')
+									img#logo-ipl(src='/images/logos/ipl.png', alt='')
 						.row
-							.span1.offset5
+							.col-xs-1.col-offset-5
 								a(target='_blank', href='http://www.esn.org/', rel='tooltip', data-original-title='ERASMUS Student Network')
-									img#logo-rotate(src='/images/logos/esn.png', alt='eramsus logo')
-							.span1.offset5
+									img#logo-rotate(src='/images/logos/esn.png', alt='')
+							.col-xs-1.col-offset-5
 								a(target='_blank', href='http://www.unimi.it/', rel='tooltip', data-original-title='UNIVERSITÀ DEGLI STUDI DI MILANO')
-									img#logo-unimi(src='/images/logos/unimi.png', alt='logo unimi')
+									img#logo-unimi(src='/images/logos/unimi.png', alt='')
 						.row
-							.span1
+							.col-xs-1
 								a(target='_blank', href='http://www.gcu.ac.uk/', rel='tooltip', data-original-title='Glasgow Caledonian University')
-									img#logo-gcu(src='/images/logos/gcu.png', alt='logo gcu')
-							.span1.offset6
+									img#logo-gcu(src='/images/logos/gcu.png', alt='')
+							.col-xs-1.col-offset-6
 								a(target='_blank', href='http://www.univ-lorraine.fr/', rel='tooltip', data-original-title='Université de Lorraine')
-									img#logo-udl(src='/images/logos/udl.png', alt='logo udl')
+									img#logo-udl(src='/images/logos/udl.png', alt='')
 						.row
-							.span1.offset5
+							.col-xs-1.col-offset-5
 								a(target='_blank', href='http://www.inholland.nl/inhollandcom/', rel='tooltip', data-original-title='Inholland University of Applied Sciences')
-									img#logo-inh(src='/images/logos/inh.png', alt='logo inh')
-			.row-fluid.logos-container
-				.span4
+									img#logo-inh(src='/images/logos/inh.png', alt='')
+			.row.logos-container
+				.col-xs-4
 					img.logo-function(src='/images/logos/doc.png', alt="")
 					br
 					br
@@ -92,7 +87,7 @@ html(ng-app)
 					br
 					| Chat directly in the editor
 					br
-				.span4
+				.col-xs-4
 					img.logo-function(src='/images/logos/chat-logo.jpg', alt="")
 					br
 					br
@@ -102,7 +97,7 @@ html(ng-app)
 					br
 					| Video meetings
 					br
-				.span4
+				.col-xs-4
 					img.logo-function(src='/images/logos/calendar-logo.jpg', alt="")
 					br
 					br
@@ -112,8 +107,8 @@ html(ng-app)
 					| Realtime Calendar
 					br
 					| Pin events to home page
-			#about.row-fluid
-				.span10.offset1
+			#about.row
+				.col-xs-10.col-offset-1
 					h1 Erasmus Intensive Programme
 					h2 	Learning Computer Programming in Virtual Environment
 					h3
@@ -145,38 +140,31 @@ html(ng-app)
 						li The teaching will be organised from Monday to Friday
 					br
 					br
-			.row-fluid.contact
-				.span12  
-					.row-fluid.contact.border-bottom-round
-						.span6
-							| Contact us
-						.span6
-							| Created by:
-							br
-							br
-							| Vincent Boulanger
-							br
-							| Lucas Gehin
-							br
-							| Gregory Baton
-							br
-							| Geoffrey Gaillard
-							br
-						.row-fluid.contact.border-bottom-round
-							.span12
-								br
-								i © Copyrigths 2013 - Creators and  IUT Charlemagne
-								br
-								br
-								br
+			.row.contact
+				.col-xs-6
+					| Contact us
+				.col-xs-6
+					| Created by:
+					ul								
+						li Vincent Boulanger								
+						li Lucas Gehin								
+						li Gregory Baton								
+						li Geoffrey Gaillard
+						
+				.row
+					.col-xs-12
+						br
+						i © Copyrigths 2013 - Creators and  IUT Charlemagne
+						br
+						br
+						br
 					
-		//   Scripts se chargants après le document 
 		script(type='text/javascript', src='/javascripts/jquery-1.10.2.js')						
-		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
-		
+		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')		
 		script(type='text/javascript', src='/javascripts/jQueryRotateCompressed.2.2.js')
 		script(type='text/javascript', src='/javascripts/jquery-ui-1.10.3.custom.min-only-shake.js')
 		
-		//  Chargement de nos scripts finaux 
+		
 		script(type='text/javascript', src='/javascripts/index/main.js')
 		script(type='text/javascript', src='/javascripts/index/controllers.js')
+		script(type='text/javascript', src='/javascripts/angular.js')
