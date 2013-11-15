@@ -1,0 +1,182 @@
+!!! 5
+html(ng-app)
+	head
+		title= title
+		meta(charset="UTF-8")
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap-responsive.css')
+		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')    
+		script(type='text/javascript', src='/javascripts/angular.js')
+	
+	body
+		.main-container.container.border-bottom
+			.navbar.navbar-fixed-top.navbar-inverse
+				.navbar-inner
+					.container
+						a.btn.btn-navbar(data-toggle='collapse', data-target='.nav-collapse')
+							span.icon-bar
+							span.icon-bar
+							span.icon-bar
+						.nav-collapse
+							ul.nav
+								li
+									button#sign-up-link.btn.btn-success(type='button')
+										span.icon-pencil.icon-white
+										| Sign up
+								li
+									button#about-link.btn.btn-info
+										span.icon-info-sign.icon-white
+										| About
+								li
+									button#contact-link.btn.btn-info
+										span.icon-envelope.icon-white
+										| Contact
+			.row-fluid.header
+				#titre.span12.
+					ERASMUS Online Collaboration Website
+			.row-fluid
+				.span6
+					.row
+						form.span10.offset1.log_form(ng-controller='Sign_in')
+							fieldset
+								legend Sign in
+								label(for='userame-field')
+									input#userame-field(ng-model='username', type='text', required='required', placeholder='Username')
+								label(for='password-field')
+									input#password-field(ng-model='password', type='password', required='required', placeholder='Password')
+								p {{message}}
+								button.btn.btn-primary(ng-click='connect()', disabled='{{fields_not_empty()}}', type='submit')
+									span.icon-check.icon-white
+									s| Sign in
+				.logos.span6
+						.row
+							.span1.offset5
+								a(target='_blank', href='http://www.en.pk.edu.pl/', rel='tooltip', data-original-title='Cracow University Of Technology')
+									img#logo-cuot(src='/images/logos/cuot.png', alt='logo cuot')
+						.row
+							.span1
+								a(target='_blank', href='http://www.metropolia.fi/en/', rel='tooltip', data-original-title='Metropolia University of Applied Sciences')
+									img#logo-metropolia(src='/images/logos/metropolia.png', alt='logo metropolia')
+							.span1.offset6
+								a(target='_blank', href='http://www.ipleiria.pt/', rel='tooltip', data-original-title='INSTITUTO POLITÉCNICO DE LEIRIA')
+									img#logo-ipl(src='/images/logos/ipl.png', alt='logo ipl')
+						.row
+							.span1.offset5
+								a(target='_blank', href='http://www.esn.org/', rel='tooltip', data-original-title='ERASMUS Student Network')
+									img#logo-rotate(src='/images/logos/esn.png', alt='eramsus logo')
+							.span1.offset5
+								a(target='_blank', href='http://www.unimi.it/', rel='tooltip', data-original-title='UNIVERSITÀ DEGLI STUDI DI MILANO')
+									img#logo-unimi(src='/images/logos/unimi.png', alt='logo unimi')
+						.row
+							.span1
+								a(target='_blank', href='http://www.gcu.ac.uk/', rel='tooltip', data-original-title='Glasgow Caledonian University')
+									img#logo-gcu(src='/images/logos/gcu.png', alt='logo gcu')
+							.span1.offset6
+								a(target='_blank', href='http://www.univ-lorraine.fr/', rel='tooltip', data-original-title='Université de Lorraine')
+									img#logo-udl(src='/images/logos/udl.png', alt='logo udl')
+						.row
+							.span1.offset5
+								a(target='_blank', href='http://www.inholland.nl/inhollandcom/', rel='tooltip', data-original-title='Inholland University of Applied Sciences')
+									img#logo-inh(src='/images/logos/inh.png', alt='logo inh')
+			.row-fluid.logos-container
+				.span4
+					img.logo-function(src='/images/logos/doc.png', alt="")
+					br
+					br
+					i Google Docs
+					|  style
+					br
+					| Realtime collaborative edition
+					br
+					| Documents versioning
+					br
+					| Chat directly in the editor
+					br
+				.span4
+					img.logo-function(src='/images/logos/chat-logo.jpg', alt="")
+					br
+					br
+					| Chat
+					br
+					| Voice calls
+					br
+					| Video meetings
+					br
+				.span4
+					img.logo-function(src='/images/logos/calendar-logo.jpg', alt="")
+					br
+					br
+					i Google Calendar
+					|  Style
+					br
+					| Realtime Calendar
+					br
+					| Pin events to home page
+			#about.row-fluid
+				.span10.offset1
+					h1 Erasmus Intensive Programme
+					h2 	Learning Computer Programming in Virtual Environment
+					h3
+						| 13 – 24 May 2013 in Espoo, Finland
+					p
+						b International Intensive Programme organised by:
+					ul
+						li Helsinki Metropolia University of Applied Sciences, Finland
+						li Glasgow Caledonian University, United Kingdom
+						li Hogeschool InHolland, The Netherlands
+						li IUT Nancy-Charlemagne / Université Nancy2, France
+						li Polytechnic Institute of Leiria, Portugal
+						li Politechnika Krakowska, Poland
+						li Universidad Politécnica de Madrid (UPM), Spain
+						li Università degli Studi di Milano, Italy
+					p
+						| 70 students and 20 teachers from seven partner institutions of higher education will meet at Helsinki Metropolia UAS in Espoo, Finland, in May 2013 to participate in the Erasmus Intensive Programme. The programme will last for two weeks. In those two weeks students from the partner institutions will work together on the topic in international teams. Prior to the two-week programme students are requested to develop an application prototype remotely in international teams. By successfully completing the Intensive Programme, student earns 5 ECTS credits. Besides work a social programme will be offered to all participants.
+					h2
+						| Aims and Objectives of the IP
+					p
+						| The computer applications are more numerous and they have become more complex and integrated. The programming work is respectively spread out into many locations globally A change is taking place in the programming paradigm in industry. Virtual working environments are employed in many corporations. All modern systems and devices are based on software development. The computer programming is always concern whenever an application is developed for a tiny embedded device, a smart card or a huge number cruncher or a PC on your desk. It is seen that there is a permanent shortage of qualified programmers and software engineers in many EU countries.
+					p
+						| The objective of this IP is to promote teaching and learning of the fundamentals of computer programming through use of virtual and remote learning environments. The qualifications and skills are learned in international teams partly virtually and partly face-to-face. As learning outcome the IP covers software development skills like building a small application, using pair-programming, and working in international team.
+					h2
+						| Working Plan
+					ul
+						li Preliminary assignments in remote international teams before the intensive weeks
+						li Intensive weeks at Helsinki Metropolia UAS, Finland
+						li The teaching will be organised from Monday to Friday
+					br
+					br
+			.row-fluid.contact
+				.span12  
+					.row-fluid.contact.border-bottom-round
+						.span6
+							| Contact us
+						.span6
+							| Created by:
+							br
+							br
+							| Vincent Boulanger
+							br
+							| Lucas Gehin
+							br
+							| Gregory Baton
+							br
+							| Geoffrey Gaillard
+							br
+						.row-fluid.contact.border-bottom-round
+							.span12
+								br
+								i © Copyrigths 2013 - Creators and  IUT Charlemagne
+								br
+								br
+								br
+					
+		//   Scripts se chargants après le document 
+		script(type='text/javascript', src='/javascripts/jquery-1.10.2.js')						
+		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
+		
+		script(type='text/javascript', src='/javascripts/jQueryRotateCompressed.2.2.js')
+		script(type='text/javascript', src='/javascripts/jquery-ui-1.10.3.custom.min-only-shake.js')
+		
+		//  Chargement de nos scripts finaux 
+		script(type='text/javascript', src='/javascripts/index/main.js')
+		script(type='text/javascript', src='/javascripts/index/controllers.js')
