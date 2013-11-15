@@ -13,10 +13,23 @@ options =
 	password : ''
 
 
-db = mysql.createConnection options
+db = null 
+nb_essay = 0
+
+connect = ()->		
+			db = mysql.createConnection options
+			db.connect (err)->
+				if err
+					console.warn "CONNECT_DATABASE: Erreur de connexion a la BD!"
+					console.warn err
+					nb_essay++
+					if nb_essay < 10
+						setTimeout connect, 2000
+
+				else
+					console.log "CONNECT_DATABASE : Connecté à la Base de Données!"
 
 
-db.connect();
 
 query =  ( sqlQuery, params, callback )->
 
@@ -58,5 +71,6 @@ avoid_sql_injection = ( str )->
 
 # Exports
 
+connect()
 exports.query = query
 	

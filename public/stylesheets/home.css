@@ -1,3 +1,6 @@
+.red {
+  border: 1px #f00 solid;
+}
 body {
   padding: 0 20px 0 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -11,24 +14,52 @@ a {
   margin-right: 10px;
 }
 .main-container {
-  margin-top: 10px;
+  margin-top: 45px;
+  padding: 0 30px 0 30px;
   background-color: rgba(255,255,255,0.8);
+  border-radius: 10px;
 }
 .header-top {
-  margin: 60px 0 60px 0;
+  padding: 60px 0 0 0;
+  margin: 60px 0 0 0;
   text-align: center;
 }
-.header-section {
-  padding: 60px 0 60px 0;
+.header-top .content {
+  padding-top: 30px;
+}
+.header-top .list-group-item {
+  text-align: left;
+}
+.header-top .list-group-item table {
+  width: 100%;
+}
+.header-top .list-group-item table td {
+  width: 50%;
+  vertical-align: middle;
+}
+.header-top .list-group-item table .news-date {
+  font-style: italic;
+  color: #808080;
+  text-align: right;
+}
+.header-top .list-group-item-text {
+  text-align: justify;
+}
+.section {
+  padding: 30px 0 30px 0;
   text-align: center;
+}
+.section .titre {
+  padding-bottom: 20px;
+}
+.section .content {
+  font-size: normal;
+  text-align: justify;
 }
 .titre {
   font-size: xx-large;
   font-weight: bold;
   text-shadow: 0 0 1px #808080;
-}
-.content {
-  font-size: normal;
 }
 .settings-btn {
   color: #fff;
@@ -53,12 +84,31 @@ a {
   border-bottom-right-radius: 20px;
 }
 /* ----------------- */
-.user {
-  margin: 0 1px 0 0;
-  border: 1px #808080 solid;
-  width: 100px;
-  height: 100px;
-  display: inline-block;
-  position: relative;
-  z-index: 1000;
+.users-link-section {
+  padding: 0;
+}
+.users-link-section .users {
+  text-align: center;
+}
+.users-link-section .users .navbar-inner {
+  text-align: left;
+}
+.users-link-section .users .content {
+  min-height: 500px;
+  text-align: center;
+}
+.users-link-section .users .content .user {
+  text-align: left;
+  min-height: 100px;
+  max-height: 100px;
+  border: 1px rgba(0,0,0,0.1) solid;
+  border-radius: 10px;
+  margin: 0;
+}
+.users-link-section .users .content .user img {
+  display: inline;
+  max-width: 100px;
+  max-height: 100px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }

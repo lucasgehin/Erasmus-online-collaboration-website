@@ -1,22 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 # Navigation
     slide_time = 600
     decallage_y =  -$(".navbar").eq(0).height() - 1

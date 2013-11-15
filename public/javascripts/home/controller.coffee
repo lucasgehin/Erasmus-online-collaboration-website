@@ -14,59 +14,16 @@ socket.on 'connecting', ()->
 	console.log "IO: Connecting to /home..."
 
 
-###
-inject_into_users = (array)->
-	elem = angular.element(
-			document.querySelector
-		)
-###
-
-
-
-
-
 
 
 # jQUery
-bind_users = null
-
-
-$(window).on 'load', ()->
-
-	bind_users = ()->
-		$(".user").on "mouseenter", (e)->
-			if not $(this).is ":animated"
-				sanitize e, $(this)
-
-				$(this).off "mouseenter"
-				bind_users_back()
-
-				options = 
-					direction : "tb"
-					content : "Image ICI, ou inverse"
-					speed: 100
-				$(this).flip options
-
-
-	bind_users_back = ()->
-
-		$(".user").on "mouseout", (e)->
-			console.log "click"
-			if not $(this).is ":animated"
-				sanitize e, $(this)
-				$(this).off "mouseout"
-				bind_users()
-				$(this).revertFlip()
-
-		
-
-
-	bind_users()
-
-
-
-
-
+# tools
+sanitize = (event, jqueryObject)->
+    event.preventDefault()
+    event.stopPropagation()
+    if jqueryObject.is ":animated"
+        jqueryObject.stop()
+        jqueryObject.clearQueue()
 
 # Angular 
 
@@ -78,29 +35,45 @@ $(window).on 'load', ()->
 
 	$scope.get_users = ()->
 		socket.emit 'get_users_list', null, (response)->
-			$scope.list = response
+			$scope.list =  response
+			for u in $scope.list
+				traiter_donnees u, ()->
+					$scope.$apply()
 			console.log "User list saved"
-			$scope.$apply()
 			
-			interval = setInterval ()->
-					if bind_users
-						clearInterval interval
-						bind_users()
-			, 50
-
-	$scope.get_users()
-
+	traiter_donnees = (user, cb)->	
+		if not user.picture
+			socket.emit "random_pokemon", null, (img)->
+				console.log img
+				user.picture = img
+				cb()
 
 
-
-
-# tools
+	$(document).ready ()->
+		$scope.get_users()
 
 
 
-sanitize = (event, jqueryObject)->
-    event.preventDefault()
-    event.stopPropagation()
-    if jqueryObject.is ":animated"
-        jqueryObject.stop()
-        jqueryObject.clearQueue()
+@News_Management = ($scope)->
+
+	$scope.list = []
+
+	$scope.get_news_list = ()->
+		console.log "Getting news list"
+		socket.emit 'get_news_list',null, (response)->
+			$scope.list = response
+			console.log "New List : "
+			console.log response
+
+			if $scope.list.length is 0
+				$scope.list.push {
+					id:-1
+					title: "There is nothing here :("
+					content : "Add a message"
+					date: ''
+				}
+
+			$scope.$apply()
+
+	$(document).ready ()->
+		$scope.get_news_list()

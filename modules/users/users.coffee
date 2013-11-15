@@ -74,7 +74,7 @@ get_users_list = ( callback )->
 
 	# create query
 	query = """
-				SELECT username
+				SELECT username, nom , prenom
 				 FROM users;
 				 
 			"""

@@ -48,7 +48,7 @@
 
   get_users_list = function(callback) {
     var e, next, query;
-    query = "SELECT username\n FROM users;\n ";
+    query = "SELECT username, nom , prenom\n FROM users;\n ";
     next = function(erreur, lignes, champs) {
       if (erreur) {
         return console.warn(erreur);
