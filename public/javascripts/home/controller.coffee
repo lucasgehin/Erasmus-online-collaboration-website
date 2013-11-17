@@ -49,7 +49,7 @@ sanitize = (event, jqueryObject)->
 				user.picture = img
 				cb()
 		###
-		cb
+		cb()
 
 
 	
