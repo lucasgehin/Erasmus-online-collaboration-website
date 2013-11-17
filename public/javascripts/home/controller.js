@@ -42,27 +42,33 @@
       });
     };
     traiter_donnees = function(user, cb) {
-      if (!user.picture) {
-        return socket.emit("random_pokemon", null, function(img) {
-          console.log(img);
-          user.picture = img;
-          return cb();
-        });
-      }
+      /*
+      		if not user.picture
+      			socket.emit "random_pokemon", null, (img)->
+      				console.log img
+      				user.picture = img
+      				cb()
+      */
+
+      return cb;
     };
-    return $(document).ready(function() {
-      return $scope.get_users();
-    });
+    return $scope.get_users();
   };
 
   this.News_Management = function($scope) {
+    $scope.short_list = [];
     $scope.list = [];
     $scope.get_news_list = function() {
       console.log("Getting news list");
       return socket.emit('get_news_list', null, function(response) {
+        var i, _i, _len, _ref;
         $scope.list = response;
-        console.log("New List : ");
-        console.log(response);
+        $scope.short_list = $scope.list.splice(0, 3);
+        _ref = $scope.short_list;
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          i = _ref[_i];
+          i.short_content = i.content.substr(0, 250) + '...';
+        }
         if ($scope.list.length === 0) {
           $scope.list.push({
             id: -1,
@@ -74,9 +80,56 @@
         return $scope.$apply();
       });
     };
-    return $(document).ready(function() {
-      return $scope.get_news_list();
-    });
+    $scope.show = function(item) {
+      var popup, scope;
+      popup = document.querySelector("#popup-news");
+      scope = angular.element(popup).scope();
+      scope.title = item.title;
+      scope.content = item.content;
+      return $(popup).modal();
+    };
+    $scope.show_all = function() {
+      var popup, scope;
+      popup = document.querySelector("#popup-news-all");
+      scope = angular.element(popup).scope();
+      if (!scope.is_initialized) {
+        scope.initalize($scope.list);
+      }
+      return scope.show();
+    };
+    return $scope.get_news_list();
+  };
+
+  this.popup_news = function($scope) {
+    $scope.title = "";
+    $scope.content = "";
+    return $scope.date = "";
+  };
+
+  this.popup_news_all = function($scope) {
+    $scope.is_initialized = false;
+    $scope.list = [];
+    $scope.current_content = $scope.initalize = function(list) {
+      $scope.list = list;
+      $scope.list[0].active = true;
+      $scope.activated = $scope.list[0];
+      return $scope.is_initialized = true;
+    };
+    $scope.show_new = function(item) {
+      $scope.current_content = item.content;
+      $scope.activated.active = false;
+      $scope.activated = item;
+      return $scope.activated.active = true;
+    };
+    return $scope.show = function() {
+      var self;
+      self = document.querySelector("#popup-news-all");
+      $("html, body").animate({
+        "scrollTop": 0
+      }, 500);
+      $scope.current_content = $scope.activated.content;
+      return $(self).modal();
+    };
   };
 
 }).call(this);

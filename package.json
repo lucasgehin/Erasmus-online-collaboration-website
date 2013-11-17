@@ -14,6 +14,7 @@
     "etherpad-lite-client": "latest",
     "underscore":"*",
     "socket.io": "*",
-    "request":"*"
+    "request":"*",
+    "gzippo":"latest"
   }
 }

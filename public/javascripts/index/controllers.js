@@ -15,16 +15,6 @@
       $scope.password = "test_pass";
       return $scope.$apply();
     };
-    $scope.fields_not_empty = function() {
-      var ret;
-      ret = "disabled";
-      if ($scope.username && $scope.password) {
-        if ($scope.username.length !== 0 || $scope.password.length !== 0) {
-          ret = "false";
-        }
-      }
-      return ret;
-    };
     $scope.connect = function() {
       var connecting, failed, headers, options, params, request, wrong_data;
       $scope.message = message_connecting;

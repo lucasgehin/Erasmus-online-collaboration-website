@@ -56,7 +56,7 @@ marge = 60px 0 60px 0
 	position absolute
 	
 
- 
+// Animations -> transform rotate MIXIN
 animation()
 	vendor('animation', arguments)
 vendor(prop, args)
@@ -72,17 +72,16 @@ transform-rotate()
 	-ms-transform: rotate(arguments)
 	transform: rotate(arguments)
 
+// ------ END -------
+
 @keyframes rotation_anim
 	from
 		transform-rotate(0deg)		
 	to
-		transform-rotate(360deg)
-		
+		transform-rotate(360deg)		
 
 #logo-rotate	
-	animation rotation_anim 30s linear 1s infinite
-	
-	
+	animation rotation_anim 30s linear 1s infinite	
 	margin-top 140px
 	margin-left 188px
 	min-width 125px

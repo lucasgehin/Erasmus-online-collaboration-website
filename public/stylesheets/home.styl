@@ -4,6 +4,8 @@ body_padding = 20px
 	border 1px red solid
 
 body
+	position relative
+	padding auto
 	padding 0 body_padding 0 body_padding
 	font 14px  "Lucida Grande", Helvetica, Arial, sans-serif
 	background-image url("/images/backgrounds/main-rzd.jpg")
@@ -18,7 +20,7 @@ a
 padding_main_container = 0 30px 0 30px
 radius_main = 10px
 .main-container
-	margin-top 45px
+	margin-top -55px
 	padding padding_main_container
 	background-color rgba(255, 255, 255, 0.8)
 	border-radius radius_main
@@ -61,8 +63,6 @@ margin_section = 30px 0 30px 0
 	font-weight bold
 	text-shadow 0 0 1px gray
 
-
-
 .settings-btn
 	color white
 
@@ -84,6 +84,8 @@ radius = 20px
 .border-bottom-round
 	border-bottom-left-radius radius
 	border-bottom-right-radius radius
+.rounded
+	border-radius radius
 
 
 /* ----------------- */
@@ -126,4 +128,8 @@ haut = 100px
 					border-top-left-radius 10px
 					border-bottom-left-radius 10px
 
-		
+
+.modal-dialog
+	width 100%
+.modal-body
+	min-height 530px

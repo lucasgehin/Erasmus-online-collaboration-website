@@ -5,6 +5,7 @@
 
 http = require 'http'
 express = require 'express'
+gzippo = require 'gzippo'
 
 routes = require './routes'
 path = require 'path'
@@ -39,7 +40,20 @@ app.use express.cookieParser('your secret here') # Devra être changé !!!!
 app.use express.session()
 app.use app.router
 app.use require('stylus').middleware(__dirname + '/public')
-app.use express.static(path.join(__dirname, 'public'))
+
+# CACHE
+
+###app.use (req, res, next) ->
+  	#if req.url.indexOf "/" == 0 || req.url.indexOf "/images/" == 0
+    	res.setHeader "Cache-Control", "public, max-age=864000"
+    	res.setHeader "Expires", new Date(Date.now() + 345600000).toUTCString()
+    	next()
+###
+static_content_options = 
+	maxAge: 345600000 # 4 jours
+
+#CONTENU STATIQUE AVEC CACHE
+app.use gzippo.staticGzip(path.join(__dirname, 'public'), static_content_options)
 
 
 # development only
