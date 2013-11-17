@@ -2,23 +2,18 @@
 (function() {
   this.Sign_in = function($scope, $http) {
     var apply, message_connecting, message_error_connect, message_error_u_p, message_verify;
-    $scope.username = "";
-    $scope.password = "";
+    $scope.username = "test_user";
+    $scope.password = "test_pass";
     $scope.message = " ";
     $scope.message_color = "black";
     message_error_u_p = "Wrong username or password";
     message_connecting = "Connecting";
     message_verify = "Checking";
     message_error_connect = "Connection failed";
-    $scope.fields_not_empty = function() {
-      var ret;
-      ret = "disabled";
-      if ($scope.username && $scope.password) {
-        if ($scope.username.length !== 0 || $scope.password.length !== 0) {
-          ret = "";
-        }
-      }
-      return ret;
+    $scope.init = function() {
+      $scope.username = "test_user";
+      $scope.password = "test_pass";
+      return $scope.$apply();
     };
     $scope.connect = function() {
       var connecting, failed, headers, options, params, request, wrong_data;

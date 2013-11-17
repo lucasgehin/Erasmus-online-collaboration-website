@@ -5,29 +5,37 @@
 
 
 (function() {
-  var DB, app, express, http, path, routes, server, users;
+  var DB, app, express, gzippo, home, http, io, path, routes, server, static_content_options, users;
 
   http = require('http');
 
   express = require('express');
 
+  gzippo = require('gzippo');
+
   routes = require('./routes');
 
   path = require('path');
+
+  io = require("socket.io");
 
   DB = require("./connect_database");
 
   users = require('./modules/users/users');
 
+  home = require('./modules/home_page/home');
+
   app = express();
 
   server = http.createServer(app);
+
+  io = io.listen(server);
 
   app.set('port', process.env.PORT || 3001);
 
   app.set('views', __dirname + '/views');
 
-  app.set('view engine', 'ejs');
+  app.set('view engine', 'jade');
 
   app.use(express.favicon());
 
@@ -45,10 +53,24 @@
 
   app.use(require('stylus').middleware(__dirname + '/public'));
 
-  app.use(express["static"](path.join(__dirname, 'public')));
+  /*app.use (req, res, next) ->
+    	#if req.url.indexOf "/" == 0 || req.url.indexOf "/images/" == 0
+      	res.setHeader "Cache-Control", "public, max-age=864000"
+      	res.setHeader "Expires", new Date(Date.now() + 345600000).toUTCString()
+      	next()
+  */
+
+
+  static_content_options = {
+    maxAge: 345600000
+  };
+
+  app.use(gzippo.staticGzip(path.join(__dirname, 'public'), static_content_options));
 
   if ('development' === app.get('env')) {
     app.use(express.errorHandler());
+    app.locals.pretty = true;
+    console.log("MODE: " + app.get("env"));
   }
 
   app.get('/', routes.login);
@@ -69,5 +91,12 @@
   server.listen(app.get('port'), function() {
     return console.log('IpVIOPE server listening on port ' + app.get('port'));
   });
+
+  /* 
+  	Initialisation des modules
+  */
+
+
+  home.init(io);
 
 }).call(this);

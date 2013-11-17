@@ -1,0 +1,163 @@
+!!! 5
+html(ng-app)
+	head
+		title= title
+		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')
+		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap-theme.css')
+		link(rel='stylesheet', href='/stylesheets/home.css')
+		script(type='text/javascript', src='/socket.io/socket.io.js')
+
+	body
+		.navbar.navbar-inverse
+			.collapse.navbar-collapse
+					ul.nav.navbar-nav
+						li
+							button.btn.btn-success.navbar-btn(type='button')
+								span.glyphicon.glyphicon-pencil
+								|  Documents
+						li
+							button.btn.btn-success.navbar-btn
+								span.glyphicon.glyphicon-facetime-video
+								|  Chat
+						li
+							button.btn.btn-success.navbar-btn
+								span.glyphicon.glyphicon-calendar
+								|  Calendar
+
+					ul.nav.navbar-nav
+						li
+							button#docs-link.btn.btn-info.navbar-btn(type='button')
+								span.glyphicon.glyphicon-pushpin
+								|   Pinned docs
+						li
+							button#projects-link.btn.btn-info.navbar-btn
+								span.glyphicon.glyphicon-briefcase
+								|   Projects
+						li
+							button#users-link.btn.btn-info.navbar-btn
+								span.glyphicon.glyphicon-user
+								|   Users
+					ul.nav.pull-right.navbar-nav
+						li.dropdown
+							.btn-group
+								button.btn.btn-danger.navbar-btn(type='button') Settings
+								button.btn.btn-danger.navbar-btn.dropdown-toggle(type='button', data-toggle='dropdown')
+									span.glyphicon.glyphicon-chevron-down
+									span.sr-only
+								ul.dropdown-menu
+									li
+										a(href='#') Help
+									li
+										a(href='#') Report a bug
+									li.divider
+									li
+										a(href='#')
+											span.logout-btn
+												span.icon-remove-sign
+												| Logout
+						
+		.main-container.container-fluid
+			.row.header-top
+				.col-xs-6
+					.titre
+						| What's new ?
+					.content(ng-controller="News_Management")
+						.list-group
+							a.list-group-item(ng-repeat="item in short_list", href="#", ng-click="show(item)")
+								.list-group-item-heading
+									table
+										tr
+											td
+												h4 {{item.title}}
+											td.news-date
+												{{item.date}}
+								p.list-group-item-text.news-content {{item.short_content}}
+						button.btn.btn-info(ng-disabled="list.length == 0", ng-click="show_all()")
+							span.glyphicon.glyphicon-plus.
+								More
+
+				.col-xs-6
+					.titre
+						| Next events
+					.content
+						| Content
+
+			.pinned-docs-section.row-fluid.section		
+				.titre.
+					Pinned documents
+				.content
+					| Content
+
+			.projects-link-section.row-fluid.section.separation-top
+				.titre
+					| Projects
+				.content
+					| Content
+
+			.users-link-section.row-fluid.section
+				.col-xs-12.users(ng-controller='User_Manager')
+					.navbar.navbar-default
+						.navbar-header
+							.navbar-brand Users
+						.collapse.navbar-collapse													
+								form.navbar-form.navbar-left(role='search')
+									.form-group
+										input.form-control(type='text', placeholder='Filter users', ng-model='filtre')
+					.content
+						span.col-xs-3.user(ng-repeat='u in list | filter:filtre')
+							table
+								tr
+									td
+										img(src='{{u.picture}}', alt='')
+									td
+										| @{{u.username}}
+										br
+										| {{u.prenom}} {{u.nom}}
+
+
+
+
+
+
+
+		.modal.fade#popup-news(ng-controller="popup_news")
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(data-dismiss="modal", aria-hidden="true")
+							&times;
+						h4.title {{title}}
+					.modal-body {{content}}
+					.modal-footer
+
+		.modal.fade#popup-news-all(ng-controller="popup_news_all")
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(data-dismiss="modal", aria-hidden="true")
+							&times;
+						h4.title News list
+					.modal-body
+						.row
+							.col-xs-4.separation-right.list
+								ul.nav.nav-pills.nav-stacked
+									li(ng-repeat="item in list", ng-class="{ active: item.active}") 
+										a(href="#", ng-click="show_new( item )" )
+											| {{item.title}}
+							.col-xs-8.rounded.content
+								{{current_content}}
+
+					
+
+
+		
+		//  Scripts se chargeants après le document 
+		script(type='text/javascript', src='/javascripts/jquery-1.10.2.js')
+		script(type='text/javascript', src='/javascripts/jquery.flippy.min.js')		
+		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')		
+		script(type='text/javascript', src='/javascripts/jquery-ui-1.10.3.custom.min-only-shake.js')
+		//Chargement de nos scripts finaux
+		script(type='text/javascript', src='/javascripts/home/main.js')
+		script(type='text/javascript', src='/javascripts/angular.js')
+		script(type='text/javascript', src='/javascripts/home/controller.js')
+		

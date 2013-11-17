@@ -1,10 +1,12 @@
 @Sign_in = ($scope, $http) ->
 	
 	#Models
-	$scope.username = ""
-	$scope.password = ""
+	$scope.username = "test_user"
+	$scope.password = "test_pass"
 	$scope.message = " "
 	$scope.message_color = "black"
+
+	
 	# Values
 	message_error_u_p = "Wrong username or password"
 	message_connecting = "Connecting"
@@ -12,14 +14,16 @@
 	message_error_connect = "Connection failed"
 
 
-	# Functions
-	$scope.fields_not_empty = ()->
-		ret = "disabled"
-		if $scope.username and   $scope.password
-			if $scope.username.length isnt 0 or $scope.password.length isnt 0
-				ret = ""
-		return ret
 
+	$scope.init = ()->
+		$scope.username = "test_user"
+		$scope.password = "test_pass"
+		$scope.$apply()
+
+	
+
+	# Functions
+	
 	$scope.connect = ()->
 
 		# VIEW

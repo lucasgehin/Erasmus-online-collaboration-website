@@ -1,71 +1,125 @@
+.red {
+  border: 1px #f00 solid;
+}
 body {
-  padding-left: 20px;
-  padding-right: 20px;
+  position: relative;
+  padding: auto;
+  padding: 0 20px 0 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
   background-image: url("/images/backgrounds/main-rzd.jpg");
   background-size: cover;
-
 }
 a {
   color: #00b7ff;
 }
-
-.nav-collapse li{
-	margin-right: 10px;
+.nav li {
+  margin-right: 10px;
 }
 .main-container {
-	margin-top: 50px;
-	background-color: rgba(255,255,255,0.8);
-	box-shadow: 0 0 10px ;
-	border-radius: 5px;
+  margin-top: -55px;
+  padding: 0 30px 0 30px;
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 10px;
 }
-
-.header-top{
-	margin-top: 60px;
-	margin-bottom: 60px;
-	text-align: center;
+.header-top {
+  padding: 60px 0 0 0;
+  margin: 60px 0 0 0;
+  text-align: center;
 }
-.header-section{
-	padding-top: 60px;
-	padding-bottom: 60px;
-	text-align: center;
+.header-top .content {
+  padding-top: 30px;
 }
-.titre{
-	font-size: xx-large;
-	font-weight: bold;
-	text-shadow: 0 0 1px gray;
+.header-top .list-group-item {
+  text-align: left;
 }
-.content{
-	font-size: normal;
+.header-top .list-group-item table {
+  width: 100%;
 }
-
-.settings-btn{
-	color: white;
+.header-top .list-group-item table td {
+  width: 50%;
+  vertical-align: middle;
 }
-.logout-btn{
-	color:red;
+.header-top .list-group-item table .news-date {
+  font-style: italic;
+  color: #808080;
+  text-align: right;
 }
-
-
-
-
-
-
-
-.separation-right{
-	border-right: 1px gray solid;
+.header-top .list-group-item-text {
+  text-align: justify;
 }
-.separation-left{
-	border-left: 1px gray solid;
+.section {
+  padding: 30px 0 30px 0;
+  text-align: center;
 }
-.separation-top{
-	border-top: 1px gray solid;
+.section .titre {
+  padding-bottom: 20px;
 }
-.separation-bottom{
-	border-bottom: 1px gray solid;
+.section .content {
+  font-size: normal;
+  text-align: justify;
 }
-
-.border-bottom-round{
-	border-bottom-left-radius: 20px;
-	border-bottom-right-radius: 20px;
+.titre {
+  font-size: xx-large;
+  font-weight: bold;
+  text-shadow: 0 0 1px #808080;
+}
+.settings-btn {
+  color: #fff;
+}
+.logout-btn {
+  color: #f00;
+}
+.separation-right {
+  border-right: 1px #808080 solid;
+}
+.separation-left {
+  border-left: 1px #808080 solid;
+}
+.separation-top {
+  border-top: 1px #808080 solid;
+}
+.separation-bottom {
+  border-bottom: 1px #808080 solid;
+}
+.border-bottom-round {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.rounded {
+  border-radius: 20px;
+}
+/* ----------------- */
+.users-link-section {
+  padding: 0;
+}
+.users-link-section .users {
+  text-align: center;
+}
+.users-link-section .users .navbar-inner {
+  text-align: left;
+}
+.users-link-section .users .content {
+  min-height: 500px;
+  text-align: center;
+}
+.users-link-section .users .content .user {
+  text-align: left;
+  min-height: 100px;
+  max-height: 100px;
+  border: 1px rgba(0,0,0,0.1) solid;
+  border-radius: 10px;
+  margin: 0;
+}
+.users-link-section .users .content .user img {
+  display: inline;
+  max-width: 100px;
+  max-height: 100px;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+.modal-dialog {
+  width: 100%;
+}
+.modal-body {
+  min-height: 530px;
 }
