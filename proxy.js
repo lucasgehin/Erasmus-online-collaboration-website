@@ -16,7 +16,7 @@
     router: {
       "ipviope.tk": "localhost:3001",
       "docs.ipviope.tk": "localhost:9001",
-      "crous.ipviope.tk": "localhost:81"
+      "aci-charlemagne.tk": "localhost:81"
     }
   };
 

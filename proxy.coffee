@@ -13,7 +13,8 @@ options = {
 	router : {
 		"ipviope.tk":"localhost:3001"		# root
 		"docs.ipviope.tk":"localhost:9001"	# EtherPad
-		"crous.ipviope.tk":"localhost:81" # Apache 
+		#"crous.ipviope.tk":"localhost:81" 	# Apache 
+		"aci-charlemagne.tk":"localhost:81"     # Apache
 	}
 }
 
