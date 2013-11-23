@@ -99,4 +99,11 @@
 
   home.init(io);
 
+  /*
+  	Deconnection
+  */
+
+
+  app.get('/logout', users.disconnect);
+
 }).call(this);

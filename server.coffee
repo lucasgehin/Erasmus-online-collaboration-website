@@ -92,3 +92,8 @@ server.listen app.get('port'), ()->
 ###
 
 home.init io  # Give the socket IO instance to home
+
+###
+	Deconnection
+###
+app.get '/logout', users.disconnect
