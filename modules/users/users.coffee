@@ -100,11 +100,18 @@ get_users_list = ( callback )->
 		console.warn e
 
 
+disconnect = (request, response)->
+	    if request.session and request.session.connected
+	        request.session.destroy()
+	    response.redirect "/"
+	        # SI (request.session existe et n'est pas egal a false) ET (request.session.connected existe et n'est pas égal a faux ) , en l'occurence connected est égal a true donc ca passe dans tout les autres cas la condition ne sera pas validée
 
-	
 
-# Exports
+		
+
+# Exports (fontions accessivles depuis l'exterieur du module)
 
 exports.connect = connect
 exports.get_users_list = get_users_list
+exports.disconnect = disconnect
 

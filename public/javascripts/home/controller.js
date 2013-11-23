@@ -50,7 +50,7 @@
       				cb()
       */
 
-      return cb;
+      return cb();
     };
     return $scope.get_users();
   };
