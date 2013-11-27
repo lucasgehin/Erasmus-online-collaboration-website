@@ -74,7 +74,7 @@ get_users_list = ( callback )->
 
 	# create query
 	query = """
-				SELECT username, nom , prenom
+				SELECT username, nom , prenom, country
 				 FROM users;
 				 
 			"""
@@ -104,9 +104,38 @@ disconnect = (request, response)->
 	    if request.session and request.session.connected
 	        request.session.destroy()
 	    response.redirect "/"
-	        # SI (request.session existe et n'est pas egal a false) ET (request.session.connected existe et n'est pas égal a faux ) , en l'occurence connected est égal a true donc ca passe dans tout les autres cas la condition ne sera pas validée
+	        # SI (request.session existe et n est pas egal a false) ET (request.session.connected existe et n est pas égal a faux ) , en l occurence connected est égal a true donc ca passe dans tout les autres cas la condition ne sera pas validée
 
+###
+get_settings_list = (callback) ->
+	#get params
+	usersession = request.session.username
 
+	#create query
+	query = """
+				SELECT username, nom, prenom
+				FROM users
+				WHERE username= '?'
+			"""
+	params = [
+		usersession
+	]
+
+	# treat query 
+	next = ( erreur, lignes, champs)->
+		
+		if erreur
+			console.warn erreur
+		else
+			callback (lignes)
+			Console.log (lignes) 
+
+	# execute query
+	try
+		DB.query query, params , next
+	catch e
+		console.warn e
+###
 		
 
 # Exports (fontions accessivles depuis l'exterieur du module)
@@ -114,4 +143,6 @@ disconnect = (request, response)->
 exports.connect = connect
 exports.get_users_list = get_users_list
 exports.disconnect = disconnect
-
+###
+exports.get_settings_list = get_settings_list
+###

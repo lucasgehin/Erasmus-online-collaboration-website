@@ -101,6 +101,34 @@ sanitize = (event, jqueryObject)->
 	$scope.get_news_list()
 
 
+@Setting_Management = ($scope)->
+
+
+
+	$scope.show = ()->
+		popup = document.querySelector "#popup_settings"
+		scope = angular.element(popup).scope()
+
+		
+				
+		$(popup).modal()
+
+	
+
+@Setting_Selection = ($scope)->
+
+	$scope.list = []
+
+	$scope.get_setting = ()->
+		socket.emit 'get_settings_list', null, (response)->
+			$scope.list = response
+			console.log(response)
+			console.log "Settings list saved"
+			
+	$scope.username = username
+	
+	$scope.get_setting()
+
 
 @popup_news = ($scope)->
 	$scope.title = ""
@@ -136,4 +164,6 @@ sanitize = (event, jqueryObject)->
 		$scope.current_content = $scope.activated.content
 		$(self).modal()
 		
-
+@popup_settings = ($scope)->
+	$scope.title = ""
+	$scope.content = ""

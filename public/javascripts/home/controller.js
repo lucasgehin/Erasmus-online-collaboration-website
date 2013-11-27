@@ -100,6 +100,28 @@
     return $scope.get_news_list();
   };
 
+  this.Setting_Management = function($scope) {
+    return $scope.show = function() {
+      var popup, scope;
+      popup = document.querySelector("#popup_settings");
+      scope = angular.element(popup).scope();
+      return $(popup).modal();
+    };
+  };
+
+  this.Setting_Selection = function($scope) {
+    $scope.list = [];
+    $scope.get_setting = function() {
+      return socket.emit('get_settings_list', null, function(response) {
+        $scope.list = response;
+        console.log(response);
+        return console.log("Settings list saved");
+      });
+    };
+    $scope.username = username;
+    return $scope.get_setting();
+  };
+
   this.popup_news = function($scope) {
     $scope.title = "";
     $scope.content = "";
@@ -130,6 +152,11 @@
       $scope.current_content = $scope.activated.content;
       return $(self).modal();
     };
+  };
+
+  this.popup_settings = function($scope) {
+    $scope.title = "";
+    return $scope.content = "";
   };
 
 }).call(this);

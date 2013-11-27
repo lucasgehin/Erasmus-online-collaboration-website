@@ -40,7 +40,8 @@ html(ng-app)
 					ul.nav.pull-right.navbar-nav
 						li.dropdown
 							.btn-group
-								button.btn.btn-danger.navbar-btn(type='button') Settings
+								button.btn.btn-danger.navbar-btn(type='button', href='#') Settings
+
 								button.btn.btn-danger.navbar-btn.dropdown-toggle(type='button', data-toggle='dropdown')
 									span.glyphicon.glyphicon-chevron-down
 									span.sr-only
@@ -113,6 +114,9 @@ html(ng-app)
 										| @{{u.username}}
 										br
 										| {{u.prenom}} {{u.nom}}
+										br
+										.country
+											img(src='images/Country/{{u.country}}.jpg', alt='Country')
 
 
 
@@ -147,6 +151,25 @@ html(ng-app)
 							.col-xs-8.rounded.content
 								{{current_content}}
 
+		.modal.fade#popup_settings(ng-controller="Setting_Selection")
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(data-dismiss="modal", aria-hidden="true")
+								&times;
+							h4.title Settings
+						
+					.modal-body
+						span
+							| Username : {{username}}
+							br
+							| Password :
+							br
+							| Confirm password :
+							br
+
+
+					.modal-footer
 					
 
 

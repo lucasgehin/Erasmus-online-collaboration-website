@@ -48,7 +48,7 @@
 
   get_users_list = function(callback) {
     var e, next, query;
-    query = "SELECT username, nom , prenom\n FROM users;\n ";
+    query = "SELECT username, nom , prenom, country\n FROM users;\n ";
     next = function(erreur, lignes, champs) {
       if (erreur) {
         return console.warn(erreur);
@@ -71,10 +71,47 @@
     return response.redirect("/");
   };
 
+  /*
+  get_settings_list = (callback) ->
+  	#get params
+  	usersession = request.session.username
+  
+  	#create query
+  	query = """
+  				SELECT username, nom, prenom
+  				FROM users
+  				WHERE username= '?'
+  			"""
+  	params = [
+  		usersession
+  	]
+  
+  	# treat query 
+  	next = ( erreur, lignes, champs)->
+  		
+  		if erreur
+  			console.warn erreur
+  		else
+  			callback (lignes)
+  			Console.log (lignes) 
+  
+  	# execute query
+  	try
+  		DB.query query, params , next
+  	catch e
+  		console.warn e
+  */
+
+
   exports.connect = connect;
 
   exports.get_users_list = get_users_list;
 
   exports.disconnect = disconnect;
+
+  /*
+  exports.get_settings_list = get_settings_list
+  */
+
 
 }).call(this);
