@@ -10,7 +10,7 @@ options =
 	host     : '127.0.0.1'
 	database :  'ipviope'
 	user    : 'root'
-	password : 'Yggdrasil/54.'
+	password : 'root'
 
 
 db = null 
