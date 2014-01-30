@@ -5,10 +5,10 @@
 
 exports.login = (req, res) ->
 
-	if req.session and req.session.connected
-		res.redirect "/home"
-	else
-		options = 
-			title: "IpVIOPE"
+  if req.session and req.session.connected
+    res.redirect "/home"
+  else
+    options = 
+      title: "IpVIOPE"
 
-		res.render 'index', options
+    res.render 'index', options

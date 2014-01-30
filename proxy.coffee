@@ -1,25 +1,23 @@
 ###
+  Ce proxy est la racine du site
 
-	Ce proxy est la racine du site
-
-	Il permet de faire tourner tourner toutes les applis sur un même port ( 80 )
-
+  Il permet de faire tourner tourner toutes les applis sur un même port ( 80 )
 ###
 
 proxy_port = 80
 
 
-options = {	
-	router : {
-		"ipviope.tk":"localhost:3001"		# root
-		"docs.ipviope.tk":"localhost:9001"	# EtherPad
-		#"crous.ipviope.tk":"localhost:81" 	# Apache 
-		"aci-charlemagne.tk":"localhost:81"     # Apache
-	}
-}
+options =
+  router:
+    "ipviope.tk":"localhost:3001"     # root
+    "docs.ipviope.tk":"localhost:9001"  # EtherPad
+    #"crous.ipviope.tk":"localhost:81"  # Apache 
+    "aci-charlemagne.tk":"localhost:81"   # Apache
 
 
-proxy = require('http-proxy').createServer options
+proxy = require 'http-proxy'
 
-proxy.listen proxy_port
+server = proxy.createServer options
+
+server.listen proxy_port
 

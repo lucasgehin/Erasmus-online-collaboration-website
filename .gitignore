@@ -1,3 +1,7 @@
 *.ini
 *.db
+
+Database_config.coffee
+Database_config.js
+
 node_modules/
