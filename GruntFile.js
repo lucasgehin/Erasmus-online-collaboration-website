@@ -8,12 +8,12 @@
         "default": {
           expand: true,
           cwd: '.',
-          src: ['*!(Gruntfile).coffee', './models/**/*.coffee', './controllers/**/*.coffee', './routes/**/*.coffee', './public/**/*.coffee', './views/**/*.coffee', './tests/**/*.coffee'],
+          src: ['*!(Gruntfile).coffee', './models/**/*.coffee', './controllers/**/*.coffee', './routes/**/*.coffee', './public/**/*.coffee', './views/**/*.coffee', './tests/**/*.coffee', './data_test/**/*.coffee'],
           ext: '.js'
         }
       },
       coffeelint: {
-        app: ['*.coffee', './controllers/**/*.coffee', './models/**/*.coffee', './routes/**/*.coffee', './public/**/*.coffee', './views/**/*.coffee', './tests/**/*.coffee'],
+        app: ['*.coffee', './controllers/**/*.coffee', './models/**/*.coffee', './routes/**/*.coffee', './public/**/*.coffee', './views/**/*.coffee', './tests/**/*.coffee', "./data_test/**/*.coffee"],
         options: {
           max_line_length: {
             level: 'ignore'
@@ -21,6 +21,11 @@
           no_trailing_whitespace: {
             level: 'ignore'
           }
+        }
+      },
+      mochaTest: {
+        test: {
+          src: ["tests/**/*.js"]
         }
       },
       jshint: {
@@ -39,8 +44,9 @@
     grunt.loadNpmTasks('grunt-contrib-coffee');
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-coffeelint');
-    grunt.registerTask('default', ['coffeelint', 'coffee']);
-    return grunt.registerTask('compile', ['coffee']);
+    grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.registerTask('default', ['coffeelint', 'coffee', 'mochaTest']);
+    return grunt.registerTask('compile', ['Compilation']);
   };
 
 }).call(this);

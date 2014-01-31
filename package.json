@@ -5,25 +5,28 @@
   "scripts": {
     "start": "node app.js"
   },
-    "devDependencies": {
+  "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-uglify": "~0.2.2",
     "grunt-contrib-coffee": "*",
     "grunt-coffeelint": "*",
-    "jshint": "latest"
+    "jshint": "latest",
+    "grunt-mocha-test": "~0.8.2"
   },
   "dependencies": {
     "express": "3.4.0",
     "jade": "*",
     "stylus": "*",
-    "http-proxy":"*",
-    "mysql":"*",
-    "password-hash":"*",
+    "http-proxy": "*",
+    "mysql": "*",
+    "password-hash": "*",
     "etherpad-lite-client": "latest",
-    "underscore":"*",
+    "underscore": "*",
     "socket.io": "*",
-    "request":"*",
-    "gzippo":"latest"
+    "request": "*",
+    "gzippo": "latest",
+    "sequelize": "~1.7.0-rc3",
+    "async": "~0.2.10"
   }
 }

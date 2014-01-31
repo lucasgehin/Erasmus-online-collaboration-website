@@ -4,7 +4,7 @@
  */
 
 (function() {
-  var DB, app, express, gzippo, home, http, io, path, routes, server, static_content_options, users;
+  var app, db, express, gzippo, home, http, io, path, routes, server, static_content_options;
 
   http = require('http');
 
@@ -18,11 +18,9 @@
 
   io = require("socket.io");
 
-  DB = require("./controllers/Database");
-
-  users = require('./modules/users/users');
-
   home = require('./modules/home_page/home');
+
+  db = require("./models");
 
   app = express();
 
@@ -77,8 +75,6 @@
     - Plus rapide car WebSocket peut mettre du temps s'initialiser au travers des pare-feux
    */
 
-  app.post('/', users.connect);
-
   server.listen(app.get('port'), function() {
     return console.log('IpVIOPE server listening on port ' + app.get('port'));
   });
@@ -94,7 +90,5 @@
   /*
     Deconnection
    */
-
-  app.get('/logout', users.disconnect);
 
 }).call(this);

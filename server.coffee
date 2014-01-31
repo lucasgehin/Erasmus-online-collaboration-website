@@ -14,14 +14,21 @@ io = require "socket.io"
 
 
 
-# Nos modules
+# On initialise les modèle en les incluant (Meme si on ne les utilisent pas). Cela les force à se charger et à se mettre en cache
 
-DB = require "./controllers/Database" 
-users = require './modules/users/users'
+#users = require './modules/users/users'
+#require './models/Status'
+#require './models/User'
 home = require './modules/home_page/home'
 
+# On ne charge que les controlleurs dont on à besoin en revanche.
 
-# Initialisation
+
+db = require "./models"
+
+
+
+# Initialisation de l'appli
 
 app = express()
 server = http.createServer app
@@ -69,7 +76,7 @@ app.get '/home', routes.home
   - Plus rapide car WebSocket peut mettre du temps s'initialiser au travers des pare-feux
  ###
 
-app.post '/' , users.connect
+#app.post '/' , users.connect  <--------------------
   
 
 
@@ -84,7 +91,13 @@ server.listen app.get('port'), ()->
 
 home.init io  # Give the socket IO instance to home
 
+
+
+
+
+
+
 ###
   Deconnection
 ###
-app.get '/logout', users.disconnect
+# app.get '/logout', users.disconnect  <------------------------------

@@ -5,20 +5,24 @@ module.exports = (grunt)->
     banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n'
 
 
-    coffee:  # Le compilateur CoffeScript
+    coffee:  # Le compilateur CoffeeScript
       default:
         expand: true
         cwd: '.'      # le dossier ou on commence la compilation
-        src: ['*!(Gruntfile).coffee', './models/**/*.coffee','./controllers/**/*.coffee', './routes/**/*.coffee', './public/**/*.coffee', './views/**/*.coffee', './tests/**/*.coffee']  # les fichiers qui nous interressents
+        src: ['*!(Gruntfile).coffee', './models/**/*.coffee','./controllers/**/*.coffee', './routes/**/*.coffee', './public/**/*.coffee', './views/**/*.coffee', './tests/**/*.coffee', './data_test/**/*.coffee']  # les fichiers qui nous interressents
         ext: '.js'   # l'extention des fichiers compilés
     
     coffeelint:
-      app: ['*.coffee', './controllers/**/*.coffee' ,'./models/**/*.coffee','./routes/**/*.coffee', './public/**/*.coffee', './views/**/*.coffee', './tests/**/*.coffee' ]
+      app: ['*.coffee', './controllers/**/*.coffee' ,'./models/**/*.coffee','./routes/**/*.coffee', './public/**/*.coffee', './views/**/*.coffee', './tests/**/*.coffee' , "./data_test/**/*.coffee"]
       options:
         max_line_length:         # Longueur de ligne maximale pour eviter le code incompréhensif.
           level: 'ignore'  		   # C'est n'est qu'un avertissement
         no_trailing_whitespace:  # Empecher les vides en fin de ligne
           level: 'ignore'        # on ignore
+
+    mochaTest:
+      test:
+        src: ["tests/**/*.js"]
 
           
     # Permet de verifier la propretée du code compilé JS
@@ -43,7 +47,8 @@ module.exports = (grunt)->
   grunt.loadNpmTasks 'grunt-contrib-coffee'
   grunt.loadNpmTasks 'grunt-contrib-jshint'
   grunt.loadNpmTasks 'grunt-coffeelint'
+  grunt.loadNpmTasks 'grunt-mocha-test'
 
 
-  grunt.registerTask 'default', ['coffeelint', 'coffee']
-  grunt.registerTask 'compile', ['coffee']
+  grunt.registerTask 'default', ['coffeelint', 'coffee', 'mochaTest']
+  grunt.registerTask 'compile', ['Compilation']
