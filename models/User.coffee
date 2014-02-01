@@ -2,6 +2,8 @@
   Défini l'entitée User
 ###
 
+Password = require 'password-hash'
+
 module.exports = (sequelize, DataTypes)->
 
   User = sequelize.define 'User', {
@@ -23,6 +25,11 @@ module.exports = (sequelize, DataTypes)->
     password :
       type: DataTypes.STRING
       allowNull: false
+      set: (value)->
+
+        pass= Password.generate value
+        
+        this.setDataValue 'password', pass
   
     # Nom réel ( canonique )
     name : 
@@ -38,6 +45,7 @@ module.exports = (sequelize, DataTypes)->
     mail :
       type:  DataTypes.STRING
       allowNull: false
+      unique: true
       validate:
         isEmail: true
 

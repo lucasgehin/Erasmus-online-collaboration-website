@@ -1,8 +1,8 @@
 start = ()->
 
-#On crée les tooltips
 
-# $("a[rel='tooltip']").tooltip {placement:'right'}
+
+
 
 #Shake au passage de la souris
 
@@ -31,6 +31,8 @@ start = ()->
     }
   
 
+
+# Shake automatique
   
 
   liste_logos = [
@@ -62,8 +64,10 @@ start = ()->
       shake_logo logo.id, i+1
     
 
-  
+  # On shake dès l'arrivée sur la page
   start_shake_logos()
+
+  # Et on re-shake toutes les 10 secondes
 
   setInterval ()->
     start_shake_logos()         
@@ -71,7 +75,8 @@ start = ()->
 
 
 
-  # Navigation
+  # Navigation auvec scroll doux
+
   slide_time = 600
 
   $("#titre").on "click", (e)-> 
@@ -100,5 +105,7 @@ start = ()->
     }, slide_time
   
 
+
+# Quand tout est prêt on lance les animations et listeners
 
 $(window).on "load", start

@@ -1,4 +1,4 @@
-!!! 5
+doctype html
 html(ng-app)
 	head
 		title= title
@@ -56,7 +56,7 @@ html(ng-app)
 											span.logout-btn
 												span.icon-remove-sign
 												| Logout
-						
+
 		.main-container.container-fluid
 			.row.header-top
 				.col-xs-6
@@ -83,7 +83,7 @@ html(ng-app)
 					.content
 						| Content
 
-			.pinned-docs-section.row-fluid.section		
+			.pinned-docs-section.row-fluid.section
 				.titre.
 					Pinned documents
 				.content
@@ -100,7 +100,7 @@ html(ng-app)
 					.navbar.navbar-default
 						.navbar-header
 							.navbar-brand Users
-						.collapse.navbar-collapse													
+						.collapse.navbar-collapse
 								form.navbar-form.navbar-left(role='search')
 									.form-group
 										input.form-control(type='text', placeholder='Filter users', ng-model='filtre')
@@ -158,7 +158,7 @@ html(ng-app)
 						button.close(data-dismiss="modal", aria-hidden="true")
 								&times;
 							h4.title Settings
-						
+
 					.modal-body
 						span
 							| Username : {{username}}
@@ -170,17 +170,16 @@ html(ng-app)
 
 
 					.modal-footer
-					
 
 
-		
+
+
 		//  Scripts se chargeants après le document 
 		script(type='text/javascript', src='/javascripts/jquery-1.10.2.js')
-		script(type='text/javascript', src='/javascripts/jquery.flippy.min.js')		
-		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')		
+		script(type='text/javascript', src='/javascripts/jquery.flippy.min.js')
+		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
 		script(type='text/javascript', src='/javascripts/jquery-ui-1.10.3.custom.min-only-shake.js')
 		//Chargement de nos scripts finaux
 		script(type='text/javascript', src='/javascripts/home/main.js')
 		script(type='text/javascript', src='/javascripts/angular.js')
 		script(type='text/javascript', src='/javascripts/home/controller.js')
-		

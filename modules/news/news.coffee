@@ -1,5 +1,5 @@
 # Imports
-DB = require "../../connect_database"
+#DB = require "../../connect_database"
 # Define
 
 get_news_list = (callback)->

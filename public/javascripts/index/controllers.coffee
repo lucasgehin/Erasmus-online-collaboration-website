@@ -1,7 +1,18 @@
+###
+
+  Voici les controleurs de la page de login.
+
+  Il est interdit d'utiliser  du websocket ici car l'utilisateur n'est pas encore authentifié.
+  Lui ouvrir les websockest lui permettraait de faire du brut force de anière trop puissante.
+
+
+###
+
+
 @Sign_in = ($scope, $http) ->
   
   #Models
-  $scope.username = "test_user"
+  $scope.username = "test_student"
   $scope.password = "test_pass"
   $scope.message = " "
   $scope.message_color = "black"
@@ -15,28 +26,25 @@
 
 
 
-  $scope.init = ()->
-    $scope.username = "test_user"
-    $scope.password = "test_pass"
-    $scope.$apply()
-
   
 
   # Functions
   
-  $scope.connect = ()->
+  $scope.connect = ->
 
     # VIEW
 
     $scope.message = message_connecting
     $scope.message_color = "gray"
+
+    # Sert a afficher . puis .. puis ... derière le message. Cela indique un chargement à l'utilisateur
     connecting = setInterval ()->
       message_end = $scope.message[-3..-1]
       if message_end isnt "..."
         $scope.message += "."
       else
         $scope.message = $scope.message[0..-4]
-      apply()
+      #apply()
     ,500
 
     failed = ()->
@@ -73,14 +81,16 @@
     request.success ( data, status, headers, config) ->
 
       if 200 <= status < 300 # if we have a good HTTP response code
-        #console.log "" + data
+        console.log "" + data
         #object = JSON.parse data
-        object = data
+        
 
-        if object.message is "user_not_exist"
+        if data.response? and data.response is false
           wrong_data()
-        else if object.message is "ok"
+        else if data.response? and data.response is true
           window.location = "/home"
+        else
+          console.log data
 
       
 

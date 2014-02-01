@@ -2,7 +2,7 @@
 (function() {
   var DB, connect, disconnect, get_users_list;
 
-  DB = require("../../connect_database");
+  //DB = require("../../connect_database");
 
   connect = function(request, response) {
     var e, next, params, password, query, username;

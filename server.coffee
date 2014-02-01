@@ -16,7 +16,7 @@ io = require "socket.io"
 
 # On initialise les modèle en les incluant (Meme si on ne les utilisent pas). Cela les force à se charger et à se mettre en cache
 
-#users = require './modules/users/users'
+{Users} = require './controllers/Users'
 #require './models/Status'
 #require './models/User'
 home = require './modules/home_page/home'
@@ -64,7 +64,19 @@ if 'development' is app.get 'env'
   console.log "MODE: " + app.get("env")
 
 
+
+
+###
+
+  Routeur
+
+###
+
 app.get '/', routes.login
+console.log Users
+app.post '/' , Users.connect
+app.get '/logout', Users.disconnect
+
 app.get '/home', routes.home
 
 
@@ -76,7 +88,6 @@ app.get '/home', routes.home
   - Plus rapide car WebSocket peut mettre du temps s'initialiser au travers des pare-feux
  ###
 
-#app.post '/' , users.connect  <--------------------
   
 
 
@@ -100,4 +111,3 @@ home.init io  # Give the socket IO instance to home
 ###
   Deconnection
 ###
-# app.get '/logout', users.disconnect  <------------------------------

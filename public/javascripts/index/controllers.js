@@ -1,7 +1,16 @@
+
+/*
+
+  Voici les controleurs de la page de login.
+
+  Il est interdit d'utiliser  du websocket ici car l'utilisateur n'est pas encore authentifié.
+  Lui ouvrir les websockest lui permettraait de faire du brut force de anière trop puissante.
+ */
+
 (function() {
   this.Sign_in = function($scope, $http) {
     var apply, message_connecting, message_error_connect, message_error_u_p, message_verify;
-    $scope.username = "test_user";
+    $scope.username = "test_student";
     $scope.password = "test_pass";
     $scope.message = " ";
     $scope.message_color = "black";
@@ -9,11 +18,6 @@
     message_connecting = "Connecting";
     message_verify = "Checking";
     message_error_connect = "Connection failed";
-    $scope.init = function() {
-      $scope.username = "test_user";
-      $scope.password = "test_pass";
-      return $scope.$apply();
-    };
     $scope.connect = function() {
       var connecting, failed, headers, options, params, request, wrong_data;
       $scope.message = message_connecting;
@@ -22,11 +26,10 @@
         var message_end;
         message_end = $scope.message.slice(-3);
         if (message_end !== "...") {
-          $scope.message += ".";
+          return $scope.message += ".";
         } else {
-          $scope.message = $scope.message.slice(0, -3);
+          return $scope.message = $scope.message.slice(0, -3);
         }
-        return apply();
       }, 500);
       failed = function() {
         clearInterval(connecting);
@@ -53,13 +56,14 @@
       };
       request = $http(options);
       request.success(function(data, status, headers, config) {
-        var object;
         if ((200 <= status && status < 300)) {
-          object = data;
-          if (object.message === "user_not_exist") {
+          console.log("" + data);
+          if ((data.response != null) && data.response === false) {
             return wrong_data();
-          } else if (object.message === "ok") {
+          } else if ((data.response != null) && data.response === true) {
             return window.location = "/home";
+          } else {
+            return console.log(data);
           }
         }
       });

@@ -1,14 +1,14 @@
-!!! 5
+doctype html
 html(ng-app)
 	head
 		title= title
 		meta(charset="UTF-8")
-		link(rel='stylesheet', href='/stylesheets/login.css')		
-		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')    
+		link(rel='stylesheet', href='/stylesheets/login.css')
+		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')
 	
 	body
 		.navbar.navbar-fixed-top.navbar-inverse
-			.collapse.navbar-collapse											
+			.collapse.navbar-collapse							
 					ul.nav.navbar-nav
 							li
 								button#sign-up-link.btn.btn-success.navbar-btn
@@ -39,7 +39,7 @@ html(ng-app)
 									br
 									label(for='password-field')
 										input#password-field.form-control(ng-model='password', type='password', required='required', placeholder='Password')
-									p(style="color:{{message_color}}"){{message}}
+									p(style="color:{{message_color}}", ng-bind="message")
 									button.btn.btn-primary(ng-click='connect()', ng-disabled="login.$invalid", type='submit')
 										span.icon-check.icon-white
 										| Sign in
@@ -145,7 +145,7 @@ html(ng-app)
 					| Contact us
 				.col-xs-6
 					| Created by:
-					ul								
+					ul
 						li Vincent Boulanger								
 						li Lucas Gehin								
 						li Gregory Baton								
@@ -159,8 +159,8 @@ html(ng-app)
 						br
 						br
 					
-		script(type='text/javascript', src='/javascripts/jquery-1.10.2.js')						
-		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')		
+		script(type='text/javascript', src='/javascripts/jquery-1.10.2.js')
+		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
 		script(type='text/javascript', src='/javascripts/jQueryRotateCompressed.2.2.js')
 		script(type='text/javascript', src='/javascripts/jquery-ui-1.10.3.custom.min-only-shake.js')
 		

@@ -2,7 +2,7 @@
 (function() {
   var DB, get_news_list;
 
-  DB = require("../../connect_database");
+  //DB = require("../../connect_database");
 
   get_news_list = function(callback) {
     var next, params, sql;
