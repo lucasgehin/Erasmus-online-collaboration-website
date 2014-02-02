@@ -23,6 +23,11 @@ html
 
 			#navbar-main.collapse.navbar-collapse
 				ul.nav.navbar-nav
+					
+					li
+						a(href='/home')
+							span.glyphicon.glyphicon-home
+							|  Home
 					li
 						a(href='#')
 							span.glyphicon.glyphicon-pencil
@@ -31,29 +36,9 @@ html
 						a(href='#')
 							span.glyphicon.glyphicon-facetime-video
 							|  Chat
-					li
-						a(href='#')
-							span.glyphicon.glyphicon-calendar
-							|  Calendar
+					
 
-					//-li.divider-vertical
-
-					li
-						a#top-link(href='#')
-							span.glyphicon.glyphicon-arrow-up
-							|   Top
-					li
-						a#docs-link(href='#')
-							span.glyphicon.glyphicon-pushpin
-							|   Pinned docs
-					li
-						a#projects-link(href='#')
-							span.glyphicon.glyphicon-briefcase
-							|   Projects
-					li
-						a#users-link(href='#')
-							span.glyphicon.glyphicon-user
-							|   Users
+					
 				ul.nav.navbar-nav.navbar-right
 					li.dropdown
 						a.dropdown-toggle(href='#', data-toggle='dropdown')  Settings <b class='caret'> </b>
