@@ -27,6 +27,8 @@
     "request": "*",
     "gzippo": "latest",
     "sequelize": "~1.7.0-rc3",
-    "async": "~0.2.10"
+    "async": "~0.2.10",
+    "session.socket.io": "~0.1.6",
+    "connect": "~2.12.0"
   }
 }

@@ -1,0 +1,55 @@
+doctype html
+html
+head
+		meta(http-equiv='Content-Type', content='text/html; charset=utf-8')
+		meta(name='description', content='')
+		meta(name='keywords', content='')
+		meta(name='author', content='Google, inc.')
+
+		//Adds Chrome Frame supprot for IE 
+		meta(http-equiv='X-UA-Compatible', content='chrome=1')
+		//title Sketchout
+		link(type='text/css', href='/stylesheets/easter-egg/reset.css', rel='stylesheet', media='screen')
+		link(type='text/css', href='/stylesheets/easter-egg/main.css', rel='stylesheet', media='screen')
+		
+	body
+		//Wraps all game elements including UI panels and the canvas the game is rendered on 
+		#game
+			#background
+			#boss
+			#player
+			//The canvas element that the game is rendered on 
+			canvas#world
+			#preloader Loading
+			#ui
+				.panels
+					#level-indicator
+						span Level
+					#instructions
+					#logo
+					a#start-button(href='#')
+					#score-ongoing
+						span.value
+					#score-outcome
+						h4 Your Score
+						span.value
+					#high-score
+						h4 High Score
+						span.value
+					#level-selector
+						ul#level-selector-list
+				a#mute-button(href='#')
+				a#pause-button(href='#')
+			#cursor
+		script(type='text/javascript', src='/javascripts/jquery-1.10.2.min.js')
+		script(type='text/javascript', src='/javascripts/easter-egg/swfobject.js')
+		script(type='text/javascript', src='/javascripts/easter-egg/tween.js')
+		script(type='text/javascript', src='/javascripts/easter-egg/util.js')
+		script(type='text/javascript', src='/javascripts/easter-egg/sound.js')
+		script(type='text/javascript', src='/javascripts/easter-egg/game.js')
+		script(type='text/javascript').
+			GameSound.setLoadedCallback(GameWorld.soundLoaded);
+			GameSound.initialize();
+			GameWorld.preload();
+
+			

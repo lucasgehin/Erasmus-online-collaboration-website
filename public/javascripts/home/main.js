@@ -7,6 +7,15 @@
 
   selector = "html, body";
 
+  $("#top-link").on("click", function(e) {
+    var target;
+    sanitise(e, selector);
+    target = $(".news-section").offset().top + decallage_y;
+    return $("html, body").animate({
+      scrollTop: target
+    }, slide_time);
+  });
+
   $("#docs-link").on("click", function(e) {
     var target;
     sanitise(e, selector);

@@ -1,17 +1,30 @@
 (function() {
-  var sanitize, socket;
+  var $load_img, Documents_list, Events_list, News_list, Projects_list, Users_list, load_count, sanitize;
 
-  socket = io.connect("/home");
+  News_list = [];
+
+  Events_list = [];
+
+  Documents_list = [];
+
+  Projects_list = [];
+
+  Users_list = [];
+
+  this.socket = io.connect("/home");
 
   socket.on('connect', function() {
     console.log("IO: Connected!");
-    return socket.on("message", function(data) {
-      return console.log("Message from server: " + data);
-    });
+    return load_end();
+  });
+
+  socket.on("message", function(data) {
+    return console.log(data);
   });
 
   socket.on('connecting', function() {
-    return console.log("IO: Connecting to /home...");
+    console.log("IO: Connecting to /home...");
+    return load_start();
   });
 
   sanitize = function(event, jqueryObject) {
@@ -23,80 +36,94 @@
     }
   };
 
+  load_count = 0;
+
+  $load_img = $('#ajaxloader');
+
+  this.load_start = function() {
+    if (load_count === 0) {
+      $load_img.fadeIn('fast');
+    }
+    return load_count++;
+  };
+
+  this.load_end = function() {
+    if (load_count > 0) {
+      load_count--;
+    }
+    if (load_count === 0) {
+      return $load_img.fadeOut('slow');
+    }
+  };
+
   this.User_Manager = function($scope) {
-    var traiter_donnees;
-    $scope.list = [];
+    $scope.list = function() {
+      return Users_list;
+    };
     $scope.get_users = function() {
-      return socket.emit('get_users_list', null, function(response) {
-        var u, _i, _len, _ref;
-        $scope.list = response;
-        _ref = $scope.list;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          u = _ref[_i];
-          traiter_donnees(u, function() {
-            return $scope.$apply();
-          });
+      load_start();
+      return socket.emit('get_users_list', null, function(error, response) {
+        if (response != null) {
+          Users_list = response;
         }
-        return console.log("User list saved");
+        load_end();
+        return $scope.$apply();
       });
     };
-    traiter_donnees = function(user, cb) {
-
-      /*
-      if not user.picture
-        socket.emit "random_pokemon", null, (img)->
-          console.log img
-          user.picture = img
-          cb()
-       */
-      return cb();
-    };
-    return $scope.get_users();
+    return socket.on('connect', function() {
+      return $scope.get_users();
+    });
   };
 
   this.News_Management = function($scope) {
-    $scope.short_list = [];
-    $scope.list = [];
+    $scope.list = function() {
+      return News_list;
+    };
+    $scope.more = function() {
+      return News_list.length === 0 || News_list[0].id === -1;
+    };
     $scope.get_news_list = function() {
       console.log("Getting news list");
-      return socket.emit('get_news_list', null, function(response) {
-        var i, _i, _len, _ref;
-        $scope.list = response;
-        $scope.short_list = $scope.list.splice(0, 3);
-        _ref = $scope.short_list;
-        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          i = _ref[_i];
-          i.short_content = i.content.substr(0, 250) + '...';
+      load_start();
+      return socket.emit('get_news_list', null, function(err, response) {
+        load_end();
+        console.log(response);
+        if (response != null) {
+          News_list = response;
         }
-        if ($scope.list.length === 0) {
-          $scope.list.push({
+        if (News_list.length === 0) {
+          News_list.push(JSON.stringify({
             id: -1,
-            title: "There is nothing here :(",
+            title: "There is nothing here yet :(",
             content: "Add a message",
-            date: ''
-          });
+            createdAt: new Date()
+          }));
         }
         return $scope.$apply();
       });
     };
+    socket.on('connect', function() {
+      return $scope.get_news_list();
+    });
     $scope.show = function(item) {
       var popup, scope;
       popup = document.querySelector("#popup-news");
       scope = angular.element(popup).scope();
       scope.title = item.title;
       scope.content = item.content;
-      return $(popup).modal();
+      $(popup).modal();
+      return null;
     };
-    $scope.show_all = function() {
+    return $scope.show_all = function() {
       var popup, scope;
       popup = document.querySelector("#popup-news-all");
       scope = angular.element(popup).scope();
       if (!scope.is_initialized) {
-        scope.initalize($scope.list);
+        scope.initalize();
       }
-      return scope.show();
+      scope.show();
+      return null;
     };
-    return $scope.get_news_list();
   };
 
   this.Setting_Management = function($scope) {
@@ -108,41 +135,35 @@
     };
   };
 
-  this.Setting_Selection = function($scope) {
-    $scope.list = [];
-    $scope.get_setting = function() {
-      return socket.emit('get_settings_list', null, function(response) {
-        $scope.list = response;
-        console.log(response);
-        return console.log("Settings list saved");
-      });
-    };
-    $scope.username = username;
-    return $scope.get_setting();
-  };
+  this.Setting_Selection = function($scope) {};
 
   this.popup_news = function($scope) {
     $scope.title = "";
     $scope.content = "";
-    return $scope.date = "";
+    $scope.date = "";
+    return null;
   };
 
   this.popup_news_all = function($scope) {
+    $scope.list = function() {
+      return News_list;
+    };
     $scope.is_initialized = false;
-    $scope.list = [];
-    $scope.current_content = $scope.initalize = function(list) {
-      $scope.list = list;
-      $scope.list[0].active = true;
-      $scope.activated = $scope.list[0];
-      return $scope.is_initialized = true;
+    $scope.current_content = '';
+    $scope.initalize = function() {
+      News_list[0].active = true;
+      $scope.activated = News_list[0];
+      $scope.is_initialized = true;
+      return null;
     };
     $scope.show_new = function(item) {
       $scope.current_content = item.content;
       $scope.activated.active = false;
       $scope.activated = item;
-      return $scope.activated.active = true;
+      $scope.activated.active = true;
+      return null;
     };
-    return $scope.show = function() {
+    $scope.show = function() {
       var self;
       self = document.querySelector("#popup-news-all");
       $("html, body").animate({
@@ -151,11 +172,32 @@
       $scope.current_content = $scope.activated.content;
       return $(self).modal();
     };
+    return null;
   };
 
   this.popup_settings = function($scope) {
     $scope.title = "";
     return $scope.content = "";
+  };
+
+  this.Project_Manager = function($scope) {
+    $scope.list = function() {
+      return Projects_list;
+    };
+    $scope.get_projects = function() {
+      load_start();
+      return socket.emit('get_projects_list', null, function(error, response) {
+        console.log(response);
+        if (response != null) {
+          Projects_list = response;
+        }
+        load_end();
+        return $scope.$apply();
+      });
+    };
+    return socket.on('connect', function() {
+      return $scope.get_projects();
+    });
   };
 
 }).call(this);

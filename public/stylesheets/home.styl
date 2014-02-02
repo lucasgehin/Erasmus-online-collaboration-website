@@ -17,10 +17,19 @@ a
 .nav li
 	margin-right 10px
 
+.divider-vertical
+	height 50px
+	margin 0 9px
+	border-left 1px solid #F2F2F2
+	border-right 1px solid #FFF
+
+
 padding_main_container = 0 30px 0 30px
 radius_main = 10px
+
 .main-container
-	margin-top -55px
+	margin-top 0px
+	
 	padding padding_main_container
 	background-color rgba(255, 255, 255, 0.8)
 	border-radius radius_main
@@ -43,9 +52,14 @@ margin_section = 30px 0 30px 0
 				width 50%
 				vertical-align middle
 			.news-date
+				width 25%
 				font-style italic
 				color gray
 				text-align right
+			.news-by
+				
+				width 25%
+				white-space no-wrap
 	.list-group-item-text
 		text-align justify
 
@@ -96,9 +110,11 @@ radius = 20px
 largeur = 150px
 haut = 100px
 
-.users-link-section
+.users-link-section, .projects-link-section
 	padding 0
-	.users
+	.users, .projects
+		
+
 		text-align center
 
 		.navbar-inner
@@ -110,9 +126,7 @@ haut = 100px
 
 			.user:first-child
 				//margin-left 30px
-			.user
-
-						
+			.user						
 				text-align left
 				min-height haut
 				max-height haut
@@ -128,6 +142,13 @@ haut = 100px
 					border-top-left-radius 10px
 					border-bottom-left-radius 10px
 
+		.project-name
+			font-size larger
+			text-decoration underline
+			font-weight bold
+		.country
+			display inline
+
 .users-link-section .users .content .user .country img 
 	display: inline;
 	max-width: 16px;
@@ -140,3 +161,32 @@ haut = 100px
 	width 100%
 .modal-body
 	min-height 530px
+
+
+.contact
+	color white
+	text-shadow 0 0 2px black
+	text-align center
+
+	margin: auto
+	background-color #333
+	border-bottom-right-radius 20px
+	border-bottom-left-radius 20px
+
+	margin-bottom 100px
+	margin-top -10px
+	padding 20px 0
+
+	ul
+		list-style-type: none
+
+
+#ajaxloader
+	position fixed
+	
+	top 310px
+	left 50%
+	margin-left -65px
+	width 128px
+	display none
+	

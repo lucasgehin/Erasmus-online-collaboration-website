@@ -1,79 +1,96 @@
 doctype html
 html(ng-app)
 	head
-		title= title
+		title Home - IpVIOPE
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap-theme.css')
 		link(rel='stylesheet', href='/stylesheets/home.css')
 		script(type='text/javascript', src='/socket.io/socket.io.js')
 
 	body
-		.navbar.navbar-inverse
-			.collapse.navbar-collapse
-					ul.nav.navbar-nav
-						li
-							button.btn.btn-success.navbar-btn(type='button')
-								span.glyphicon.glyphicon-pencil
-								|  Documents
-						li
-							button.btn.btn-success.navbar-btn
-								span.glyphicon.glyphicon-facetime-video
-								|  Chat
-						li
-							button.btn.btn-success.navbar-btn
-								span.glyphicon.glyphicon-calendar
-								|  Calendar
+		.navbar.navbar-default.navbar-fixed-top(role='navigation')
+			.container-fluid
+				.navbar-header
+					button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-main')
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand(href='#') IpVIOPE
 
-					ul.nav.navbar-nav
-						li
-							button#docs-link.btn.btn-info.navbar-btn(type='button')
-								span.glyphicon.glyphicon-pushpin
-								|   Pinned docs
-						li
-							button#projects-link.btn.btn-info.navbar-btn
-								span.glyphicon.glyphicon-briefcase
-								|   Projects
-						li
-							button#users-link.btn.btn-info.navbar-btn
-								span.glyphicon.glyphicon-user
-								|   Users
-					ul.nav.pull-right.navbar-nav
-						li.dropdown
-							.btn-group
-								button.btn.btn-danger.navbar-btn(type='button', href='#') Settings
+			#navbar-main.collapse.navbar-collapse
+				ul.nav.navbar-nav
+					li
+						a(href='#')
+							span.glyphicon.glyphicon-pencil
+							|  Documents
+					li
+						a(href='#')
+							span.glyphicon.glyphicon-facetime-video
+							|  Chat
+					li
+						a(href='#')
+							span.glyphicon.glyphicon-calendar
+							|  Calendar
 
-								button.btn.btn-danger.navbar-btn.dropdown-toggle(type='button', data-toggle='dropdown')
-									span.glyphicon.glyphicon-chevron-down
-									span.sr-only
-								ul.dropdown-menu
-									li
-										a(href='#') Help
-									li
-										a(href='#') Report a bug
-									li.divider
-									li
-										a(href='logout')
-											span.logout-btn
-												span.icon-remove-sign
-												| Logout
+					//-li.divider-vertical
+
+					li
+						a#top-link(href='#')
+							span.glyphicon.glyphicon-arrow-up
+							|   Top
+					li
+						a#docs-link(href='#')
+							span.glyphicon.glyphicon-pushpin
+							|   Pinned docs
+					li
+						a#projects-link(href='#')
+							span.glyphicon.glyphicon-briefcase
+							|   Projects
+					li
+						a#users-link(href='#')
+							span.glyphicon.glyphicon-user
+							|   Users
+				ul.nav.navbar-nav.navbar-right
+					li.dropdown
+						a.dropdown-toggle(href='#', data-toggle='dropdown')  Settings <b class='caret'> </b>
+							
+
+							//- button.btn.btn-danger.navbar-btn(type='button', href='#') Settings
+
+							//- button.btn.btn-danger.navbar-btn.dropdown-toggle(type='button', data-toggle='dropdown')
+							//- 	span.glyphicon.glyphicon-chevron-down
+							//- 	span.sr-only
+							ul.dropdown-menu
+								li
+									a(href='#') Help
+								li
+									a(href='#') Report a bug
+								li.divider
+								li
+									a(href='logout')
+										span.logout-btn
+											span.icon-remove-sign
+											| Logout
 
 		.main-container.container-fluid
-			.row.header-top
+			.news-section.row.header-top
 				.col-xs-6
 					.titre
 						| What's new ?
 					.content(ng-controller="News_Management")
 						.list-group
-							a.list-group-item(ng-repeat="item in short_list", href="#", ng-click="show(item)")
+							a.list-group-item(ng-repeat="item in list() | limitTo: 4", href="#", ng-click="show(item)")
 								.list-group-item-heading
 									table
 										tr
 											td
-												h4 {{item.title}}
+												h4 {{item.title | limitTo: 30}}
 											td.news-date
-												{{item.date}}
-								p.list-group-item-text.news-content {{item.short_content}}
-						button.btn.btn-info(ng-disabled="list.length == 0", ng-click="show_all()")
+												{{item.createdAt}}
+											td.news-by by {{item.user.username}}
+								p.list-group-item-text.news-content {{item.content | limitTo: 100}}
+						button.btn.btn-info(ng-disabled="more()", ng-click="show_all()")
 							span.glyphicon.glyphicon-plus.
 								More
 
@@ -89,11 +106,30 @@ html(ng-app)
 				.content
 					| Content
 
-			.projects-link-section.row-fluid.section.separation-top
-				.titre
-					| Projects
-				.content
-					| Content
+			.projects-link-section.row-fluid.section
+				.col-xs-12.projects(ng-controller='Project_Manager')
+					.navbar.navbar-default
+						.navbar-header
+							.navbar-brand Projects
+						.collapse.navbar-collapse
+								form.navbar-form.navbar-left(role='search')
+									.form-group
+										input.form-control(type='text', placeholder='Filter projects', ng-model='filter')
+					.content
+						span.col-xs-3.projects(ng-repeat='project in list() | filter:filter')
+							table
+								tr
+									td
+										img(ng-src='{{project.image.url_thumbnail}}', alt='')
+									td
+										span.project-name {{project.name}}
+										.country
+											&emsp;
+											img(ng-src='/images/Country/{{project.country.name}}.jpg', alt='')
+										br
+										| {{project.description | limitTo: 255}}
+										br
+										
 
 			.users-link-section.row-fluid.section
 				.col-xs-12.users(ng-controller='User_Manager')
@@ -103,20 +139,20 @@ html(ng-app)
 						.collapse.navbar-collapse
 								form.navbar-form.navbar-left(role='search')
 									.form-group
-										input.form-control(type='text', placeholder='Filter users', ng-model='filtre')
+										input.form-control(type='text', placeholder='Filter users', ng-model='filter')
 					.content
-						span.col-xs-3.user(ng-repeat='u in list | filter:filtre')
+						span.col-xs-3.user(ng-repeat='user in list() | filter:filter')
 							table
 								tr
 									td
-										img(src='{{u.picture}}', alt='')
+										img(ng-src='{{user.picture}}', alt='')
 									td
-										| @{{u.username}}
+										| @{{user.username}}
 										br
-										| {{u.prenom}} {{u.nom}}
+										| {{user.firstname}} {{user.name}}
 										br
 										.country
-											img(src='images/Country/{{u.country}}.jpg', alt='Country')
+											img(ng-src='/images/Country/{{user.country.name}}.jpg', alt='Country')
 
 
 
@@ -145,9 +181,10 @@ html(ng-app)
 						.row
 							.col-xs-4.separation-right.list
 								ul.nav.nav-pills.nav-stacked
-									li(ng-repeat="item in list", ng-class="{ active: item.active}") 
+									li(ng-repeat="item in list()", ng-class="{ active: item.active}") 
 										a(href="#", ng-click="show_new( item )" )
 											| {{item.title}}
+											p(style='float:right;') {{item.createdAt}} by {{item.user.username}}
 							.col-xs-8.rounded.content
 								{{current_content}}
 
@@ -170,16 +207,66 @@ html(ng-app)
 
 
 					.modal-footer
+		.row.contact
+				.col-xs-6
+					| Contact us
+				.col-xs-6
+					ul
+						li Created by:
+						li &nbsp;
+						li Vincent Boulanger								
+						li Lucas Gehin								
+						li Gregory Baton								
+						li Geoffrey Gaillard
+						
+				.row
+					.col-xs-12
+						br
+						i © Copyrigths 2013 - Creators and  IUT Charlemagne
+						br
+						br
+						br
+
+				.row
+					.col-xs-12
+						&uarr; &uarr; &darr; &darr; &larr; &rarr; &larr; &rarr; B A
 
 
 
+
+		img#ajaxloader(src="/images/ajax-loader.gif", alt='')
 
 		//  Scripts se chargeants après le document 
 		script(type='text/javascript', src='/javascripts/jquery-1.10.2.js')
-		script(type='text/javascript', src='/javascripts/jquery.flippy.min.js')
+		//- script(type='text/javascript', src='/javascripts/jquery.flippy.min.js')
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
-		script(type='text/javascript', src='/javascripts/jquery-ui-1.10.3.custom.min-only-shake.js')
-		//Chargement de nos scripts finaux
-		script(type='text/javascript', src='/javascripts/home/main.js')
+		//- script(type='text/javascript', src='/javascripts/jquery-ui-1.10.3.custom.min-only-shake.js')
+		// Chargement de nos scripts finaux
 		script(type='text/javascript', src='/javascripts/angular.js')
+		script(type='text/javascript', src='/javascripts/home/main.js')
 		script(type='text/javascript', src='/javascripts/home/controller.js')
+
+		script(type='text/javascript').
+			if ( window.addEventListener ) {
+				var kkeys = [], konami = "38,38,40,40,37,39,37,39,66,65";
+				window.addEventListener("keydown", function(e){
+					kkeys.push( e.keyCode );
+					if ( kkeys.toString().indexOf( konami ) >= 0 ) {
+						
+						window.location = "/easteregg";
+					}
+				}, true);
+			}
+
+
+			
+			
+			(function() {
+				var good_advice_malard;
+				good_advice_malard = "\n  IF YOU ARE TIRED OR CURIOUS\n	          _.._\n             /   o\\__,\n             \\  -.___/\n              \\  \\\n         (\\____)  \\\n     |\_(         ))\n_____|   (_        /________\n     _\\____(______/__\n       ______\n\nYOU SHOULD TRY THE KONAMI CODE\n";
+				return console.log(good_advice_malard);
+			})();
+			
+			
+					
+

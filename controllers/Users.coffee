@@ -12,19 +12,16 @@ Password = require 'password-hash'
 ###
 
 
-
-
-
-
 class Users
   constructor: ->
   
   #Callback de la forme: (err, list)
   @find_all: (callback) ->
 
-    query  =  db.User.findAll()
+    query = db.User.findAll {include: [db.Country, db.Status, db.Project]}
 
     query.success (users)->
+      #console.log users
       callback null, users
 
     query.error (err)->
@@ -39,7 +36,7 @@ class Users
 
       id= parseInt id # On enlève les décimaux 
   
-      query  =  db.User.find()
+      query  =  db.User.find(id)
   
       query.success (user)->
         callback null, user

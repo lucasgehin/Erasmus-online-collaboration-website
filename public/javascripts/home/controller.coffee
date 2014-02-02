@@ -1,22 +1,37 @@
+
+#Collections
+
+News_list = []
+Events_list = []
+Documents_list = []
+Projects_list = []
+Users_list = []
+
+
 #Sockets
 
-socket = io.connect "/home"
+@socket = io.connect "/home"
 
 socket.on 'connect', ()->
   console.log "IO: Connected!"
+  load_end()
 
 
-  socket.on "message", (data)->
-    console.log "Message from server: #{data}"
+socket.on "message", (data)->
+  console.log data
   
 
 socket.on 'connecting', ()->
   console.log "IO: Connecting to /home..."
+  load_start()
 
 
 
 
 # jQUery
+
+  #vide
+
 # tools
 sanitize = (event, jqueryObject)->
   event.preventDefault()
@@ -25,91 +40,115 @@ sanitize = (event, jqueryObject)->
     jqueryObject.stop()
     jqueryObject.clearQueue()
 
+# Charement
+load_count = 0
+$load_img = $ '#ajaxloader'
+
+@load_start=->
+  if load_count is 0
+    $load_img.fadeIn 'fast'   
+
+  load_count++
+
+@load_end=->
+  if load_count > 0
+    load_count--
+
+  if load_count is 0
+    $load_img.fadeOut 'slow'
+  
+
 # Angular 
 
 
 
 # Controllers
 @User_Manager = ($scope)->
-  $scope.list = []
 
-  $scope.get_users = ()->
-    socket.emit 'get_users_list', null, (response)->
-      $scope.list =  response
-      for u in $scope.list
-        traiter_donnees u, ()->
-          $scope.$apply()
-      console.log "User list saved"
-      
-  traiter_donnees = (user, cb)->  
-    ###
-    if not user.picture
-      socket.emit "random_pokemon", null, (img)->
-        console.log img
-        user.picture = img
-        cb()
-    ###
-    cb()
+  $scope.list = ->
+    return Users_list
 
 
-  
-  $scope.get_users()
+  $scope.get_users = ->
+    load_start()
+    socket.emit 'get_users_list', null, (error, response)->
+      #console.log response
+      Users_list = response if response?
+      #console.log "User list saved"
+      load_end()
+
+      $scope.$apply() # Sert à forcer la MAJ de la vue
+
+  socket.on 'connect', ->
+    $scope.get_users()
 
 
 
 @News_Management = ($scope)->
 
-  $scope.short_list = []
-  $scope.list = []
+  
+
+  $scope.list = ->
+    return News_list
+
+  $scope.more= ->
+    return (News_list.length == 0 || News_list[0].id == -1)
+
 
   $scope.get_news_list = ()->
     console.log "Getting news list"
-    socket.emit 'get_news_list',null, (response)->
-      $scope.list = response
-
-      $scope.short_list = $scope.list.splice(0,3)
+    load_start()
+    socket.emit 'get_news_list',null, (err, response)->
       
-      for i in $scope.short_list
-        i.short_content = i.content.substr(0,250)+'...'
-      
+      load_end()
 
-      if $scope.list.length is 0
-        $scope.list.push {
+      console.log response
+
+      if response?
+        News_list = response
+   
+
+      if News_list.length is 0
+        News_list.push JSON.stringify {
           id:-1
-          title: "There is nothing here :("
+          title: "There is nothing here yet :("
           content : "Add a message"
-          date: ''
+          createdAt: new Date()
         }
 
       $scope.$apply()
+
+  socket.on 'connect', ->
+    $scope.get_news_list()
 
   $scope.show =  (item)->
     popup = document.querySelector "#popup-news"
     scope = angular.element(popup).scope()
     scope.title = item.title
     scope.content = item.content
-        
+      
     $(popup).modal()
 
-  $scope.show_all = ()->
+    return null
+
+  $scope.show_all = ->
     popup = document.querySelector "#popup-news-all"    
     scope = angular.element(popup).scope()
     if not scope.is_initialized
-      scope.initalize($scope.list)    
+      scope.initalize()    
     scope.show()
 
-  $scope.get_news_list()
+    return null
+
+  
 
 
-@Setting_Management = ($scope)->
+@Setting_Management= ($scope)->
 
 
-
-  $scope.show = ()->
-    popup = document.querySelector "#popup_settings"
-    scope = angular.element(popup).scope()
-
-    
+  $scope.show= ()->
+    popup= document.querySelector "#popup_settings"
+    scope= angular.element(popup).scope()    
         
     $(popup).modal()
 
@@ -117,17 +156,7 @@ sanitize = (event, jqueryObject)->
 
 @Setting_Selection = ($scope)->
 
-  $scope.list = []
 
-  $scope.get_setting = ()->
-    socket.emit 'get_settings_list', null, (response)->
-      $scope.list = response
-      console.log(response)
-      console.log "Settings list saved"
-      
-  $scope.username = username
-  
-  $scope.get_setting()
 
 
 @popup_news = ($scope)->
@@ -135,17 +164,25 @@ sanitize = (event, jqueryObject)->
   $scope.content = ""
   $scope.date= ""
 
+  return null
+
 
 @popup_news_all = ($scope)->
-  $scope.is_initialized = false
-  $scope.list = []
-  $scope.current_content = 
 
-  $scope.initalize = (list)->
-    $scope.list = list
-    $scope.list[0].active = true
-    $scope.activated = $scope.list[0]
+  $scope.list= ->
+    return News_list
+
+  $scope.is_initialized = false  
+  $scope.current_content = ''
+
+
+  $scope.initalize = ->
+    
+    News_list[0].active = true
+    $scope.activated = News_list[0]
     $scope.is_initialized = true
+
+    return null
 
 
   $scope.show_new = (item)->
@@ -155,7 +192,11 @@ sanitize = (event, jqueryObject)->
     $scope.activated = item
     $scope.activated.active = true
 
+    return null
+
   
+
+
   $scope.show= ()->
     self = document.querySelector "#popup-news-all"
     $("html, body").animate {
@@ -163,7 +204,33 @@ sanitize = (event, jqueryObject)->
     }, 500
     $scope.current_content = $scope.activated.content
     $(self).modal()
-    
+
+  return null
+  
 @popup_settings = ($scope)->
   $scope.title = ""
   $scope.content = ""
+
+
+@Project_Manager= ($scope)->
+
+  $scope.list = ->
+    return Projects_list
+
+  $scope.get_projects =->
+    load_start()
+
+    socket.emit 'get_projects_list', null, (error, response)->
+      
+      console.log response
+      
+      Projects_list = response if response?
+      
+      load_end()
+
+      $scope.$apply()
+
+
+
+  socket.on 'connect' , ->
+    $scope.get_projects()

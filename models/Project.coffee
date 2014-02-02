@@ -21,12 +21,7 @@ module.exports = (sequelize, DataTypes)->
     description:
       type: DataTypes.TEXT
       allowNull: true
-
-
-
-
-
-
+      
   },
   classMethods: {
     associate: (models)->

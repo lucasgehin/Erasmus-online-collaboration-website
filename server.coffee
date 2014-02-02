@@ -5,25 +5,19 @@
 
 http = require 'http'
 express = require 'express'
+connect = require 'connect'
 gzippo = require 'gzippo'
 
 routes = require './routes'
 path = require 'path'
 
-io = require "socket.io"
+
 
 
 
 # On initialise les modèle en les incluant (Meme si on ne les utilisent pas). Cela les force à se charger et à se mettre en cache
 
 {Users} = require './controllers/Users'
-#require './models/Status'
-#require './models/User'
-home = require './modules/home_page/home'
-
-# On ne charge que les controlleurs dont on à besoin en revanche.
-
-
 db = require "./models"
 
 
@@ -32,7 +26,9 @@ db = require "./models"
 
 app = express()
 server = http.createServer app
-io = io.listen server
+
+cookieParser = express.cookieParser('your secret sauce here') # Devra être changé !!!!   <-------------------
+sessionStore = new connect.middleware.session.MemoryStore()
 
 
 # all environments
@@ -43,8 +39,8 @@ app.use express.favicon()
 app.use express.logger('dev')
 app.use express.bodyParser()
 app.use express.methodOverride()
-app.use express.cookieParser('your secret here') # Devra être changé !!!!
-app.use express.session()
+app.use cookieParser
+app.use express.session {store : sessionStore}
 app.use app.router
 app.use require('stylus').middleware(__dirname + '/public')
 
@@ -73,11 +69,15 @@ if 'development' is app.get 'env'
 ###
 
 app.get '/', routes.login
-console.log Users
+
 app.post '/' , Users.connect
 app.get '/logout', Users.disconnect
 
 app.get '/home', routes.home
+
+app.get '/easteregg', routes.easteregg
+
+app.get '/calendar', routes.calendar
 
 
 ###
@@ -100,11 +100,12 @@ server.listen app.get('port'), ()->
   Initialisation des modules
 ###
 
-home.init io  # Give the socket IO instance to home
 
+# On charge le controlleur de websocket pour lui donner le lien avec Express en parametre
 
+{Sio} = require './controllers/Sio'
 
-
+Sio.init server, sessionStore , cookieParser
 
 
 

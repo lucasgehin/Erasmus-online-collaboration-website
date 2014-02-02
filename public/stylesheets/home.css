@@ -15,8 +15,14 @@ a {
 .nav li {
   margin-right: 10px;
 }
+.divider-vertical {
+  height: 50px;
+  margin: 0 9px;
+  border-left: 1px solid #f2f2f2;
+  border-right: 1px solid #fff;
+}
 .main-container {
-  margin-top: -55px;
+  margin-top: 0px;
   padding: 0 30px 0 30px;
   background-color: rgba(255,255,255,0.8);
   border-radius: 10px;
@@ -40,9 +46,14 @@ a {
   vertical-align: middle;
 }
 .header-top .list-group-item table .news-date {
+  width: 25%;
   font-style: italic;
   color: #808080;
   text-align: right;
+}
+.header-top .list-group-item table .news-by {
+  width: 25%;
+  white-space: no-wrap;
 }
 .header-top .list-group-item-text {
   text-align: justify;
@@ -89,20 +100,33 @@ a {
   border-radius: 20px;
 }
 /* ----------------- */
-.users-link-section {
+.users-link-section,
+.projects-link-section {
   padding: 0;
 }
-.users-link-section .users {
+.users-link-section .users,
+.projects-link-section .users,
+.users-link-section .projects,
+.projects-link-section .projects {
   text-align: center;
 }
-.users-link-section .users .navbar-inner {
+.users-link-section .users .navbar-inner,
+.projects-link-section .users .navbar-inner,
+.users-link-section .projects .navbar-inner,
+.projects-link-section .projects .navbar-inner {
   text-align: left;
 }
-.users-link-section .users .content {
+.users-link-section .users .content,
+.projects-link-section .users .content,
+.users-link-section .projects .content,
+.projects-link-section .projects .content {
   min-height: 500px;
   text-align: center;
 }
-.users-link-section .users .content .user {
+.users-link-section .users .content .user,
+.projects-link-section .users .content .user,
+.users-link-section .projects .content .user,
+.projects-link-section .projects .content .user {
   text-align: left;
   min-height: 100px;
   max-height: 100px;
@@ -110,12 +134,29 @@ a {
   border-radius: 10px;
   margin: 0;
 }
-.users-link-section .users .content .user img {
+.users-link-section .users .content .user img,
+.projects-link-section .users .content .user img,
+.users-link-section .projects .content .user img,
+.projects-link-section .projects .content .user img {
   display: inline;
   max-width: 100px;
   max-height: 100px;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
+}
+.users-link-section .users .project-name,
+.projects-link-section .users .project-name,
+.users-link-section .projects .project-name,
+.projects-link-section .projects .project-name {
+  font-size: larger;
+  text-decoration: underline;
+  font-weight: bold;
+}
+.users-link-section .users .country,
+.projects-link-section .users .country,
+.users-link-section .projects .country,
+.projects-link-section .projects .country {
+  display: inline;
 }
 .users-link-section .users .content .user .country img {
   display: inline;
@@ -129,4 +170,27 @@ a {
 }
 .modal-body {
   min-height: 530px;
+}
+.contact {
+  color: #fff;
+  text-shadow: 0 0 2px #000;
+  text-align: center;
+  margin: auto;
+  background-color: #333;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  margin-bottom: 100px;
+  margin-top: -10px;
+  padding: 20px 0;
+}
+.contact ul {
+  list-style-type: none;
+}
+#ajaxloader {
+  position: fixed;
+  top: 310px;
+  left: 50%;
+  margin-left: -65px;
+  width: 128px;
+  display: none;
 }
