@@ -5,29 +5,31 @@ db = require '../models'
 
 ###
 
-  Controlleur gérant les News
+  Controlleur gérant les Events
 
 ###
 
 
 
-class News
+class Events
   constructor: ->
   
   #Callback de la forme: (err, list)
   @find_all: (callback) ->
 
-    query  =  db.News.findAll {
+    query  =  db.Event.findAll {
       include:[
-        db.User
+        db.User,
+        db.Status,
+        db.Project
       ]
     }
 
-    query.success (news)->
-      callback null, news
+    query.success (Events)->
+      callback null, Events
 
     query.error (err)->
-      console.log "News@find_all: #{err}"
+      console.log "Events@find_all: #{err}"
       callback err, null
 
 
@@ -38,17 +40,17 @@ class News
 
       id= parseInt id # On enlève les décimaux 
   
-      query  =  db.News.find(id)
+      query  =  db.Event.find(id)
   
       query.success (user)->
         callback null, user
   
       query.error (err)->
-        console.log "News@find_by_id: #{err}"
+        console.log "Events@find_all: #{err}"
         callback err, null
     else
 
-      err = new Exception "News@find_by_id: Id should be an integer in range  [0..n], |#{id}| given. ", 1
+      err = new Exception "Users@find_by_id: Id should be an integer in range  [0..n], |#{id}| given. ", 1
       
       callback err, null
 
@@ -56,17 +58,17 @@ class News
   @find_by_title: (title_param, callback)->
 
     if typeof title_param is "string"
-      query  =  db.News.find {where: {title: title_param}}
+      query  =  db.Event.find {where: {title: title_param}}
   
       query.success (user)->
         callback null, user
   
       query.error (err)->
-        console.log "News@find_by_title: #{err}"
+        console.log "Events@find_by_title: #{err}"
         callback err, null
 
 
 
 
 
-exports.News = News
+exports.Events = Events

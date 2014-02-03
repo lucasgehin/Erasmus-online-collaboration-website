@@ -1,5 +1,5 @@
 (function() {
-  var Exception, News, db;
+  var Events, Exception, db;
 
   db = require('../models');
 
@@ -8,48 +8,48 @@
 
   /*
   
-    Controlleur gérant les News
+    Controlleur gérant les Events
    */
 
-  News = (function() {
-    function News() {}
+  Events = (function() {
+    function Events() {}
 
-    News.find_all = function(callback) {
+    Events.find_all = function(callback) {
       var query;
-      query = db.News.findAll({
-        include: [db.User]
+      query = db.Event.findAll({
+        include: [db.User, db.Status, db.Project]
       });
-      query.success(function(news) {
-        return callback(null, news);
+      query.success(function(Events) {
+        return callback(null, Events);
       });
       return query.error(function(err) {
-        console.log("News@find_all: " + err);
+        console.log("Events@find_all: " + err);
         return callback(err, null);
       });
     };
 
-    News.find_by_id = function(id, callback) {
+    Events.find_by_id = function(id, callback) {
       var err, query;
       if (typeof id === "number") {
         id = parseInt(id);
-        query = db.News.find(id);
+        query = db.Event.find(id);
         query.success(function(user) {
           return callback(null, user);
         });
         return query.error(function(err) {
-          console.log("News@find_by_id: " + err);
+          console.log("Events@find_all: " + err);
           return callback(err, null);
         });
       } else {
-        err = new Exception("News@find_by_id: Id should be an integer in range  [0..n], |" + id + "| given. ", 1);
+        err = new Exception("Users@find_by_id: Id should be an integer in range  [0..n], |" + id + "| given. ", 1);
         return callback(err, null);
       }
     };
 
-    News.find_by_title = function(title_param, callback) {
+    Events.find_by_title = function(title_param, callback) {
       var query;
       if (typeof title_param === "string") {
-        query = db.News.find({
+        query = db.Event.find({
           where: {
             title: title_param
           }
@@ -58,16 +58,16 @@
           return callback(null, user);
         });
         return query.error(function(err) {
-          console.log("News@find_by_title: " + err);
+          console.log("Events@find_by_title: " + err);
           return callback(err, null);
         });
       }
     };
 
-    return News;
+    return Events;
 
   })();
 
-  exports.News = News;
+  exports.Events = Events;
 
 }).call(this);

@@ -1,5 +1,5 @@
 (function() {
-  var News, Projects, SessionSockets, Sio, Socket_io, Users;
+  var Events, News, Projects, SessionSockets, Sio, Socket_io, Users;
 
   SessionSockets = require('session.socket.io');
 
@@ -10,6 +10,8 @@
   News = require('./News').News;
 
   Projects = require('./Projects').Projects;
+
+  Events = require('./Events').Events;
 
 
   /*
@@ -32,12 +34,13 @@
       io_options = {
         transports: ['htmlfile', 'xhr-polling', 'jsonp-polling']
       };
-      io = Socket_io.listen(app, this.sessionSockets = new SessionSockets(io, sessionStore, cookieParser));
+      io = Socket_io.listen(app, io_options);
+      this.sessionSockets = new SessionSockets(io, sessionStore, cookieParser);
       return this.routes();
     };
 
     Sio.routes = function() {
-      return this.sessionSockets.of('/home').on('connection', function(err, socket, session) {
+      this.sessionSockets.of('/home').on('connection', function(err, socket, session) {
         var user, _ref;
         user = session != null ? (_ref = session.user) != null ? _ref.username : void 0 : void 0;
         if (user === void 0) {
@@ -59,9 +62,25 @@
             return callback(err, list);
           });
         });
-        return socket.on("get_projects_list", function(no_data, callback) {
+        socket.on("get_projects_list", function(no_data, callback) {
           console.log("Sio: Demande de la liste des projets par " + user);
           return Projects.find_all(function(err, list) {
+            return callback(err, list);
+          });
+        });
+        return socket.on("get_events_next", function(no_data, callback) {
+          console.log("Sio: Demande de la liste des events les plus proches par " + user);
+          return Events.find_next_events(function(err, list) {
+            return callback(err, list);
+          });
+        });
+      });
+      return this.sessionSockets.of('/calendar').on('connection', function(err, socket, session) {
+        var user, _ref;
+        user = session != null ? (_ref = session.user) != null ? _ref.username : void 0 : void 0;
+        return socket.on("get_events_list", function(no_data, callback) {
+          console.log("Sio: Demande de la liste des events par " + user);
+          return Events.find_all(function(err, list) {
             return callback(err, list);
           });
         });

@@ -1,5 +1,5 @@
 (function() {
-  var $calendar, $load_img, load_count, load_end, load_start, start;
+  var $calendar, $load_img, load_count, start;
 
   $(document).ready(function() {
     load_start();
@@ -29,14 +29,14 @@
 
   $load_img = $('#ajaxloader');
 
-  load_start = function() {
+  this.load_start = function() {
     if (load_count === 0) {
       $load_img.fadeIn('fast');
     }
     return load_count++;
   };
 
-  load_end = function() {
+  this.load_end = function() {
     if (load_count > 0) {
       load_count--;
     }

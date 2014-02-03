@@ -6,6 +6,7 @@ Socket_io = require 'socket.io'
 {Users} = require './Users'
 {News} = require './News'
 {Projects} = require './Projects'
+{Events} = require './Events'
 
 ###
 
@@ -82,6 +83,30 @@ class Sio
         console.log "Sio: Demande de la liste des projets par #{user}"
 
         Projects.find_all (err, list)->
+          callback err, list
+
+
+
+
+      socket.on "get_events_next", (no_data, callback)->
+
+        console.log "Sio: Demande de la liste des events les plus proches par #{user}"
+
+        Events.find_next_events (err, list)->
+          callback err, list
+
+
+
+
+    @sessionSockets.of('/calendar').on 'connection', (err, socket, session)->
+
+      user = session?.user?.username
+
+      socket.on "get_events_list", (no_data, callback)->
+
+        console.log "Sio: Demande de la liste des events par #{user}"
+
+        Events.find_all (err, list)->
           callback err, list
 
 

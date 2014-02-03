@@ -23,15 +23,24 @@ module.exports = (sequelize, DataTypes)->
       type: DataTypes.TEXT
       allowNull: true
 
-    start_time:
+    allDay:
+      type: DataTypes.BOOLEAN
+      allowNull: false
+      defaultValue: false
+
+    start:
       type: DataTypes.DATE
       allowNull: false
       defaultValue: sequelize.NOW
 
-    end_time:
+    end:
       type: DataTypes.DATE
-      allowNull: false
-      defaultValue: sequelize.NOW
+      allowNull: true
+      
+
+    url:
+      type: DataTypes.STRING
+      allowNull: true
 
 
     # Peut être par exemple 0: Faible, 1: Normal, 2: Prioritaire, 3: Urgent, 4: Exceptionnel, 5: Optionnel.     
@@ -46,7 +55,7 @@ module.exports = (sequelize, DataTypes)->
   classMethods: {
     associate: (models)->
 
-      Event.belongsTo models.User, {as: 'author'}
+      Event.belongsTo models.User
       Event.belongsTo models.Status
       Event.belongsTo models.Project
 

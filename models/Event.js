@@ -20,15 +20,23 @@
         type: DataTypes.TEXT,
         allowNull: true
       },
-      start_time: {
+      allDay: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
+      start: {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: sequelize.NOW
       },
-      end_time: {
+      end: {
         type: DataTypes.DATE,
-        allowNull: false,
-        defaultValue: sequelize.NOW
+        allowNull: true
+      },
+      url: {
+        type: DataTypes.STRING,
+        allowNull: true
       },
       priority: {
         type: DataTypes.INTEGER,
@@ -38,9 +46,7 @@
     }, {
       classMethods: {
         associate: function(models) {
-          Event.belongsTo(models.User, {
-            as: 'author'
-          });
+          Event.belongsTo(models.User);
           Event.belongsTo(models.Status);
           Event.belongsTo(models.Project);
           Event.hasOne(models.Event, {
