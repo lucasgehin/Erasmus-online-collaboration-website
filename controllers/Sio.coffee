@@ -30,7 +30,7 @@ class Sio
 
     io_options=
       transports: ['htmlfile', 'xhr-polling', 'jsonp-polling'] # Webscokect disabled due to firewalls
-    io = Socket_io.listen app, 
+    io = Socket_io.listen app, io_options
 
     @sessionSockets = new SessionSockets io, sessionStore, cookieParser
 
