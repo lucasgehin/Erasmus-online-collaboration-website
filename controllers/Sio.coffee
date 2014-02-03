@@ -28,7 +28,9 @@ class Sio
 
   @init: (app, sessionStore, cookieParser)->
 
-    io = Socket_io.listen app
+    io_options=
+      transports: ['htmlfile', 'xhr-polling', 'jsonp-polling'] # Webscokect disabled due to firewalls
+    io = Socket_io.listen app, 
 
     @sessionSockets = new SessionSockets io, sessionStore, cookieParser
 
