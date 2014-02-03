@@ -1,7 +1,7 @@
 *.ini
 *.db
 
-*.js
+
 
 Database_config.coffee
 Database_config.js
