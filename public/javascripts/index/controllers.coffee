@@ -12,7 +12,7 @@
 @Sign_in = ($scope, $http) ->
   
   #Models
-  $scope.username = "test_student"
+  $scope.username = "test_user"
   $scope.password = "test_pass"
   $scope.message = " "
   $scope.message_color = "black"
