@@ -1,5 +1,5 @@
 (function() {
-  var Events, News, Projects, SessionSockets, Sio, Socket_io, Users;
+  var Events, News, Projects, SessionSockets, Sio, Socket_io, Users, set_event_editable;
 
   SessionSockets = require('session.socket.io');
 
@@ -76,27 +76,43 @@
         });
       });
       return this.sessionSockets.of('/calendar').on('connection', function(err, socket, session) {
-        var id_status_user_session, user, _ref;
+        var user;
         user = session != null ? session.user : void 0;
         if (user != null) {
-          console.log(user);
-          id_status_user_session = (_ref = user.statu) != null ? _ref.id.toString() : void 0;
-          return socket.on("get_events_list", function(no_data, callback) {
+          socket.on("get_events_list", function(no_data, callback) {
             console.log("Sio: Demande de la liste des events par " + user.username);
             return Events.find_all(function(err, list) {
-              var event, id_status_user_event, list_to_send, _i, _len;
+              var event, list_to_send, _i, _len;
               list_to_send = [];
               for (_i = 0, _len = list.length; _i < _len; _i++) {
                 event = list[_i];
-                id_status_user_event = event.user.StatuId.toString();
-                event.setDataValue('editable', false);
-                if (id_status_user_event === id_status_user_session) {
-                  event.setDataValue('editable', true);
-                }
+                event = set_event_editable(event, user);
                 list_to_send.push(event);
               }
               return callback(err, list_to_send);
             });
+          });
+          return socket.on("update_event", function(event, callback) {
+            var response;
+            console.log("Sio: Mise a jour d'un évenement par " + user.username);
+            response = {
+              response: false
+            };
+            if (event.StatuId === null || event.StatuId === user.StatuId) {
+              return Events.update(event, function(err, new_event) {
+                if (err != null) {
+                  return callback(err, null);
+                } else if (new_event != null) {
+                  console.log("\nEvenenment " + new_event.title + " mis a jour par " + user.username + "\n");
+                  response.response = true;
+                  new_event = set_event_editable(new_event, user);
+                  socket.broadcast.emit('update_event', new_event);
+                  return callback(null, response);
+                }
+              });
+            } else {
+              return callback(null, response);
+            }
           });
         } else {
           return console.log("Utilisateur non connecté a tenté d'acceder au calendrier. -> utilisateur ignoré.");
@@ -107,6 +123,17 @@
     return Sio;
 
   })();
+
+  set_event_editable = function(event, user) {
+    var id_status_user_event, id_status_user_session, _ref;
+    id_status_user_event = event.user.StatuId.toString();
+    id_status_user_session = (_ref = user.statu) != null ? _ref.id.toString() : void 0;
+    event.setDataValue('editable', false);
+    if (id_status_user_event === id_status_user_session) {
+      event.setDataValue('editable', true);
+    }
+    return event;
+  };
 
   exports.Sio = Sio;
 

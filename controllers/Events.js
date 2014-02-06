@@ -32,16 +32,21 @@
       var err, query;
       if (typeof id === "number") {
         id = parseInt(id);
-        query = db.Event.find(id);
-        query.success(function(user) {
-          return callback(null, user);
+        query = db.Event.find({
+          where: {
+            id: id
+          },
+          include: [db.User, db.Status, db.Project]
+        });
+        query.success(function(event) {
+          return callback(null, event);
         });
         return query.error(function(err) {
           console.log("Events@find_all: " + err);
           return callback(err, null);
         });
       } else {
-        err = new Exception("Users@find_by_id: Id should be an integer in range  [0..n], |" + id + "| given. ", 1);
+        err = new Exception("Events@find_by_id: Id should be an integer in range  [0..n], |" + id + "| given. ", 1);
         return callback(err, null);
       }
     };
@@ -62,6 +67,40 @@
           return callback(err, null);
         });
       }
+    };
+
+    Events.update = function(event, callback) {
+      var id;
+      id = parseInt(event.id);
+      return Events.find_by_id(id, function(err, db_event) {
+        var query;
+        if (err != null) {
+          console.log(err);
+          callback(err, null);
+        }
+        if (db_event != null) {
+          query = db_event.updateAttributes({
+            title: event.title,
+            description: event.description,
+            allDay: event.allDay,
+            start: event.start,
+            end: event.end,
+            url: event.url,
+            priority: event.priority,
+            StatuId: event.StatuId,
+            ProjectId: event.ProjectId
+          });
+          query.success(function(db_event) {
+            return callback(null, db_event);
+          });
+          return query.error(function(err) {
+            if (err != null) {
+              console.log(err);
+              return callback(err, null);
+            }
+          });
+        }
+      });
     };
 
     return Events;

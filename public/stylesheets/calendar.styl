@@ -1,5 +1,3 @@
-
-
 body
 	padding 0 1.1%
 
@@ -27,3 +25,18 @@ body
 	width 128px
 	display none
 	
+
+
+
+.fc-event-draggable
+	box-shadow: 0 0 0px white
+
+.fc-event-draggable:hover
+	box-shadow: 0 0 10px black
+	animation: event-over 0.2s
+
+@keyframes event-over
+	from
+		box-shadow: 0 0 0px white	
+	to
+		box-shadow: 0 0 10px black

@@ -20,3 +20,55 @@ body {
   width: 128px;
   display: none;
 }
+.fc-event-draggable {
+  box-shadow: 0 0 0px #fff;
+}
+.fc-event-draggable:hover {
+  box-shadow: 0 0 10px #000;
+  animation: event-over 0.2s;
+}
+@-moz-keyframes event-over {
+  0% {
+    box-shadow: 0 0 0px #fff;
+  }
+
+  100% {
+    box-shadow: 0 0 10px #000;
+  }
+}
+@-webkit-keyframes event-over {
+  0% {
+    box-shadow: 0 0 0px #fff;
+  }
+
+  100% {
+    box-shadow: 0 0 10px #000;
+  }
+}
+@-o-keyframes event-over {
+  0% {
+    box-shadow: 0 0 0px #fff;
+  }
+
+  100% {
+    box-shadow: 0 0 10px #000;
+  }
+}
+@-ms-keyframes event-over {
+  0% {
+    box-shadow: 0 0 0px #fff;
+  }
+
+  100% {
+    box-shadow: 0 0 10px #000;
+  }
+}
+@keyframes event-over {
+  0% {
+    box-shadow: 0 0 0px #fff;
+  }
+
+  100% {
+    box-shadow: 0 0 10px #000;
+  }
+}

@@ -26,6 +26,7 @@ class Events
     }
 
     query.success (Events)->
+      
       callback null, Events
 
     query.error (err)->
@@ -40,17 +41,17 @@ class Events
 
       id= parseInt id # On enlève les décimaux 
   
-      query  =  db.Event.find(id)
+      query  =  db.Event.find { where: {id: id}, include: [db.User,  db.Status, db.Project  ]   }
   
-      query.success (user)->
-        callback null, user
+      query.success (event)->
+        callback null, event
   
       query.error (err)->
         console.log "Events@find_all: #{err}"
         callback err, null
     else
 
-      err = new Exception "Users@find_by_id: Id should be an integer in range  [0..n], |#{id}| given. ", 1
+      err = new Exception "Events@find_by_id: Id should be an integer in range  [0..n], |#{id}| given. ", 1
       
       callback err, null
 
@@ -68,7 +69,35 @@ class Events
         callback err, null
 
 
+  @update: (event, callback)->
+    id = parseInt event.id
 
+    Events.find_by_id id, (err, db_event)->
+      if err?
+        console.log err
+        callback err, null
+
+      if db_event?
+        query = db_event.updateAttributes {
+          title: event.title
+          description: event.description
+          allDay: event.allDay
+          start: event.start
+          end: event.end
+          url : event.url
+          priority: event.priority
+          StatuId : event.StatuId
+          ProjectId : event.ProjectId
+        }
+
+        query.success (db_event)->
+          callback null, db_event
+
+        query.error (err)->
+          if err?
+            console.log err           
+
+            callback err, null
 
 
 exports.Events = Events

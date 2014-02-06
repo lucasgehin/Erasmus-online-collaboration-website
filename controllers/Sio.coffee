@@ -104,8 +104,13 @@ class Sio
 
       if user?
 
-        console.log user
-        id_status_user_session = user.statu?.id.toString()
+        
+        
+
+
+
+
+
 
         socket.on "get_events_list", (no_data, callback)->
     
@@ -116,29 +121,64 @@ class Sio
             list_to_send = []
     
             for event in list
-              
-              id_status_user_event = event.user.StatuId.toString()
-
-              event.setDataValue 'editable', false
-    
-              if id_status_user_event is id_status_user_session
-                
-                event.setDataValue 'editable', true
-
-
-              
+              event = set_event_editable( event, user )          
 
               list_to_send.push event
-
-
-
     
             callback err, list_to_send
+
+            
+
+
+
+
+
+        socket.on "update_event", (event, callback)->
+    
+          console.log "Sio: Mise a jour d'un évenement par #{user.username}"
+
+          response=
+            response: false
+    
+          if event.StatuId is null or event.StatuId is user.StatuId  # On a le droit de modifier
+
+            Events.update event, (err, new_event)->
+              if err?
+                callback err, null
+
+              else if new_event?
+
+                console.log "\nEvenenment #{new_event.title} mis a jour par #{user.username}\n" 
+
+                response.response = true
+
+                new_event = set_event_editable( new_event, user)
+
+                socket.broadcast.emit 'update_event', new_event 
+
+                callback null, response
+          else
+            callback null, response
+
+
       else
 
         console.log "Utilisateur non connecté a tenté d'acceder au calendrier. -> utilisateur ignoré."
 
 
+# Tools
 
+
+set_event_editable = (event, user)->
+
+  id_status_user_event = event.user.StatuId.toString()
+  id_status_user_session = user.statu?.id.toString()
+  
+  event.setDataValue 'editable', false
+
+  if id_status_user_event is id_status_user_session
+    event.setDataValue 'editable', true 
+
+  return event  
 
 exports.Sio = Sio
