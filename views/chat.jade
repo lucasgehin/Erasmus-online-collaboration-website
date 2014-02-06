@@ -1,10 +1,10 @@
 doctype html
 html
 	head
-		title Calendar- IpVIOPE
+		title Chat - IpVIOPE
 
-		link(rel='stylesheet', href='/javascripts/fullcalendar/fullcalendar/fullcalendar.css')
-		link(rel='stylesheet', href='/stylesheets/calendar.css')
+
+		link(rel='stylesheet', href='/stylesheets/chat.css')
 
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap-theme.css')
@@ -33,9 +33,9 @@ html
 							span.glyphicon.glyphicon-pencil
 							|  Documents
 					li
-						a(href='/chat')
-							span.glyphicon.glyphicon-facetime-video
-							|  Chat
+						a(href='/calendar')
+							span.glyphicon.glyphicon-calendar
+							|  Calendar
 					
 
 					
@@ -64,18 +64,27 @@ html
 			.main-container.container-fluid
 				.row
 					.col-xs-12
-						#calendar
+						#chat
+							.people
+								| 2 People in this room
+
+							.chat_window
+								| Hello
+
+							.room
+								| Home room
+
+							.new_message
+								| Write here your message !
 
 		img#ajaxloader(src="/images/ajax-loader.gif", alt='')
 
 
-		script(type='text/javascript', src='/javascripts/fullcalendar/lib/jquery.min.js')
-		script(type='text/javascript', src='/javascripts/fullcalendar/lib/moment.min.js')
-		script(type='text/javascript', src='/javascripts/fullcalendar/fullcalendar/fullcalendar.js')
+
 
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
 
 		script(type='text/javascript', src='/socket.io/socket.io.js')
+		
 
-		script(type='text/javascript', src='/javascripts/fullcalendar/main.js')
-		script(type='text/javascript', src='/javascripts/fullcalendar/controllers.js')
+

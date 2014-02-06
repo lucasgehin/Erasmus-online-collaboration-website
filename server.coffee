@@ -79,6 +79,8 @@ app.get '/easteregg', routes.easteregg
 
 app.get '/calendar', routes.calendar
 
+app.get '/chat', routes.chat
+
 
 ###
  Connection des utilisateurs en AJAX car :
