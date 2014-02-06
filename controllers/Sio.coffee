@@ -100,14 +100,43 @@ class Sio
 
     @sessionSockets.of('/calendar').on 'connection', (err, socket, session)->
 
-      user = session?.user?.username
+      user = session?.user
 
-      socket.on "get_events_list", (no_data, callback)->
+      if user?
 
-        console.log "Sio: Demande de la liste des events par #{user}"
+        console.log user
+        id_status_user_session = user.statu?.id.toString()
 
-        Events.find_all (err, list)->
-          callback err, list
+        socket.on "get_events_list", (no_data, callback)->
+    
+          console.log "Sio: Demande de la liste des events par #{user.username}"
+    
+          Events.find_all (err, list)->
+
+            list_to_send = []
+    
+            for event in list
+              
+              id_status_user_event = event.user.StatuId.toString()
+
+              event.setDataValue 'editable', false
+    
+              if id_status_user_event is id_status_user_session
+                
+                event.setDataValue 'editable', true
+
+
+              
+
+              list_to_send.push event
+
+
+
+    
+            callback err, list_to_send
+      else
+
+        console.log "Utilisateur non connecté a tenté d'acceder au calendrier. -> utilisateur ignoré."
 
 
 

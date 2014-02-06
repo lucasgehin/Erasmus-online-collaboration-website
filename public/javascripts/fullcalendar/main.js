@@ -1,5 +1,5 @@
 (function() {
-  var $calendar, $load_img, load_count, start;
+  var $calendar, $load_img, load_count, resize_calendar, start;
 
   $(document).ready(function() {
     load_start();
@@ -22,7 +22,11 @@
         return load_end();
       }
     };
-    return $calendar.fullCalendar(options);
+    $calendar.fullCalendar(options);
+    resize_calendar();
+    return $(window).on('resize', function() {
+      return resize_calendar();
+    });
   };
 
   load_count = 0;
@@ -43,6 +47,12 @@
     if (load_count === 0) {
       return $load_img.fadeOut('slow');
     }
+  };
+
+  resize_calendar = function() {
+    var height_calendar;
+    height_calendar = $(window).height() - $('.navbar').height() * 1.6;
+    return $("#calendar").fullCalendar('option', 'height', height_calendar);
   };
 
 }).call(this);

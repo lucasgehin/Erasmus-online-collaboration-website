@@ -10,7 +10,7 @@
 (function() {
   this.Sign_in = function($scope, $http) {
     var apply, message_connecting, message_error_connect, message_error_u_p, message_verify;
-    $scope.username = "test_user";
+    $scope.username = "test_student";
     $scope.password = "test_pass";
     $scope.message = " ";
     $scope.message_color = "black";

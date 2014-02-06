@@ -76,14 +76,31 @@
         });
       });
       return this.sessionSockets.of('/calendar').on('connection', function(err, socket, session) {
-        var user, _ref;
-        user = session != null ? (_ref = session.user) != null ? _ref.username : void 0 : void 0;
-        return socket.on("get_events_list", function(no_data, callback) {
-          console.log("Sio: Demande de la liste des events par " + user);
-          return Events.find_all(function(err, list) {
-            return callback(err, list);
+        var id_status_user_session, user, _ref;
+        user = session != null ? session.user : void 0;
+        if (user != null) {
+          console.log(user);
+          id_status_user_session = (_ref = user.statu) != null ? _ref.id.toString() : void 0;
+          return socket.on("get_events_list", function(no_data, callback) {
+            console.log("Sio: Demande de la liste des events par " + user.username);
+            return Events.find_all(function(err, list) {
+              var event, id_status_user_event, list_to_send, _i, _len;
+              list_to_send = [];
+              for (_i = 0, _len = list.length; _i < _len; _i++) {
+                event = list[_i];
+                id_status_user_event = event.user.StatuId.toString();
+                event.setDataValue('editable', false);
+                if (id_status_user_event === id_status_user_session) {
+                  event.setDataValue('editable', true);
+                }
+                list_to_send.push(event);
+              }
+              return callback(err, list_to_send);
+            });
           });
-        });
+        } else {
+          return console.log("Utilisateur non connecté a tenté d'acceder au calendrier. -> utilisateur ignoré.");
+        }
       });
     };
 

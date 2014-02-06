@@ -5,10 +5,20 @@ $(document).ready ->
 $calendar = null
 
 start = ->
-  
+
+
+  # On ajuste la taille du calendrier
+
   $calendar = $ '#calendar'
 
+  
+
+  # On initilalise le calendrier
+  
+  
+
   options=
+    
     defaultView:'agendaWeek'
     header:
       left:'title'
@@ -19,14 +29,15 @@ start = ->
       load_end()
 
   $calendar.fullCalendar options
+  
+
+  resize_calendar()
+
+  $(window).on 'resize', ->
+    resize_calendar()
 
 
-
-
-
-
-
-# Charement
+# Chargement
 load_count = 0
 $load_img = $ '#ajaxloader'
 
@@ -43,3 +54,11 @@ $load_img = $ '#ajaxloader'
   if load_count is 0
     $load_img.fadeOut 'slow'
 
+
+
+
+resize_calendar = ->
+
+  height_calendar = $(window).height() - $('.navbar').height() * 1.6
+
+  $("#calendar").fullCalendar 'option', 'height', height_calendar

@@ -54,9 +54,16 @@ class Users
   @find_by_username: (username_param, callback)->
 
     if typeof username_param is "string"
-      query  =  db.User.find {where: {username: username_param}}
+      query  =  db.User.find {
+        where: {
+          username: username_param
+        },
+        include: [db.Status, db.Country, db.Project]
+      }
   
       query.success (user)->
+        user.status = user.statu
+        delete user.statu
         callback null, user
   
       query.error (err)->

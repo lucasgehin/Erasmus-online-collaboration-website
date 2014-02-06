@@ -54,9 +54,12 @@
         query = db.User.find({
           where: {
             username: username_param
-          }
+          },
+          include: [db.Status, db.Country, db.Project]
         });
         query.success(function(user) {
+          user.status = user.statu;
+          delete user.statu;
           return callback(null, user);
         });
         return query.error(function(err) {
