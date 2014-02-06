@@ -66,7 +66,14 @@ html
 					.col-xs-12
 						#chat
 							.people
-								| 2 People in this room
+								.well.well-sm
+									|People in this room
+								.liste
+									img(src="/images/Country/#{user.country.name}.jpg" alt="#{user.country.name}")
+									|#{user.username}
+									|#{user.statu.name}
+									
+
 
 							.chat_window
 								| Hello
@@ -74,16 +81,19 @@ html
 							.room
 								| Home room
 
+							.create_room
+								input.form-control(placeholder="New room")
 							.new_message
-								| Write here your message !
+								input.form-control(placeholder="Write here your message")
+								button.btn.btn-success(type='button') Send
 
 		img#ajaxloader(src="/images/ajax-loader.gif", alt='')
 
 
 
-
+		script(type='text/javascript', src='/javascripts/fullcalendar/lib/jquery.min.js')
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
-
+		script(type='text/javascript', src='/javascripts/chat/main.js')
 		script(type='text/javascript', src='/socket.io/socket.io.js')
 		
 
