@@ -37,7 +37,9 @@
       return load_start();
     });
     return socket.on('update_event', function(event) {
-      return Events.replace(event);
+      load_start();
+      Events.replace(event);
+      return load_end();
     });
   };
 
@@ -70,7 +72,17 @@
           }
         }
       },
-      eventResize: function(event, revertFunc) {}
+      eventResize: function(event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view) {
+        if (!event.editable) {
+          return revertFunc();
+        } else {
+          if (true) {
+            return Events.update(event);
+          } else {
+            return revertFunc();
+          }
+        }
+      }
     };
     return $calendar.fullCalendar(options);
   };

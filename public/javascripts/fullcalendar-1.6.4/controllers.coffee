@@ -43,7 +43,9 @@ start= ->
     load_start()
 
   socket.on 'update_event', (event)->
+    load_start()
     Events.replace event
+    load_end()
 
 
 init_calendar = ->
@@ -85,12 +87,14 @@ init_calendar = ->
           revertFunc()
 
 
-    eventResize: (event, revertFunc)->
-      #alert(event.title + " end is now " + event.end.format())
- 
-      #if not confirm("is this okay?")
-      #  revertFunc()
-
+    eventResize: (event, dayDelta, minuteDelta, revertFunc, jsEvent, ui, view)->
+      if not event.editable
+        revertFunc()
+      else
+        if true #confirm "Are you sure to move this event here ?"
+          Events.update event
+        else
+          revertFunc()
 
   $calendar.fullCalendar options
   
