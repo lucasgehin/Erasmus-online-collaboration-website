@@ -4,6 +4,7 @@ $calendar = null
 $(document).ready ->
   $calendar = $ '#calendar'
   start()
+  init_editor()
 
 
 #Collections
@@ -13,7 +14,12 @@ $(document).ready ->
 
 
 
-#Sockets
+
+###
+              Sockets
+###
+
+
 socket = null
 
 start= ->
@@ -48,6 +54,12 @@ start= ->
     load_end()
 
 
+
+###
+          FULL CALENDAR
+###
+
+
 init_calendar = ->
 
   # On ajuste la taille du calendrier
@@ -62,10 +74,11 @@ init_calendar = ->
   options=
     
     height: height_calendar
+    firstDay: 1
     defaultView:'agendaWeek'
     ignoreTimezone: false
     header:
-      left:'title'
+      left:''
       center:''
       right:'today prev,next month,agendaWeek,agendaDay'
 
@@ -96,8 +109,23 @@ init_calendar = ->
         else
           revertFunc()
 
+    eventClick: (event, jsEvent, view)->              
+      $scope_popup = $('#popup-show-event').scope()
+      $scope_popup.show event
+
+
   $calendar.fullCalendar options
   
+
+
+
+
+
+###
+
+          CLASS EVENTS
+
+###
   
 
 class Events
@@ -168,3 +196,141 @@ class Events
   @replace: (event)->
     $calendar.fullCalendar 'removeEvents' , event.id
     $calendar.fullCalendar 'renderEvent' , event
+
+
+
+
+###
+              ANGULAR CONTROLLERS
+###
+
+@popup_show_event = ($scope, $sce)-> 
+  
+  $scope.disabled = true
+  $scope.priority = 1
+  event_backup = null  
+
+  $popup_show = $ "#popup-show-event"
+
+  $scope.show = (event)->
+
+    $scope.title = event.title
+    $scope.description = $sce.trustAsHtml event.description
+    $scope.start = moment(event.start).format('MMMM Do YYYY, h:mm:ss a') if event.start?
+    $scope.end =   moment(event.end).format('MMMM Do YYYY, h:mm:ss a') if event.end?
+    $scope.priority = event.priority
+
+    $scope.disabled = not event.editable
+
+    event_backup = event
+
+    $scope.$apply()
+
+    $popup_show.modal 'show'
+
+  $scope.edit =->
+    scope = $('#popup-edit-event').scope()
+    $popup_show.modal 'hide'
+    scope.edit event_backup
+    return null
+    
+
+
+@popup_edit_event= ($scope)->
+
+
+  $scope.title = ""
+
+  $scope.priority = 1
+
+  $popup_edit = $ "#popup-edit-event"
+
+  event_backup = null
+
+
+  $scope.edit = (event)->
+
+    event_backup = event
+    $scope.title = event.title    
+    $scope.priority = event.priority
+
+
+    $popup_edit.modal 'show'
+
+    picker_date_start = $popup_edit.find("#date-start").pickadate().pickadate("picker") #.set 'select', unix_time_start
+    picker_time_start = $popup_edit.find("#time-start").pickatime().pickatime('picker') #.set 'select', unix_time_start
+    
+
+    picker_date_end = $popup_edit.find("#date-end").pickadate().pickadate('picker')
+    picker_time_end = $popup_edit.find("#time-end").pickatime().pickatime('picker')
+  
+
+    #if event.start? and event.end?
+
+    unix_time_start = new Date  event.start
+    unix_time_end = new Date  event.end if event.end?
+  
+    picker_date_start.set "max", unix_time_end if unix_time_end?
+    picker_date_start.set "select", unix_time_start
+  
+    picker_time_start.set "max", unix_time_end if unix_time_end?
+    picker_time_start.set "select", unix_time_start 
+  
+  
+    picker_date_end.set 'min', unix_time_start
+    picker_date_end.set 'select', unix_time_end
+  
+    picker_time_end.set 'min', unix_time_start
+    picker_time_end.set 'select', unix_time_end
+  
+  
+    CKEDITOR.instances.editor.setData  event.description
+
+  $scope.save = ->
+
+    event = event_backup
+
+    event.title = $scope.title
+    event.description = CKEDITOR.instances.editor.getData()
+
+
+    select_date_start = $('#date-start').pickadate().pickadate('picker').get('select')
+    select_time_start = $('#time-start').pickatime().pickatime('picker').get('select')
+
+    select_date_end = $('#date-end').pickadate().pickadate('picker').get('select')
+    select_time_end = $('#time-end').pickatime().pickatime('picker').get('select')
+          
+    date_start = new Date( select_date_start.pick )     
+    date_start.setHours( select_time_start.hour  ) 
+    date_start.setMinutes( select_time_start.mins )
+
+
+    date_end = new Date (select_date_end.pick)
+    date_end.setHours( select_time_end.hour )
+    date_end.setMinutes( select_time_end.mins )
+
+
+    event.start = date_start.toJSON()
+    event.end = date_end.toJSON()
+
+    console.log date_start.toJSON()
+    console.log date_end.toJSON()
+
+
+    event.priority = $scope.priority
+
+    Events.update event
+
+
+
+    return null
+    
+
+
+
+###
+           CK EDITOR
+###
+
+init_editor = ->
+  

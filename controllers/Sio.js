@@ -107,6 +107,7 @@
                   response.response = true;
                   new_event = set_event_editable(new_event, user);
                   socket.broadcast.emit('update_event', new_event);
+                  socket.emit('update_event', new_event);
                   return callback(null, response);
                 }
               });

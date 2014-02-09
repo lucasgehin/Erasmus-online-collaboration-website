@@ -154,7 +154,8 @@ class Sio
 
                 new_event = set_event_editable( new_event, user)
 
-                socket.broadcast.emit 'update_event', new_event 
+                socket.broadcast.emit 'update_event', new_event
+                socket.emit 'update_event', new_event 
 
                 callback null, response
           else

@@ -1,14 +1,21 @@
 doctype html
-html
+html(ng-app)
 	head
+		meta(name='viewport', content="width=device-width")
 		title Calendar- IpVIOPE
-
-		link(rel='stylesheet', href='/javascripts/fullcalendar/fullcalendar/fullcalendar.css')
-		link(rel='stylesheet', href='/stylesheets/calendar.css')
 
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap-theme.css')
+
+		link(rel='stylesheet', href='/javascripts/fullcalendar/fullcalendar/fullcalendar.css')
+
+		link(rel='stylesheet', href='/javascripts/pickadate/themes/default.css')
+		link(rel='stylesheet', href='/javascripts/pickadate/themes/default.date.css')
+		link(rel='stylesheet', href='/javascripts/pickadate/themes/default.time.css')
+
 		
+		
+		link(rel='stylesheet', href='/stylesheets/calendar.css')
 
 	body
 		.navbar.navbar-default(role='navigation')
@@ -66,9 +73,75 @@ html
 					.col-xs-12
 						#calendar
 
+
+		.modal.fade#popup-show-event(ng-controller="popup_show_event")
+			.modal-dialog
+				.modal-content
+					.modal-header
+						
+						button.close(data-dismiss="modal", aria-hidden="true", ng-click="close()")
+							&times;
+						h4.title {{title}}
+					.modal-body
+						span.date-start {{start}} &emsp; → &emsp;
+						span.date-end {{end}}
+						span.priority {{priority}}
+						.description(ng-bind-html="description")
+							
+					.modal-footer(ng-hide="disabled")
+						button.save(ng-click="edit()").btn.btn-success
+							| Modify
+
+
+		.modal.fade#popup-edit-event(ng-controller="popup_edit_event")
+			.modal-dialog
+				.modal-content
+					form
+						.modal-header						
+							button.close(data-dismiss="modal", aria-hidden="true", ng-click="close()")
+								&times;
+							input.title(value="{{title}}", placeholder="Title", required)
+						.modal-body
+
+							.options
+								.row-fluid
+									.col-xs-12
+										.input-group
+											span.input-group-addon From
+											input.form-control#date-start(placeholder="start", required)
+											span.input-group-addon At
+											input.form-control#time-start(placeholder='hour', required)
+								.row-fluid
+									.col-xs-12
+											.input-group
+												span.input-group-addon To
+												input.form-control#date-end(placeholder="end",  required)
+												span.input-group-addon At
+												input.form-control#time-end(placeholder='hour',  required)
+								.row-fluid
+									.col-xs-12
+											.input-group
+												span.input-group-addon Priority
+												select.form-control.Priority
+							.row-fluid
+								br
+								textarea#editor.ckeditor
+
+									
+					.modal-footer
+						input.save(type="submit", ng-click="save()" , value="Update").btn.btn-success
+						
+
+
+
 		img#ajaxloader(src="/images/ajax-loader.gif", alt='')
 
+
 		script(type='text/javascript', src='/javascripts/jquery-1.10.2.min.js')
+
+		
+		script(type='text/javascript', src='/javascripts/angular.js')
+		
 		script(type='text/javascript', src='/javascripts/fullcalendar-1.6.4/lib/jquery-ui.custom.min.js')
 
 		//-script(type='text/javascript', src='/javascripts/fullcalendar-1.6.4/lib/moment.min.js')
@@ -77,6 +150,18 @@ html
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
 
 		script(type='text/javascript', src='/socket.io/socket.io.js')
+
+		//-script(type='text/javascript', src='/javascripts/pickadate/legacy.js')
+		script(type='text/javascript', src='/javascripts/pickadate/picker.js')
+		script(type='text/javascript', src='/javascripts/pickadate/picker.date.js')
+		script(type='text/javascript', src='/javascripts/pickadate/picker.time.js')
+
+		script(type='text/javascript', src='/javascripts/ckeditor-standard/ckeditor.js')
+
+
+		script(type='text/javascript', src='/javascripts/moment.min.js')
+
+		
 
 		script(type='text/javascript', src='/javascripts/fullcalendar-1.6.4/main.js')
 		script(type='text/javascript', src='/javascripts/fullcalendar-1.6.4/controllers.js')

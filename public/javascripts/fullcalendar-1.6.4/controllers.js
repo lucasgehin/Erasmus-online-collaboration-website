@@ -1,12 +1,18 @@
 (function() {
-  var $calendar, Events, init_calendar, socket, start;
+  var $calendar, Events, init_calendar, init_editor, socket, start;
 
   $calendar = null;
 
   $(document).ready(function() {
     $calendar = $('#calendar');
-    return start();
+    start();
+    return init_editor();
   });
+
+
+  /*
+                Sockets
+   */
 
   socket = null;
 
@@ -43,16 +49,22 @@
     });
   };
 
+
+  /*
+            FULL CALENDAR
+   */
+
   init_calendar = function() {
     var height_calendar, options;
     $calendar = $('#calendar');
     height_calendar = $(window).height() - $('.navbar').height() * 1.6;
     options = {
       height: height_calendar,
+      firstDay: 1,
       defaultView: 'agendaWeek',
       ignoreTimezone: false,
       header: {
-        left: 'title',
+        left: '',
         center: '',
         right: 'today prev,next month,agendaWeek,agendaDay'
       },
@@ -82,10 +94,21 @@
             return revertFunc();
           }
         }
+      },
+      eventClick: function(event, jsEvent, view) {
+        var $scope_popup;
+        $scope_popup = $('#popup-show-event').scope();
+        return $scope_popup.show(event);
       }
     };
     return $calendar.fullCalendar(options);
   };
+
+
+  /*
+  
+            CLASS EVENTS
+   */
 
   Events = (function() {
     function Events() {}
@@ -158,5 +181,106 @@
     return Events;
 
   })();
+
+
+  /*
+                ANGULAR CONTROLLERS
+   */
+
+  this.popup_show_event = function($scope, $sce) {
+    var $popup_show, event_backup;
+    $scope.disabled = true;
+    $scope.priority = 1;
+    event_backup = null;
+    $popup_show = $("#popup-show-event");
+    $scope.show = function(event) {
+      $scope.title = event.title;
+      $scope.description = $sce.trustAsHtml(event.description);
+      if (event.start != null) {
+        $scope.start = moment(event.start).format('MMMM Do YYYY, h:mm:ss a');
+      }
+      if (event.end != null) {
+        $scope.end = moment(event.end).format('MMMM Do YYYY, h:mm:ss a');
+      }
+      $scope.priority = event.priority;
+      $scope.disabled = !event.editable;
+      event_backup = event;
+      $scope.$apply();
+      return $popup_show.modal('show');
+    };
+    return $scope.edit = function() {
+      var scope;
+      scope = $('#popup-edit-event').scope();
+      $popup_show.modal('hide');
+      scope.edit(event_backup);
+      return null;
+    };
+  };
+
+  this.popup_edit_event = function($scope) {
+    var $popup_edit, event_backup;
+    $scope.title = "";
+    $scope.priority = 1;
+    $popup_edit = $("#popup-edit-event");
+    event_backup = null;
+    $scope.edit = function(event) {
+      var picker_date_end, picker_date_start, picker_time_end, picker_time_start, unix_time_end, unix_time_start;
+      event_backup = event;
+      $scope.title = event.title;
+      $scope.priority = event.priority;
+      $popup_edit.modal('show');
+      picker_date_start = $popup_edit.find("#date-start").pickadate().pickadate("picker");
+      picker_time_start = $popup_edit.find("#time-start").pickatime().pickatime('picker');
+      picker_date_end = $popup_edit.find("#date-end").pickadate().pickadate('picker');
+      picker_time_end = $popup_edit.find("#time-end").pickatime().pickatime('picker');
+      unix_time_start = new Date(event.start);
+      if (event.end != null) {
+        unix_time_end = new Date(event.end);
+      }
+      if (unix_time_end != null) {
+        picker_date_start.set("max", unix_time_end);
+      }
+      picker_date_start.set("select", unix_time_start);
+      if (unix_time_end != null) {
+        picker_time_start.set("max", unix_time_end);
+      }
+      picker_time_start.set("select", unix_time_start);
+      picker_date_end.set('min', unix_time_start);
+      picker_date_end.set('select', unix_time_end);
+      picker_time_end.set('min', unix_time_start);
+      picker_time_end.set('select', unix_time_end);
+      return CKEDITOR.instances.editor.setData(event.description);
+    };
+    return $scope.save = function() {
+      var date_end, date_start, event, select_date_end, select_date_start, select_time_end, select_time_start;
+      event = event_backup;
+      event.title = $scope.title;
+      event.description = CKEDITOR.instances.editor.getData();
+      select_date_start = $('#date-start').pickadate().pickadate('picker').get('select');
+      select_time_start = $('#time-start').pickatime().pickatime('picker').get('select');
+      select_date_end = $('#date-end').pickadate().pickadate('picker').get('select');
+      select_time_end = $('#time-end').pickatime().pickatime('picker').get('select');
+      date_start = new Date(select_date_start.pick);
+      date_start.setHours(select_time_start.hour);
+      date_start.setMinutes(select_time_start.mins);
+      date_end = new Date(select_date_end.pick);
+      date_end.setHours(select_time_end.hour);
+      date_end.setMinutes(select_time_end.mins);
+      event.start = date_start.toJSON();
+      event.end = date_end.toJSON();
+      console.log(date_start.toJSON());
+      console.log(date_end.toJSON());
+      event.priority = $scope.priority;
+      Events.update(event);
+      return null;
+    };
+  };
+
+
+  /*
+             CK EDITOR
+   */
+
+  init_editor = function() {};
 
 }).call(this);

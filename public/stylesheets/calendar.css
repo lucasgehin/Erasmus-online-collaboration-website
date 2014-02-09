@@ -21,6 +21,36 @@ body {
   width: 128px;
   display: none;
 }
+#popup-edit-event .close,
+#popup-show-event .close {
+  color: #f00;
+}
+#popup-edit-event .options,
+#popup-show-event .options {
+  width: 100%;
+  text-align: center;
+}
+#popup-edit-event .title,
+#popup-show-event .title {
+  font-size: x-large;
+}
+#popup-edit-event .date-start,
+#popup-show-event .date-start,
+#popup-edit-event .date-end,
+#popup-show-event .date-end {
+  font-size: large;
+}
+.modal-dialog {
+  width: 75%;
+}
+.modal-body {
+  min-height: 350px;
+}
+@media (max-width: 730px) {
+  .modal-dialog {
+    width: 100%;
+  }
+}
 .fc-event-draggable {
   box-shadow: 0 0 0px #fff;
 }
