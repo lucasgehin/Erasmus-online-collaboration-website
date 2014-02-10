@@ -12,6 +12,7 @@ html(ng-app)
 		link(rel='stylesheet', href='/javascripts/pickadate/themes/default.css')
 		link(rel='stylesheet', href='/javascripts/pickadate/themes/default.date.css')
 		link(rel='stylesheet', href='/javascripts/pickadate/themes/default.time.css')
+		link(rel='stylesheet', href='/javascripts/colorpicker/css/colorpicker.css')
 
 		
 		
@@ -74,7 +75,7 @@ html(ng-app)
 						#calendar
 
 
-		.modal.fade#popup-show-event(ng-controller="popup_show_event")
+		.modal.fade#popup-show-event(ng-controller="popup_show_event", data-backdrop="static", data-keyboard="false")
 			.modal-dialog
 				.modal-content
 					.modal-header
@@ -93,7 +94,7 @@ html(ng-app)
 							| Modify
 
 
-		.modal.fade#popup-edit-event(ng-controller="popup_edit_event")
+		.modal.fade#popup-edit-event(ng-controller="popup_edit_event", data-backdrop="static", data-keyboard="false")
 			.modal-dialog
 				.modal-content
 					form
@@ -121,8 +122,12 @@ html(ng-app)
 								.row-fluid
 									.col-xs-12
 											.input-group
-												span.input-group-addon Priority
-												select.form-control.Priority
+												span.input-group-addon Color / Priority
+												select.form-control(ng-model="color" ng-options="c.id as c.name for (num, c) in color_map")
+
+												
+												span.input-group-addon Or pick one
+												input.form-control#color-picker
 							.row-fluid
 								br
 								textarea#editor.ckeditor
@@ -160,6 +165,7 @@ html(ng-app)
 		//-script(type='text/javascript', src='/javascripts/ckeditor-standard/dialog-patch.js')
 
 		script(type='text/javascript', src='/javascripts/moment.min.js')
+		script(type='text/javascript', src='/javascripts/colorpicker/js/colorpicker.js')
 
 		
 

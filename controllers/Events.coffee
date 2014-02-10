@@ -19,7 +19,9 @@ class Events
 
     query  =  db.Event.findAll {
       include:[
-        db.User,
+        {model: db.User , include:[
+          db.Status
+        ]},
         db.Status,
         db.Project
       ]
@@ -41,7 +43,15 @@ class Events
 
       id= parseInt id # On enlève les décimaux 
   
-      query  =  db.Event.find { where: {id: id}, include: [db.User,  db.Status, db.Project  ]   }
+      query  =  db.Event.find { 
+        where:
+          id: id
+        include:[
+          {model: db.User, include:[ db.Status ]}
+          db.Status
+          db.Project
+        ]
+      }
   
       query.success (event)->
         callback null, event
@@ -91,7 +101,8 @@ class Events
         }
 
         query.success (db_event)->
-          callback null, db_event
+          Events.find_by_id db_event.id, (err, event_with_all_data)->
+            callback null, event_with_all_data
 
         query.error (err)->
           if err?

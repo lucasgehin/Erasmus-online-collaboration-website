@@ -20,6 +20,10 @@
       description: {
         type: DataTypes.TEXT,
         allowNull: true
+      },
+      rank: {
+        type: DataTypes.INTEGER.UNSIGNED,
+        allowNull: false
       }
     }, {
       classMethods: {

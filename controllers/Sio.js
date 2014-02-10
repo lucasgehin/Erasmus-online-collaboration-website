@@ -1,5 +1,5 @@
 (function() {
-  var Events, News, Projects, SessionSockets, Sio, Socket_io, Users, set_event_editable;
+  var Events, News, Projects, SessionSockets, Sio, Socket_io, Users, event_is_editable, set_event_editable;
 
   SessionSockets = require('session.socket.io');
 
@@ -98,7 +98,8 @@
             response = {
               response: false
             };
-            if (event.StatuId === null || event.StatuId === user.StatuId) {
+            if (event_is_editable(event, user)) {
+              event.editable = null;
               return Events.update(event, function(err, new_event) {
                 if (err != null) {
                   return callback(err, null);
@@ -125,13 +126,21 @@
 
   })();
 
+  event_is_editable = function(event, user) {
+    var rank_user_event, rank_user_session, _ref;
+    rank_user_event = event.user.statu.rank;
+    rank_user_session = (_ref = user.statu) != null ? _ref.rank : void 0;
+    return rank_user_event <= rank_user_session;
+  };
+
   set_event_editable = function(event, user) {
-    var id_status_user_event, id_status_user_session, _ref;
-    id_status_user_event = event.user.StatuId.toString();
-    id_status_user_session = (_ref = user.statu) != null ? _ref.id.toString() : void 0;
-    event.setDataValue('editable', false);
-    if (id_status_user_event === id_status_user_session) {
-      event.setDataValue('editable', true);
+    var rank_user_event, rank_user_session, _ref;
+    console.log(event);
+    rank_user_event = event.user.statu.rank;
+    rank_user_session = (_ref = user.statu) != null ? _ref.rank : void 0;
+    event.setDataValue('is_editable', false);
+    if (rank_user_event <= rank_user_session) {
+      event.setDataValue('is_editable', true);
     }
     return event;
   };

@@ -140,7 +140,9 @@ class Sio
           response=
             response: false
     
-          if event.StatuId is null or event.StatuId is user.StatuId  # On a le droit de modifier
+          if event_is_editable event, user  # On a le droit de modifier
+
+            event.editable = null
 
             Events.update event, (err, new_event)->
               if err?
@@ -170,15 +172,24 @@ class Sio
 # Tools
 
 
-set_event_editable = (event, user)->
-
-  id_status_user_event = event.user.StatuId.toString()
-  id_status_user_session = user.statu?.id.toString()
+event_is_editable = (event, user) ->
   
-  event.setDataValue 'editable', false
+  
+  rank_user_event = event.user.statu.rank
+  rank_user_session = user.statu?.rank
 
-  if id_status_user_event is id_status_user_session
-    event.setDataValue 'editable', true 
+  return rank_user_event <= rank_user_session
+
+set_event_editable = (event, user) ->
+
+  console.log event
+  rank_user_event = event.user.statu.rank
+  rank_user_session = user.statu?.rank
+  
+  event.setDataValue 'is_editable', no
+
+  
+  event.setDataValue 'is_editable', yes if rank_user_event <= rank_user_session
 
   return event  
 

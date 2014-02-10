@@ -41,7 +41,7 @@ body {
   font-size: large;
 }
 .modal-dialog {
-  width: 75%;
+  width: 95%;
 }
 .modal-body {
   min-height: 350px;
@@ -51,13 +51,44 @@ body {
     width: 100%;
   }
 }
-.fc-event-draggable {
+.fc-event {
   box-shadow: 0 0 0px #fff;
 }
-.fc-event-draggable:hover {
+.fc-event-draggable {
+  animation: shake-edit 0.3s infinite alternate;
+  -webkit-animation: shake-edit 0.3s infinite alternate;
+}
+.fc-event:hover {
   box-shadow: 0 0 10px #000;
   animation: event-over 0.2s;
+  -webkit-animation: event-over 0.2s;
 }
+@-webkit-keyframes event-over {
+  0% {
+    box-shadow: 0 0 0px #fff;
+  }
+
+  100% {
+    box-shadow: 0 0 10px #000;
+  }
+}
+@keyframes shake-edit{
+
+		0%		{transform: rotate(0deg)}
+		25%		{transform: rotate(-1deg)}
+		50%		{transform: rotate(0deg)}
+		75%		{transform: rotate(1deg)}
+		100%	{transform: rotate(0deg)}
+	}
+
+	@-webkit-keyframes shake-edit{
+
+		0%		{ -webkit-transform: rotate(0deg)}
+		25%		{ -webkit-transform: rotate(-1deg)}
+		50%		{ -webkit-transform: rotate(0deg)}
+		75%		{ -webkit-transform: rotate(1deg)}
+		100%	{ -webkit-transform: rotate(0deg)}
+	}
 @-moz-keyframes event-over {
   0% {
     box-shadow: 0 0 0px #fff;

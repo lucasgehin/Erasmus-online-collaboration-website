@@ -1,12 +1,38 @@
 (function() {
-  var $calendar, Events, calendar_started, events_fetched, init_calendar, init_editor, load_all_events, socket, start;
+  var $calendar, Events, calendar_started, events_fetched, init_calendar, is_editing, load_all_events, socket, start;
 
   $calendar = null;
 
   $(document).ready(function() {
+    var $cp, apply_color;
     $calendar = $('#calendar');
     start();
-    return init_editor();
+    $cp = $('#color-picker');
+    $cp.ColorPicker({
+      onSubmit: function(hsb, hex, rgb, el) {
+        return apply_color(hsb, hex, rgb, el);
+      },
+      onChange: function(hsb, hex, rgb) {
+        return apply_color(hsb, hex, rgb, $cp);
+      },
+      onShow: function(colpkr) {
+        $(colpkr).fadeIn(500);
+        return false;
+      },
+      onHide: function(colpkr) {
+        $(colpkr).fadeOut(500);
+        return false;
+      },
+      onBeforeShow: function() {
+        return apply_color(null, '6BA5C2', null, $cp);
+      }
+    }).bind('keyup', function() {
+      return $(this).ColorPickerSetColor(this.value);
+    });
+    return apply_color = function(hsb, hex, rgb, el) {
+      $(el).val(hex + " | Your text will look like this.");
+      return $(el).css('background-color', "#" + hex);
+    };
   });
 
 
@@ -38,6 +64,9 @@
     });
     return socket.on('update_event', function(event) {
       load_start();
+      if (is_editing && event.is_editable) {
+        event.editable = true;
+      }
       Events.replace(event);
       return load_end();
     });
@@ -65,7 +94,7 @@
   };
 
   init_calendar = function() {
-    var height_calendar, options;
+    var button_edit_calendar, height_calendar, options;
     calendar_started = true;
     $calendar = $('#calendar');
     height_calendar = $(window).height() - $('.navbar').height() * 1.6;
@@ -78,6 +107,16 @@
         left: '',
         center: '',
         right: 'today prev,next month,agendaWeek,agendaDay'
+      },
+      buttonText: {
+        prev: '←',
+        next: '→',
+        prevYear: '«',
+        nextYear: '»',
+        today: 'today',
+        month: 'month',
+        week: 'week',
+        day: 'day'
       },
       dragRevertDuration: 2000,
       eventRevertDuration: 3000,
@@ -116,7 +155,12 @@
         return load_all_events();
       }
     };
-    return $calendar.fullCalendar(options);
+    $calendar.fullCalendar(options);
+    button_edit_calendar = "<button id='edit-calendar' class='btn btn-success' >\n  <span class=\"glyphicon glyphicon-edit\">&emsp;Edit</span>\n</button>";
+    $('.fc-header-left').html(button_edit_calendar);
+    return $('#edit-calendar').on('click', function() {
+      return toggle_edit();
+    });
   };
 
 
@@ -224,13 +268,19 @@
       $scope.disabled = !event.editable;
       event_backup = event;
       $scope.$apply();
-      return $popup_show.modal('show');
+      $popup_show.modal('show');
+      return toggle_edit();
     };
-    return $scope.edit = function() {
+    $scope.edit = function() {
       var scope;
       scope = $('#popup-edit-event').scope();
-      $popup_show.modal('hide');
+      $scope.close();
       scope.edit(event_backup);
+      return null;
+    };
+    return $scope.close = function() {
+      toggle_edit();
+      $popup_show.modal('hide');
       return null;
     };
   };
@@ -241,12 +291,33 @@
     $scope.priority = 1;
     $popup_edit = $("#popup-edit-event");
     event_backup = null;
+    $scope.color_map = [
+      {
+        name: "Insignificant - Gray",
+        color: '#676767',
+        id: 0
+      }, {
+        name: "Normal - Blue",
+        color: '#6BA5C2',
+        id: 1
+      }, {
+        name: "Important - Orange",
+        color: '#FFA12F',
+        id: 2
+      }, {
+        name: "Mandatory - Red",
+        color: '#FF2B2B',
+        id: 3
+      }
+    ];
+    $scope.color = 1;
     $scope.edit = function(event) {
       var picker_date_end, picker_date_start, picker_time_end, picker_time_start, unix_time_end, unix_time_start;
       event_backup = event;
       $scope.title = event.title;
       $scope.priority = event.priority;
       $popup_edit.modal('show');
+      toggle_edit();
       picker_date_start = $popup_edit.find("#date-start").pickadate().pickadate("picker");
       picker_time_start = $popup_edit.find("#time-start").pickatime().pickatime('picker');
       picker_date_end = $popup_edit.find("#date-end").pickadate().pickadate('picker');
@@ -269,8 +340,9 @@
       picker_time_end.set('select', unix_time_end);
       return CKEDITOR.instances.editor.setData(event.description);
     };
-    return $scope.save = function() {
+    $scope.save = function() {
       var date_end, date_start, event, select_date_end, select_date_start, select_time_end, select_time_start;
+      alert($scope.color);
       event = event_backup;
       event.title = $scope.title;
       event.description = CKEDITOR.instances.editor.getData();
@@ -292,18 +364,49 @@
       Events.update(event, function(event) {
         var scope;
         scope = $('#popup-show-event').scope();
-        $popup_edit.modal('hide');
-        return scope.show(event);
+        scope.show(event);
+        return $scope.close();
       });
+      return null;
+    };
+    return $scope.close = function() {
+      $popup_edit.modal('hide');
+      toggle_edit();
       return null;
     };
   };
 
+  is_editing = false;
 
-  /*
-             CK EDITOR
-   */
-
-  init_editor = function() {};
+  this.toggle_edit = function(skip) {
+    var $btn, event, list, _i, _len, _results;
+    is_editing = !is_editing;
+    $btn = $('#edit-calendar span');
+    if (is_editing) {
+      $btn.html('&nbsp;&nbsp;Stop Editing');
+      $btn.toggleClass('glyphicon-edit');
+      $btn.toggleClass('glyphicon-check');
+    } else {
+      $btn.html('&nbsp;&nbsp;Edit');
+      $btn.toggleClass('glyphicon-edit');
+      $btn.toggleClass('glyphicon-check');
+    }
+    list = $calendar.fullCalendar('clientEvents');
+    _results = [];
+    for (_i = 0, _len = list.length; _i < _len; _i++) {
+      event = list[_i];
+      if (is_editing) {
+        if (event.is_editable === true) {
+          event.editable = true;
+        }
+      } else {
+        if (event.is_editable === true) {
+          event.editable = false;
+        }
+      }
+      _results.push(Events.replace(event));
+    }
+    return _results;
+  };
 
 }).call(this);

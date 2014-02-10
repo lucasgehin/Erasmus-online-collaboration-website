@@ -34,7 +34,12 @@
       var err, query;
       if (typeof id === "number") {
         id = parseInt(id);
-        query = db.User.find(id);
+        query = db.User.find({
+          where: {
+            id: id
+          },
+          include: [db.Country, db.Status, db.Project]
+        });
         query.success(function(user) {
           return callback(null, user);
         });

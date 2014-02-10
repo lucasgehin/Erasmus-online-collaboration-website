@@ -17,7 +17,12 @@
     Events.find_all = function(callback) {
       var query;
       query = db.Event.findAll({
-        include: [db.User, db.Status, db.Project]
+        include: [
+          {
+            model: db.User,
+            include: [db.Status]
+          }, db.Status, db.Project
+        ]
       });
       query.success(function(Events) {
         return callback(null, Events);
@@ -36,7 +41,12 @@
           where: {
             id: id
           },
-          include: [db.User, db.Status, db.Project]
+          include: [
+            {
+              model: db.User,
+              include: [db.Status]
+            }, db.Status, db.Project
+          ]
         });
         query.success(function(event) {
           return callback(null, event);
@@ -91,7 +101,9 @@
             ProjectId: event.ProjectId
           });
           query.success(function(db_event) {
-            return callback(null, db_event);
+            return Events.find_by_id(db_event.id, function(err, event_with_all_data) {
+              return callback(null, event_with_all_data);
+            });
           });
           return query.error(function(err) {
             if (err != null) {

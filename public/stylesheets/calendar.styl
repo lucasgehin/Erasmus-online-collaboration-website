@@ -39,7 +39,7 @@ body
 	.date-start, .date-end
 		font-size large
 .modal-dialog
-	width 75%
+	width 95%
 .modal-body
 	min-height 350px
 
@@ -47,19 +47,73 @@ body
 	.modal-dialog
 		width 100%
 
-	
 
 
+
+.fc-event
+	box-shadow 0 0 0px white
 
 .fc-event-draggable
-	box-shadow: 0 0 0px white
+	animation: shake-edit 0.3s infinite alternate	
+	-webkit-animation: shake-edit 0.3s infinite alternate
 
-.fc-event-draggable:hover
+.fc-event:hover
 	box-shadow: 0 0 10px black
 	animation: event-over 0.2s
+	-webkit-animation: event-over 0.2s
+
 
 @keyframes event-over
 	from
 		box-shadow: 0 0 0px white	
 	to
 		box-shadow: 0 0 10px black
+
+@-webkit-keyframes event-over
+	from
+		box-shadow: 0 0 0px white	
+	to
+		box-shadow: 0 0 10px black
+
+
+
+
+@css{
+	@keyframes shake-edit{
+
+		0%		{transform: rotate(0deg)}
+		25%		{transform: rotate(-1deg)}
+		50%		{transform: rotate(0deg)}
+		75%		{transform: rotate(1deg)}
+		100%	{transform: rotate(0deg)}
+	}
+
+	@-webkit-keyframes shake-edit{
+
+		0%		{ -webkit-transform: rotate(0deg)}
+		25%		{ -webkit-transform: rotate(-1deg)}
+		50%		{ -webkit-transform: rotate(0deg)}
+		75%		{ -webkit-transform: rotate(1deg)}
+		100%	{ -webkit-transform: rotate(0deg)}
+	}
+	
+}
+
+
+// @-moz-keyframes shake-edit
+// {
+// 0%   {-moz-transform: rotate(0deg)}
+// 25%  {-moz-transform: rotate(-10deg)}
+// 50%  {-moz-transform: rotate(0deg)}
+// 75%  {-moz-transform: rotate(10deg)}
+// 100% {-moz-transform: rotate(0deg)}
+// }
+
+// @-o-keyframes shake-edit
+// {
+// 0%   {transform: rotate(0deg)}
+// 25%  {transform: rotate(-10deg)}
+// 50%  {transform: rotate(0deg)}
+// 75%  {transform: rotate(10deg)}
+// 100% {transform: rotate(0deg)}
+// }

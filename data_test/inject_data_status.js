@@ -6,13 +6,16 @@
   data = [
     {
       name: 'Student',
-      description: "A Student post can be viewed by everybody"
+      description: "A Student post can be viewed by everybody",
+      rank: 1
     }, {
       name: 'Teacher',
-      description: "A Teacher post can be viewed by Admins, Teachers, and optionaly by Students"
+      description: "A Teacher post can be viewed by Admins, Teachers, and optionaly by Students",
+      rank: 2
     }, {
       name: 'Admin',
-      description: "An Admin post can be viewed by Admins and optionaly by Teachers and/or Students"
+      description: "An Admin post can be viewed by Admins and optionaly by Teachers and/or Students",
+      rank: 3
     }
   ];
 

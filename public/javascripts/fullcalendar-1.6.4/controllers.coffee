@@ -4,10 +4,37 @@ $calendar = null
 $(document).ready ->
   $calendar = $ '#calendar'
   start()
-  init_editor()
 
+  $cp = $ '#color-picker'
 
-#Collections
+  $cp.ColorPicker({
+    onSubmit: (hsb, hex, rgb, el)->
+      apply_color hsb, hex, rgb, el
+    onChange: (hsb, hex, rgb)->
+      apply_color hsb, hex, rgb, $cp
+
+    onShow: (colpkr)->
+      $(colpkr).fadeIn 500
+      return false
+    
+    onHide: (colpkr)->
+      $(colpkr).fadeOut 500
+      return false
+          
+    onBeforeShow:->
+      apply_color null, '6BA5C2', null, $cp
+    
+  })
+  .bind 'keyup', ->
+    $(this).ColorPickerSetColor(this.value)
+  
+  apply_color= (hsb, hex, rgb, el)->
+    $(el).val hex + " | Your text will look like this."
+    $(el).css 'background-color', "##{hex}"
+    
+    
+
+# Parameters
 
 
 
@@ -46,11 +73,9 @@ start= ->
 
   socket.on 'update_event', (event)->
     load_start()
+    event.editable = yes if is_editing and event.is_editable
     Events.replace event
     load_end()
-
-
-
 
 
 ###
@@ -66,9 +91,7 @@ load_all_events = ->
     for event in events
       $calendar.fullCalendar 'renderEvent', event
 
-    events_fetched = yes
-
-    
+    events_fetched = yes   
 
     load_end()
 
@@ -97,6 +120,15 @@ init_calendar = ->
       left:''
       center:''
       right:'today prev,next month,agendaWeek,agendaDay'
+    buttonText:
+      prev:     '←'
+      next:     '→'
+      prevYear: '«' 
+      nextYear: '»'  
+      today:    'today'
+      month:    'month'
+      week:     'week'
+      day:      'day'
 
     
     dragRevertDuration: 2000
@@ -128,6 +160,7 @@ init_calendar = ->
     eventClick: (event, jsEvent, view)->              
       $scope_popup = $('#popup-show-event').scope()
       $scope_popup.show event
+      
 
     viewRender: (view, element)->
       
@@ -137,12 +170,20 @@ init_calendar = ->
        
 
   $calendar.fullCalendar options
+
+  button_edit_calendar = """
+    <button id='edit-calendar' class='btn btn-success' >
+      <span class="glyphicon glyphicon-edit">&emsp;Edit</span>
+    </button>
+  """
+
+  $('.fc-header-left').html button_edit_calendar
+
+
+  $('#edit-calendar').on 'click', ->    
+    toggle_edit()
+
   
-
-
-
-
-
 ###
 
           CLASS EVENTS
@@ -252,11 +293,24 @@ class Events
 
     $popup_show.modal 'show'
 
+    toggle_edit()
+    
+    
+    
+      
+
   $scope.edit =->
     scope = $('#popup-edit-event').scope()
-    $popup_show.modal 'hide'
+    $scope.close()
     scope.edit event_backup
     return null
+
+  $scope.close = ->
+    toggle_edit()
+    $popup_show.modal 'hide'
+    return null
+
+  
     
 
 
@@ -272,6 +326,35 @@ class Events
   event_backup = null
 
 
+  $scope.color_map=[
+    { # notice → gray
+      name: "Insignificant - Gray"
+      color: '#676767'
+      id: 0
+    }
+    { # Classic → blue
+      name: "Normal - Blue"
+      color: '#6BA5C2'
+      id: 1
+    }
+    {
+      # Important → orange
+      name: "Important - Orange"
+      color: '#FFA12F'
+      id: 2
+    }
+    {
+      # Obligatory → red
+      name: "Mandatory - Red"
+      color: '#FF2B2B'
+      id: 3
+    }
+  ]
+  
+    
+  $scope.color = 1
+
+
   $scope.edit = (event)->
 
     event_backup = event
@@ -280,6 +363,8 @@ class Events
 
 
     $popup_edit.modal 'show'
+
+    toggle_edit()
 
     picker_date_start = $popup_edit.find("#date-start").pickadate().pickadate("picker") #.set 'select', unix_time_start
     picker_time_start = $popup_edit.find("#time-start").pickatime().pickatime('picker') #.set 'select', unix_time_start
@@ -311,6 +396,8 @@ class Events
     CKEDITOR.instances.editor.setData  event.description
 
   $scope.save = ->
+
+    alert $scope.color
 
     event = event_backup
 
@@ -346,19 +433,58 @@ class Events
     Events.update event, (event)->
 
       scope = $('#popup-show-event').scope()
-      $popup_edit.modal 'hide'
       scope.show event
-
-
+      $scope.close()
 
     return null
     
+  $scope.close =->
+    $popup_edit.modal 'hide'
+    toggle_edit()
+    return null
+
+
+#   COLORPICKER
 
 
 
-###
-           CK EDITOR
-###
 
-init_editor = ->
+
+
+
+# ANIMATION EDITION
+
+
   
+
+is_editing = no
+
+
+@toggle_edit = (skip) ->
+
+  
+  
+  is_editing = not is_editing
+
+  $btn = $('#edit-calendar span')
+    
+  if is_editing
+
+    $btn.html '&nbsp;&nbsp;Stop Editing'
+    $btn.toggleClass 'glyphicon-edit'
+    $btn.toggleClass 'glyphicon-check'
+    
+  else
+    $btn.html '&nbsp;&nbsp;Edit'
+    $btn.toggleClass 'glyphicon-edit'
+    $btn.toggleClass 'glyphicon-check'
+
+  list = $calendar.fullCalendar 'clientEvents'
+
+  for event in list
+    if is_editing
+      event.editable = yes if event.is_editable is yes
+    else
+      event.editable = no if event.is_editable is yes
+    
+    Events.replace event

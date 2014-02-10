@@ -27,8 +27,7 @@ module.exports = (sequelize, DataTypes)->
 
     rank:
       type: DataTypes.INTEGER.UNSIGNED
-      allowNull: false
-      
+      allowNull: false    
 
 
   },

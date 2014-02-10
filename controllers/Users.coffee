@@ -36,7 +36,7 @@ class Users
 
       id= parseInt id # On enlève les décimaux 
   
-      query  =  db.User.find(id)
+      query  =  db.User.find {where:{id: id}, include:[db.Country, db.Status, db.Project]}
   
       query.success (user)->
         callback null, user
