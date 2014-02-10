@@ -19,6 +19,8 @@ $(document).ready ->
               Sockets
 ###
 
+calendar_started = no
+events_fetched = no
 
 socket = null
 
@@ -30,16 +32,10 @@ start= ->
     console.log "IO: Connected!"
     load_end()
 
-    init_calendar()
-  
-    load_start()
-    Events.find_all (err, events)->
-      load_end() if err?
-  
-      for event in events
-        $calendar.fullCalendar 'renderEvent', event
+    init_calendar() if not calendar_started
 
-      load_end()
+    #load_all_events()
+
   
   socket.on "message", (data)->
     console.log data    
@@ -55,13 +51,32 @@ start= ->
 
 
 
+
+
 ###
           FULL CALENDAR
 ###
 
+load_all_events = ->
+
+  load_start()
+  Events.find_all (err, events)->
+    load_end() if err?
+
+    for event in events
+      $calendar.fullCalendar 'renderEvent', event
+
+    events_fetched = yes
+
+    
+
+    load_end()
+
+
 
 init_calendar = ->
 
+  calendar_started = yes
   # On ajuste la taille du calendrier
 
   $calendar = $ '#calendar'
@@ -76,6 +91,7 @@ init_calendar = ->
     height: height_calendar
     firstDay: 1
     defaultView:'agendaWeek'
+
     ignoreTimezone: false
     header:
       left:''
@@ -113,6 +129,12 @@ init_calendar = ->
       $scope_popup = $('#popup-show-event').scope()
       $scope_popup.show event
 
+    viewRender: (view, element)->
+      
+      $calendar.fullCalendar 'removeEvents'
+      load_all_events()
+
+       
 
   $calendar.fullCalendar options
   
@@ -178,7 +200,7 @@ class Events
         console.log "Events@find_by_title: #{err}"
         callback err, null
   
-  @update: (event)->
+  @update: (event, callback)->
 
     load_start()
 
@@ -192,6 +214,8 @@ class Events
           alert("This event has not been saved. Maybe you dont have rights on it ?")
       
       load_end()
+
+      callback(event) if callback? and response.response is yes
 
   @replace: (event)->
     $calendar.fullCalendar 'removeEvents' , event.id
@@ -319,7 +343,11 @@ class Events
 
     event.priority = $scope.priority
 
-    Events.update event
+    Events.update event, (event)->
+
+      scope = $('#popup-show-event').scope()
+      $popup_edit.modal 'hide'
+      scope.show event
 
 
 

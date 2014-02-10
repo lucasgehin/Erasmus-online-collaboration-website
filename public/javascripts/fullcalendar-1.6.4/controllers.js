@@ -1,5 +1,5 @@
 (function() {
-  var $calendar, Events, init_calendar, init_editor, socket, start;
+  var $calendar, Events, calendar_started, events_fetched, init_calendar, init_editor, load_all_events, socket, start;
 
   $calendar = null;
 
@@ -14,6 +14,10 @@
                 Sockets
    */
 
+  calendar_started = false;
+
+  events_fetched = false;
+
   socket = null;
 
   start = function() {
@@ -21,19 +25,9 @@
     socket.on('connect', function() {
       console.log("IO: Connected!");
       load_end();
-      init_calendar();
-      load_start();
-      return Events.find_all(function(err, events) {
-        var event, _i, _len;
-        if (err != null) {
-          load_end();
-        }
-        for (_i = 0, _len = events.length; _i < _len; _i++) {
-          event = events[_i];
-          $calendar.fullCalendar('renderEvent', event);
-        }
-        return load_end();
-      });
+      if (!calendar_started) {
+        return init_calendar();
+      }
     });
     socket.on("message", function(data) {
       return console.log(data);
@@ -54,8 +48,25 @@
             FULL CALENDAR
    */
 
+  load_all_events = function() {
+    load_start();
+    return Events.find_all(function(err, events) {
+      var event, _i, _len;
+      if (err != null) {
+        load_end();
+      }
+      for (_i = 0, _len = events.length; _i < _len; _i++) {
+        event = events[_i];
+        $calendar.fullCalendar('renderEvent', event);
+      }
+      events_fetched = true;
+      return load_end();
+    });
+  };
+
   init_calendar = function() {
     var height_calendar, options;
+    calendar_started = true;
     $calendar = $('#calendar');
     height_calendar = $(window).height() - $('.navbar').height() * 1.6;
     options = {
@@ -99,6 +110,10 @@
         var $scope_popup;
         $scope_popup = $('#popup-show-event').scope();
         return $scope_popup.show(event);
+      },
+      viewRender: function(view, element) {
+        $calendar.fullCalendar('removeEvents');
+        return load_all_events();
       }
     };
     return $calendar.fullCalendar(options);
@@ -159,7 +174,7 @@
       }
     };
 
-    Events.update = function(event) {
+    Events.update = function(event, callback) {
       load_start();
       return socket.emit('update_event', event, function(err, response) {
         if (err != null) {
@@ -169,7 +184,10 @@
             alert("This event has not been saved. Maybe you dont have rights on it ?");
           }
         }
-        return load_end();
+        load_end();
+        if ((callback != null) && response.response === true) {
+          return callback(event);
+        }
       });
     };
 
@@ -271,7 +289,12 @@
       console.log(date_start.toJSON());
       console.log(date_end.toJSON());
       event.priority = $scope.priority;
-      Events.update(event);
+      Events.update(event, function(event) {
+        var scope;
+        scope = $('#popup-show-event').scope();
+        $popup_edit.modal('hide');
+        return scope.show(event);
+      });
       return null;
     };
   };

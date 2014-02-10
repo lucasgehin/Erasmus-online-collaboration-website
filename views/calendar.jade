@@ -100,7 +100,7 @@ html(ng-app)
 						.modal-header						
 							button.close(data-dismiss="modal", aria-hidden="true", ng-click="close()")
 								&times;
-							input.title(value="{{title}}", placeholder="Title", required)
+							input.title(ng-model="title", placeholder="Title", required)
 						.modal-body
 
 							.options
@@ -138,8 +138,7 @@ html(ng-app)
 
 
 		script(type='text/javascript', src='/javascripts/jquery-1.10.2.min.js')
-
-		
+			
 		script(type='text/javascript', src='/javascripts/angular.js')
 		
 		script(type='text/javascript', src='/javascripts/fullcalendar-1.6.4/lib/jquery-ui.custom.min.js')
@@ -156,8 +155,9 @@ html(ng-app)
 		script(type='text/javascript', src='/javascripts/pickadate/picker.date.js')
 		script(type='text/javascript', src='/javascripts/pickadate/picker.time.js')
 
+		
 		script(type='text/javascript', src='/javascripts/ckeditor-standard/ckeditor.js')
-
+		//-script(type='text/javascript', src='/javascripts/ckeditor-standard/dialog-patch.js')
 
 		script(type='text/javascript', src='/javascripts/moment.min.js')
 
