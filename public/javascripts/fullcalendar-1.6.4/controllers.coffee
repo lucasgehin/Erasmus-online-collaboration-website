@@ -21,25 +21,30 @@ $(document).ready ->
       $(colpkr).fadeOut 500
       return false
           
-    onBeforeShow:->
-      apply_color null, '6BA5C2', null, $cp
+    
     
   })
   .bind 'keyup', ->
     $(this).ColorPickerSetColor(this.value)
   
   apply_color= (hsb, hex, rgb, el)->
-    $(el).val hex + " | Your text will look like this."
+    hex = "" if not hex?
+    color = hex.split '#'
+
+
+    scope = $cp.scope()
+    scope.color_picker = ""
+    scope.color_picker = '#' + color[ color.length-1 ] + " | Your text will look like this."
+    
     $(el).css 'background-color', "##{hex}"
+    $(el).val scope.color_picker
+
+    scope.watch_predefined()
+
     
     
 
 # Parameters
-
-
-
-
-
 
 
 ###
@@ -291,12 +296,13 @@ class Events
 
     $scope.$apply()
 
+    $('#color-row').css {
+      'background-color': event.color
+      'box-shadow': "0 0 5px #{event.color}"
+    }
     $popup_show.modal 'show'
 
     toggle_edit()
-    
-    
-    
       
 
   $scope.edit =->
@@ -319,7 +325,7 @@ class Events
 
   $scope.title = ""
 
-  $scope.priority = 1
+  
 
   $popup_edit = $ "#popup-edit-event"
 
@@ -327,44 +333,119 @@ class Events
 
 
   $scope.color_map=[
+    { # undefined → custom
+      name: "Custom  →"
+      color: null
+      id: 0
+    }
     { # notice → gray
       name: "Insignificant - Gray"
-      color: '#676767'
-      id: 0
+      color: '#8c8c8c'
+      id: 1
     }
     { # Classic → blue
       name: "Normal - Blue"
-      color: '#6BA5C2'
-      id: 1
+      color: '#6ba5c2'
+      id: 2
     }
     {
       # Important → orange
       name: "Important - Orange"
-      color: '#FFA12F'
-      id: 2
+      color: '#ffa12f'
+      id: 3
     }
     {
       # Obligatory → red
       name: "Mandatory - Red"
-      color: '#FF2B2B'
-      id: 3
+      color: '#ff5252'
+      id: 4
     }
   ]
   
     
-  $scope.color = 1
+  $scope.color = 0
 
+  $scope.color_picker = ""
+
+
+
+  $scope.color_picker_style=
+    'background-color': $scope.color_picker
+
+  get_color_picker_value = ->
+    return $scope.color_picker.split(' |')[0]
+
+
+  $scope.reset_picker = ->
+    $scope.color_picker = event_backup.color
+    $scope.color_picker_style['background-color'] = event_backup.color
+    
+
+  $scope.apply_predefined = ->
+
+    color = get_color_picker_value()
+    
+    if $scope.color > 0
+      color = $scope.color_map[$scope.color].color
+      
+        
+    $scope.color_picker = color
+    $scope.color_picker_style['background-color'] = color
+
+  $scope.watch_predefined = ->
+
+    color_picker_value = get_color_picker_value()
+
+    found = no
+    i = 0
+    for color in $scope.color_map
+
+      if color.color
+        console.log "#{color_picker_value}|#{color.color}"
+        if color_picker_value is color.color
+          $scope.color = i
+          found = yes
+      i++
+      
+
+
+    $scope.color = 0 if not found
+
+    if $scope.$root.$$phase isnt '$apply' and $scope.$root.$$phase isnt '$digest'
+      $scope.$apply()
+    
+    
 
   $scope.edit = (event)->
 
+    # On sauvegarde l'event
     event_backup = event
-    $scope.title = event.title    
-    $scope.priority = event.priority
 
+
+    $scope.title = event.title # on initialise le titre
+
+
+    # Ajout de la couleur dans le picker et initialisation
+    
+    $scope.reset_picker()
+
+
+    # On détermine si la couleur est une couleur prédéfinie et on la met dans le <select> si c'est le cas
+    
+    $scope.watch_predefined()
+
+    
+
+
+    # on affiche
 
     $popup_edit.modal 'show'
 
+    # on désactive les effets qui pourrai déranger durant la lecture
+
     toggle_edit()
+
+    # On initialise les datepicker
 
     picker_date_start = $popup_edit.find("#date-start").pickadate().pickadate("picker") #.set 'select', unix_time_start
     picker_time_start = $popup_edit.find("#time-start").pickatime().pickatime('picker') #.set 'select', unix_time_start
@@ -374,7 +455,7 @@ class Events
     picker_time_end = $popup_edit.find("#time-end").pickatime().pickatime('picker')
   
 
-    #if event.start? and event.end?
+    #On empeche la saisie de date foireuses
 
     unix_time_start = new Date  event.start
     unix_time_end = new Date  event.end if event.end?
@@ -393,17 +474,21 @@ class Events
     picker_time_end.set 'select', unix_time_end
   
   
+    # Enfin on lance CK EDITOR
+
     CKEDITOR.instances.editor.setData  event.description
 
   $scope.save = ->
 
-    alert $scope.color
+    # On récupère l'objet initial dans lequel on va écraser les données
 
     event = event_backup
 
     event.title = $scope.title
     event.description = CKEDITOR.instances.editor.getData()
 
+
+    # On créée un nouvelle date a partir des pickers
 
     select_date_start = $('#date-start').pickadate().pickadate('picker').get('select')
     select_time_start = $('#time-start').pickatime().pickatime('picker').get('select')
@@ -424,11 +509,15 @@ class Events
     event.start = date_start.toJSON()
     event.end = date_end.toJSON()
 
-    console.log date_start.toJSON()
-    console.log date_end.toJSON()
+    
+    # On met la couleur
 
 
-    event.priority = $scope.priority
+    event.color = get_color_picker_value()
+    console.log $scope.color_picker
+
+
+    # On met a jour
 
     Events.update event, (event)->
 

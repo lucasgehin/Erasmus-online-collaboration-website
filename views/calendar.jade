@@ -78,11 +78,11 @@ html(ng-app)
 		.modal.fade#popup-show-event(ng-controller="popup_show_event", data-backdrop="static", data-keyboard="false")
 			.modal-dialog
 				.modal-content
-					.modal-header
-						
+					.modal-header						
 						button.close(data-dismiss="modal", aria-hidden="true", ng-click="close()")
 							&times;
 						h4.title {{title}}
+					#color-row
 					.modal-body
 						span.date-start {{start}} &emsp; → &emsp;
 						span.date-end {{end}}
@@ -123,11 +123,11 @@ html(ng-app)
 									.col-xs-12
 											.input-group
 												span.input-group-addon Color / Priority
-												select.form-control(ng-model="color" ng-options="c.id as c.name for (num, c) in color_map")
+												select.form-control(ng-model="color" ng-options="c.id as c.name for (num, c) in color_map", ng-click="apply_predefined()")
 
 												
 												span.input-group-addon Or pick one
-												input.form-control#color-picker
+												input.form-control#color-picker( ng-model="color_picker", ng-bind="color_picker", ng-style="color_picker_style")
 							.row-fluid
 								br
 								textarea#editor.ckeditor

@@ -11,7 +11,7 @@ data=[
      allDay: false
      start: date.setHours( date.getHours() + 1)
      author: 'test_student'
-     priority: 1
+     color: '#6BA5C2'
 
   },
   {
@@ -20,7 +20,7 @@ data=[
      allDay: false
      start: date.setHours( date.getHours() + 2)
      author: 'test_teacher'
-     priority: 2
+     color: '#FFA12F'
 
   },
   {
@@ -29,7 +29,7 @@ data=[
      allDay: false
      start: date.setHours( date.getHours() + 3)
      author: 'test_teacher'
-     priority: 1
+     color: '#6BA5C2'
 
   },
   {
@@ -37,7 +37,7 @@ data=[
      decription: "Description de l'evenement n°4"
      allDay: true
      author: 'test_student'
-     priority: 1
+     color: '#6BA5C2'
   },
   {
      title: 'Evenement 5'
@@ -45,7 +45,7 @@ data=[
      allDay: false
      start: date.setHours( date.getHours() + 5)
      author: 'test_admin'
-     priority: 3
+     color: '#FF5252'
 
   },
   {
@@ -53,7 +53,7 @@ data=[
      decription: "Description de l'evenement n°6"
      allDay: true
      author: 'test_admin'
-     priority: 3
+     color: '#FF5252'
   },
   {
      title: 'Evenement 7'
@@ -61,7 +61,7 @@ data=[
      allDay: false
      start: date.setHours( date.getHours() + 7)
      author: 'test_student'
-     priority: 0
+     color: '#8C8C8C'
 
   },
   {
@@ -70,7 +70,7 @@ data=[
      allDay: false
      start: date.setHours( date.getHours() + 8)
      author: 'test_admin'
-     priority: 4
+     color: '#6BA5C2'
 
   }
 ]
@@ -108,12 +108,10 @@ for event in data
 
       else
 
-        
-        
-        user = results.event_with_user.user
-        
+        user = results.event_with_user.user        
 
         event = results.event_with_user
+
         event.username = null
 
         create = db.Event.create event

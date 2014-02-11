@@ -38,10 +38,9 @@
         type: DataTypes.STRING,
         allowNull: true
       },
-      priority: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 1
+      color: {
+        type: DataTypes.STRING(30),
+        allowNull: true
       }
     }, {
       classMethods: {

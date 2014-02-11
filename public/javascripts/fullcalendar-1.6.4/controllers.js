@@ -22,16 +22,22 @@
       onHide: function(colpkr) {
         $(colpkr).fadeOut(500);
         return false;
-      },
-      onBeforeShow: function() {
-        return apply_color(null, '6BA5C2', null, $cp);
       }
     }).bind('keyup', function() {
       return $(this).ColorPickerSetColor(this.value);
     });
     return apply_color = function(hsb, hex, rgb, el) {
-      $(el).val(hex + " | Your text will look like this.");
-      return $(el).css('background-color', "#" + hex);
+      var color, scope;
+      if (hex == null) {
+        hex = "";
+      }
+      color = hex.split('#');
+      scope = $cp.scope();
+      scope.color_picker = "";
+      scope.color_picker = '#' + color[color.length - 1] + " | Your text will look like this.";
+      $(el).css('background-color', "#" + hex);
+      $(el).val(scope.color_picker);
+      return scope.watch_predefined();
     };
   });
 
@@ -268,6 +274,10 @@
       $scope.disabled = !event.editable;
       event_backup = event;
       $scope.$apply();
+      $('#color-row').css({
+        'background-color': event.color,
+        'box-shadow': "0 0 5px " + event.color
+      });
       $popup_show.modal('show');
       return toggle_edit();
     };
@@ -286,36 +296,84 @@
   };
 
   this.popup_edit_event = function($scope) {
-    var $popup_edit, event_backup;
+    var $popup_edit, event_backup, get_color_picker_value;
     $scope.title = "";
-    $scope.priority = 1;
     $popup_edit = $("#popup-edit-event");
     event_backup = null;
     $scope.color_map = [
       {
-        name: "Insignificant - Gray",
-        color: '#676767',
+        name: "Custom  →",
+        color: null,
         id: 0
       }, {
-        name: "Normal - Blue",
-        color: '#6BA5C2',
+        name: "Insignificant - Gray",
+        color: '#8c8c8c',
         id: 1
       }, {
-        name: "Important - Orange",
-        color: '#FFA12F',
+        name: "Normal - Blue",
+        color: '#6ba5c2',
         id: 2
       }, {
-        name: "Mandatory - Red",
-        color: '#FF2B2B',
+        name: "Important - Orange",
+        color: '#ffa12f',
         id: 3
+      }, {
+        name: "Mandatory - Red",
+        color: '#ff5252',
+        id: 4
       }
     ];
-    $scope.color = 1;
+    $scope.color = 0;
+    $scope.color_picker = "";
+    $scope.color_picker_style = {
+      'background-color': $scope.color_picker
+    };
+    get_color_picker_value = function() {
+      return $scope.color_picker.split(' |')[0];
+    };
+    $scope.reset_picker = function() {
+      $scope.color_picker = event_backup.color;
+      return $scope.color_picker_style['background-color'] = event_backup.color;
+    };
+    $scope.apply_predefined = function() {
+      var color;
+      color = get_color_picker_value();
+      if ($scope.color > 0) {
+        color = $scope.color_map[$scope.color].color;
+      }
+      $scope.color_picker = color;
+      return $scope.color_picker_style['background-color'] = color;
+    };
+    $scope.watch_predefined = function() {
+      var color, color_picker_value, found, i, _i, _len, _ref;
+      color_picker_value = get_color_picker_value();
+      found = false;
+      i = 0;
+      _ref = $scope.color_map;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        color = _ref[_i];
+        if (color.color) {
+          console.log("" + color_picker_value + "|" + color.color);
+          if (color_picker_value === color.color) {
+            $scope.color = i;
+            found = true;
+          }
+        }
+        i++;
+      }
+      if (!found) {
+        $scope.color = 0;
+      }
+      if ($scope.$root.$$phase !== '$apply' && $scope.$root.$$phase !== '$digest') {
+        return $scope.$apply();
+      }
+    };
     $scope.edit = function(event) {
       var picker_date_end, picker_date_start, picker_time_end, picker_time_start, unix_time_end, unix_time_start;
       event_backup = event;
       $scope.title = event.title;
-      $scope.priority = event.priority;
+      $scope.reset_picker();
+      $scope.watch_predefined();
       $popup_edit.modal('show');
       toggle_edit();
       picker_date_start = $popup_edit.find("#date-start").pickadate().pickadate("picker");
@@ -342,7 +400,6 @@
     };
     $scope.save = function() {
       var date_end, date_start, event, select_date_end, select_date_start, select_time_end, select_time_start;
-      alert($scope.color);
       event = event_backup;
       event.title = $scope.title;
       event.description = CKEDITOR.instances.editor.getData();
@@ -358,9 +415,8 @@
       date_end.setMinutes(select_time_end.mins);
       event.start = date_start.toJSON();
       event.end = date_end.toJSON();
-      console.log(date_start.toJSON());
-      console.log(date_end.toJSON());
-      event.priority = $scope.priority;
+      event.color = get_color_picker_value();
+      console.log($scope.color_picker);
       Events.update(event, function(event) {
         var scope;
         scope = $('#popup-show-event').scope();

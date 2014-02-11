@@ -96,6 +96,7 @@
             start: event.start,
             end: event.end,
             url: event.url,
+            color: event.color,
             priority: event.priority,
             StatuId: event.StatuId,
             ProjectId: event.ProjectId

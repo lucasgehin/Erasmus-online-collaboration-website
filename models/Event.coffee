@@ -43,12 +43,12 @@ module.exports = (sequelize, DataTypes)->
       allowNull: true
 
 
-    # Peut être par exemple 0: Faible, 1: Normal, 2: Prioritaire, 3: Urgent, 4: Exceptionnel, 5: Optionnel.     
+    # Suffisement grand pour stocker du #FF00FF du rgba(255,255,255,0.9) du hslv(). etc ...
     
-    priority:
-      type: DataTypes.INTEGER
-      allowNull: false
-      defaultValue: 1
+    color:
+      type: DataTypes.STRING(30)
+      allowNull: true
+      
 
 
   },
