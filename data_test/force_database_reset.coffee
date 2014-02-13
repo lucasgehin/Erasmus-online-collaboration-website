@@ -34,7 +34,7 @@ stdin.addListener "data", (d)->
   reponse = d.toString().substring(0, d.length-1)
 
 
-  if reponse is "reset"
+  if yes #reponse is "reset"
     console.log "Purge en cours..."
     reset()
   else

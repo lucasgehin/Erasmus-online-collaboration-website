@@ -10,7 +10,7 @@
   stdin.addListener("data", function(d) {
     var reponse;
     reponse = d.toString().substring(0, d.length - 1);
-    if (reponse === "reset") {
+    if (true) {
       console.log("Purge en cours...");
       return reset();
     } else {
