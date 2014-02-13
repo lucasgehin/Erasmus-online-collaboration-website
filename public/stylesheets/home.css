@@ -144,6 +144,15 @@ a {
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
 }
+.users-link-section .users .content .user .connected,
+.projects-link-section .users .content .user .connected,
+.users-link-section .projects .content .user .connected,
+.projects-link-section .projects .content .user .connected {
+  background-color: #008000;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+}
 .users-link-section .users .project-name,
 .projects-link-section .users .project-name,
 .users-link-section .projects .project-name,

@@ -1,4 +1,8 @@
 
+# Gobal object
+
+@root = exports ? this
+
 ###
  Module dependencies.
 ###
@@ -30,6 +34,7 @@ server = http.createServer app
 cookieParser = express.cookieParser('your secret sauce here') # Devra être changé !!!!   <-------------------
 sessionStore = new connect.middleware.session.MemoryStore()
 
+root.sessionStore = sessionStore
 
 # all environments
 app.set 'port', process.env.PORT || 3001

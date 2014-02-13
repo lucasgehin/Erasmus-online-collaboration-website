@@ -97,8 +97,21 @@ html(ng-app)
 				.col-xs-6
 					.titre
 						| Next events
-					.content
-						| Content
+					.content(ng-controller="Events_Management")
+						.list-group
+							a.list-group-item(ng-repeat="item in list() | limitTo: 4", href="#", ng-click="show(item)")
+								.list-group-item-heading
+									table
+										tr
+											td
+												h4 {{item.title | limitTo: 30}}
+											td.news-date
+												{{item.createdAt}}
+											td.news-by by {{item.user.username}}
+								p.list-group-item-text.news-content {{item.description | limitTo: 100}}
+						button.btn.btn-info(ng-disabled="more()", ng-click="show_all()")
+							span.glyphicon.glyphicon-plus.
+								More
 
 			.pinned-docs-section.row-fluid.section
 				.titre.
@@ -153,6 +166,10 @@ html(ng-app)
 										br
 										.country
 											img(ng-src='/images/Country/{{user.country.name}}.jpg', alt='Country')
+										.connected(ng-show="user.online")
+										
+											
+
 
 
 

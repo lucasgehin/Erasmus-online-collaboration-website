@@ -79,6 +79,10 @@
       }
     };
 
+    Events.find_next_events = function(callback) {
+      return callback(null);
+    };
+
     Events.update = function(event, callback) {
       var id;
       id = parseInt(event.id);

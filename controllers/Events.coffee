@@ -78,6 +78,9 @@ class Events
         console.log "Events@find_by_title: #{err}"
         callback err, null
 
+  @find_next_events: (callback)->
+    callback null
+
 
   @update: (event, callback)->
     id = parseInt event.id

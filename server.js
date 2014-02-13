@@ -1,10 +1,12 @@
-
-/*
- Module dependencies.
- */
-
 (function() {
   var Sio, Users, app, connect, cookieParser, db, express, gzippo, http, path, routes, server, sessionStore, static_content_options;
+
+  this.root = typeof exports !== "undefined" && exports !== null ? exports : this;
+
+
+  /*
+   Module dependencies.
+   */
 
   http = require('http');
 
@@ -29,6 +31,8 @@
   cookieParser = express.cookieParser('your secret sauce here');
 
   sessionStore = new connect.middleware.session.MemoryStore();
+
+  root.sessionStore = sessionStore;
 
   app.set('port', process.env.PORT || 3001);
 

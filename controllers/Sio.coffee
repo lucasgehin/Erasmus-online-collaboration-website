@@ -1,3 +1,5 @@
+root = exports ? this
+
 SessionSockets = require 'session.socket.io'
 Socket_io = require 'socket.io'
 
@@ -55,12 +57,41 @@ class Sio
 
 
 
-      socket.on "get_users_list", (no_data, callback)->
+      socket.on "get_users_list", (no_data, callback)=>
 
         console.log "Sio: Demande de la liste des utilisateurs par #{user}"
 
-        Users.find_all (err, list)->
-          callback err, list
+        liste_users_a_envoyer = []
+
+        sessions = []
+
+        for id, session_json of @root.sessionStore.sessions
+          session = JSON.parse session_json
+          sessions.push session
+
+
+        Users.find_all (err, list_users)->         
+                   
+          for user in list_users
+            user.setDataValue 'online', false
+            for session in sessions
+              
+              username = session.user?.username
+
+              
+
+              console.log "#{user.username}|#{username}"
+
+              if username?
+                if user.username is username
+                  user.setDataValue 'online', true
+                  break
+
+            console.log user.is_connected
+
+            liste_users_a_envoyer.push user
+              
+          callback err, liste_users_a_envoyer
 
 
 

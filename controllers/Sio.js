@@ -1,5 +1,7 @@
 (function() {
-  var Events, News, Projects, SessionSockets, Sio, Socket_io, Users, event_is_editable, set_event_editable;
+  var Events, News, Projects, SessionSockets, Sio, Socket_io, Users, event_is_editable, root, set_event_editable;
+
+  root = typeof exports !== "undefined" && exports !== null ? exports : this;
 
   SessionSockets = require('session.socket.io');
 
@@ -50,12 +52,41 @@
           console.log("Demande de connection WS de /home par " + user + ". -> ok");
         }
         socket.emit('message', "Welcome " + user);
-        socket.on("get_users_list", function(no_data, callback) {
-          console.log("Sio: Demande de la liste des utilisateurs par " + user);
-          return Users.find_all(function(err, list) {
-            return callback(err, list);
-          });
-        });
+        socket.on("get_users_list", (function(_this) {
+          return function(no_data, callback) {
+            var id, liste_users_a_envoyer, session_json, sessions, _ref1;
+            console.log("Sio: Demande de la liste des utilisateurs par " + user);
+            liste_users_a_envoyer = [];
+            sessions = [];
+            _ref1 = _this.root.sessionStore.sessions;
+            for (id in _ref1) {
+              session_json = _ref1[id];
+              session = JSON.parse(session_json);
+              sessions.push(session);
+            }
+            return Users.find_all(function(err, list_users) {
+              var username, _i, _j, _len, _len1, _ref2;
+              for (_i = 0, _len = list_users.length; _i < _len; _i++) {
+                user = list_users[_i];
+                user.setDataValue('online', false);
+                for (_j = 0, _len1 = sessions.length; _j < _len1; _j++) {
+                  session = sessions[_j];
+                  username = (_ref2 = session.user) != null ? _ref2.username : void 0;
+                  console.log("" + user.username + "|" + username);
+                  if (username != null) {
+                    if (user.username === username) {
+                      user.setDataValue('online', true);
+                      break;
+                    }
+                  }
+                }
+                console.log(user.is_connected);
+                liste_users_a_envoyer.push(user);
+              }
+              return callback(err, liste_users_a_envoyer);
+            });
+          };
+        })(this));
         socket.on("get_news_list", function(no_data, callback) {
           console.log("Sio: Demande de la liste des news par " + user);
           return News.find_all(function(err, list) {

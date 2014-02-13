@@ -60,12 +60,19 @@
     $scope.list = function() {
       return Users_list;
     };
+    $scope.online = function(user) {
+      if (user.online) {
+        return 'online';
+      }
+      return 'offline';
+    };
     $scope.get_users = function() {
       load_start();
       return socket.emit('get_users_list', null, function(error, response) {
         if (response != null) {
           Users_list = response;
         }
+        console.log("User list saved");
         load_end();
         return $scope.$apply();
       });
@@ -104,6 +111,57 @@
     };
     socket.on('connect', function() {
       return $scope.get_news_list();
+    });
+    $scope.show = function(item) {
+      var popup, scope;
+      popup = document.querySelector("#popup-news");
+      scope = angular.element(popup).scope();
+      scope.title = item.title;
+      scope.content = item.content;
+      $(popup).modal();
+      return null;
+    };
+    return $scope.show_all = function() {
+      var popup, scope;
+      popup = document.querySelector("#popup-news-all");
+      scope = angular.element(popup).scope();
+      if (!scope.is_initialized) {
+        scope.initalize();
+      }
+      scope.show();
+      return null;
+    };
+  };
+
+  this.Events_Management = function($scope) {
+    $scope.list = function() {
+      return Events_list;
+    };
+    $scope.more = function() {
+      return Events_list.length === 0 || Events_list[0].id === -1;
+    };
+    $scope.get_events_next = function() {
+      console.log("Getting events list");
+      load_start();
+      return socket.emit('get_events_next', null, function(err, response) {
+        load_end();
+        console.log(response);
+        if (response != null) {
+          Events_list = response;
+        }
+        if (Events_list.length === 0) {
+          Events_list.push(JSON.stringify({
+            id: -1,
+            title: "Nothing planed today ! :D",
+            content: "You can add an event in the calendar if you want.",
+            createdAt: new Date()
+          }));
+        }
+        return $scope.$apply();
+      });
+    };
+    socket.on('connect', function() {
+      return $scope.get_events_next();
     });
     $scope.show = function(item) {
       var popup, scope;

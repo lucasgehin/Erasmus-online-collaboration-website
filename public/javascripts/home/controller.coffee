@@ -68,13 +68,19 @@ $load_img = $ '#ajaxloader'
   $scope.list = ->
     return Users_list
 
+  $scope.online = (user)->
+    if user.online
+      return 'online'
+    
+    return 'offline'
 
   $scope.get_users = ->
     load_start()
     socket.emit 'get_users_list', null, (error, response)->
       #console.log response
       Users_list = response if response?
-      #console.log "User list saved"
+
+      console.log "User list saved"
       load_end()
 
       $scope.$apply() # Sert à forcer la MAJ de la vue
@@ -85,8 +91,6 @@ $load_img = $ '#ajaxloader'
 
 
 @News_Management = ($scope)->
-
-  
 
   $scope.list = ->
     return News_list
@@ -140,7 +144,63 @@ $load_img = $ '#ajaxloader'
 
     return null
 
-  
+
+
+
+@Events_Management = ($scope)->
+
+  $scope.list = ->
+    return Events_list
+
+  $scope.more= ->
+    return (Events_list.length == 0 || Events_list[0].id == -1)
+
+
+  $scope.get_events_next = ()->
+    console.log "Getting events list"
+    load_start()
+    socket.emit 'get_events_next',null, (err, response)->
+      
+      load_end()
+
+      console.log response
+
+      if response?
+        Events_list = response
+   
+
+      if Events_list.length is 0
+        Events_list.push JSON.stringify {
+          id:-1
+          title: "Nothing planed today ! :D"
+          content : "You can add an event in the calendar if you want."
+          createdAt: new Date()
+        }
+
+      $scope.$apply()
+
+  socket.on 'connect', ->
+    $scope.get_events_next()
+
+  $scope.show =  (item)->
+    popup = document.querySelector "#popup-news"
+    scope = angular.element(popup).scope()
+    scope.title = item.title
+    scope.content = item.content
+      
+    $(popup).modal()
+
+    return null
+
+  $scope.show_all = ->
+    popup = document.querySelector "#popup-news-all"    
+    scope = angular.element(popup).scope()
+    if not scope.is_initialized
+      scope.initalize()    
+    scope.show()
+
+    return null
+
 
 
 @Setting_Management= ($scope)->
