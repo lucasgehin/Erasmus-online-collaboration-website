@@ -1,6 +1,8 @@
 $calendar = null
 
 
+
+
 $(document).ready ->
   $calendar = $ '#calendar'
   start()
@@ -119,7 +121,9 @@ init_calendar = ->
     height: height_calendar
     firstDay: 1
     defaultView:'agendaWeek'
-
+    selectable: true
+    selectHelper: true
+    unselectAuto: true
     ignoreTimezone: false
     header:
       left:''
@@ -171,6 +175,21 @@ init_calendar = ->
       
       $calendar.fullCalendar 'removeEvents'
       load_all_events()
+
+    select : (startDate, endDate, allDay, jsEvent, view )->
+      
+      event=
+        start: startDate.toJSON()
+        end: endDate.toJSON()
+        title: '<Title - Change Me>'
+        description: ' Your description here '
+        color: '#6ba5c2'
+        creating: true
+
+      $scope_popup = $('#popup-edit-event').scope()
+      $scope_popup.edit event
+
+
 
        
 
@@ -432,9 +451,7 @@ class Events
 
     # On détermine si la couleur est une couleur prédéfinie et on la met dans le <select> si c'est le cas
     
-    $scope.watch_predefined()
-
-    
+    $scope.watch_predefined()  
 
 
     # on affiche
@@ -476,7 +493,13 @@ class Events
   
     # Enfin on lance CK EDITOR
 
-    CKEDITOR.instances.editor.setData  event.description
+    desc = event.description
+
+    console.log desc
+
+    setTimeout ->
+      CKEDITOR.instances.editor.setData(desc)
+    , 500
 
   $scope.save = ->
 
@@ -523,6 +546,7 @@ class Events
 
       scope = $('#popup-show-event').scope()
       scope.show event
+      
       $scope.close()
 
     return null

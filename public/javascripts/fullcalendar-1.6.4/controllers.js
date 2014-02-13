@@ -108,6 +108,9 @@
       height: height_calendar,
       firstDay: 1,
       defaultView: 'agendaWeek',
+      selectable: true,
+      selectHelper: true,
+      unselectAuto: true,
       ignoreTimezone: false,
       header: {
         left: '',
@@ -159,6 +162,19 @@
       viewRender: function(view, element) {
         $calendar.fullCalendar('removeEvents');
         return load_all_events();
+      },
+      select: function(startDate, endDate, allDay, jsEvent, view) {
+        var $scope_popup, event;
+        event = {
+          start: startDate.toJSON(),
+          end: endDate.toJSON(),
+          title: '<Title - Change Me>',
+          description: ' Your description here ',
+          color: '#6ba5c2',
+          creating: true
+        };
+        $scope_popup = $('#popup-edit-event').scope();
+        return $scope_popup.edit(event);
       }
     };
     $calendar.fullCalendar(options);
@@ -369,7 +385,7 @@
       }
     };
     $scope.edit = function(event) {
-      var picker_date_end, picker_date_start, picker_time_end, picker_time_start, unix_time_end, unix_time_start;
+      var desc, picker_date_end, picker_date_start, picker_time_end, picker_time_start, unix_time_end, unix_time_start;
       event_backup = event;
       $scope.title = event.title;
       $scope.reset_picker();
@@ -396,7 +412,11 @@
       picker_date_end.set('select', unix_time_end);
       picker_time_end.set('min', unix_time_start);
       picker_time_end.set('select', unix_time_end);
-      return CKEDITOR.instances.editor.setData(event.description);
+      desc = event.description;
+      console.log(desc);
+      return setTimeout(function() {
+        return CKEDITOR.instances.editor.setData(desc);
+      }, 500);
     };
     $scope.save = function() {
       var date_end, date_start, event, select_date_end, select_date_start, select_time_end, select_time_start;
