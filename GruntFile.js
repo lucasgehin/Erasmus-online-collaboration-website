@@ -1,52 +1,46 @@
-(function() {
-  module.exports = function(grunt) {
-    var config;
+
+module.exports = function (grunt) {
+    "use strict";
+
+    var config, files = [
+        '*.js',
+        './controllers/**/*.js',
+        './models/**/*.js',
+        './routes/**/*.js',
+        './views/**/*.js',
+        './tests/**/*.js',
+        './public/javascripts/index/**.js',
+        './public/javascripts/home/**.js',
+        './public/javascripts/chat/**.js'
+    ];
+
+
     config = {
-      pkg: grunt.file.readJSON('package.json'),
-      banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
-      coffee: {
-        "default": {
-          expand: true,
-          cwd: '.',
-          src: ['*!(Gruntfile).coffee', './models/**/*.coffee', './controllers/**/*.coffee', './routes/**/*.coffee', './public/**/*.coffee', './views/**/*.coffee', './tests/**/*.coffee', './data_test/**/*.coffee'],
-          ext: '.js'
+        pkg: grunt.file.readJSON('package.json'),
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
+
+        mochaTest: {
+            test: {
+                src: ["tests/**/*.js"]
+            }
+        },
+        jshint: {
+            src: files,
+            options: {
+
+                globals: {
+                    jQuery: true,
+                    console: true,
+                    module: true
+                }
+            }
         }
-      },
-      coffeelint: {
-        app: ['*.coffee', './controllers/**/*.coffee', './models/**/*.coffee', './routes/**/*.coffee', './public/**/*.coffee', './views/**/*.coffee', './tests/**/*.coffee', "./data_test/**/*.coffee"],
-        options: {
-          max_line_length: {
-            level: 'ignore'
-          },
-          no_trailing_whitespace: {
-            level: 'ignore'
-          }
-        }
-      },
-      mochaTest: {
-        test: {
-          src: ["tests/**/*.js"]
-        }
-      },
-      jshint: {
-        src: ['*.js', './controllers/**/*.js', './models/**/*.js', './routes/**/*.js', './views/**/*.js', './public/**/*.js', './tests/**/*.js'],
-        options: {
-          '-W069': true,
-          globals: {
-            jQuery: true,
-            console: true,
-            module: true
-          }
-        }
-      }
     };
     grunt.initConfig(config);
-    grunt.loadNpmTasks('grunt-contrib-coffee');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-coffeelint');
-    grunt.loadNpmTasks('grunt-mocha-test');
-    grunt.registerTask('default', ['coffeelint', 'coffee', 'mochaTest']);
-    return grunt.registerTask('compile', ['Compilation']);
-  };
 
-}).call(this);
+    grunt.loadNpmTasks('grunt-contrib-jshint');
+
+    grunt.loadNpmTasks('grunt-mocha-test');
+    grunt.registerTask('default', ['jshint']);
+    return grunt.registerTask('test', ['mochaTest']);
+};

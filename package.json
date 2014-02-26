@@ -9,8 +9,6 @@
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "~0.6.3",
     "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-coffee": "*",
-    "grunt-coffeelint": "*",
     "jshint": "latest",
     "grunt-mocha-test": "~0.8.2"
   },
@@ -22,6 +20,7 @@
     "password-hash": "*",
     "etherpad-lite-client": "latest",
     "underscore": "*",
+    "lodash": "*",
     "socket.io": "*",
     "request": "*",
     "gzippo": "latest",

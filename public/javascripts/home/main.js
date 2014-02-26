@@ -1,55 +1,60 @@
-(function() {
-  var decallage_y, sanitise, selector, slide_time;
+/*jlint browser: true */
+/*global $ */
 
-  slide_time = 600;
+var decallage_y, sanitise, selector, slide_time;
 
-  decallage_y = -$(".navbar").eq(0).height() - 1;
+slide_time = 600;
 
-  selector = "html, body";
+decallage_y = -$(".navbar").eq(0).height() - 1;
 
-  $("#top-link").on("click", function(e) {
+selector = "html, body";
+
+$("#top-link").on("click", function (e) {
+    "use strict";
     var target;
     sanitise(e, selector);
     target = $(".news-section").offset().top + decallage_y;
     return $("html, body").animate({
-      scrollTop: target
+        scrollTop: target
     }, slide_time);
-  });
+});
 
-  $("#docs-link").on("click", function(e) {
+$("#docs-link").on("click", function (e) {
+    "use strict";
     var target;
     sanitise(e, selector);
     target = $(".pinned-docs-section").offset().top + decallage_y;
     return $("html, body").animate({
-      scrollTop: target
+        scrollTop: target
     }, slide_time);
-  });
+});
 
-  $("#projects-link").on("click", function(e) {
+$("#projects-link").on("click", function (e) {
+    "use strict";
     var target;
     sanitise(e, selector);
     target = $(".projects-link-section").offset().top + decallage_y;
     return $("html,body").animate({
-      scrollTop: target
+        scrollTop: target
     }, slide_time);
-  });
+});
 
-  $("#users-link").on("click", function(e) {
+$("#users-link").on("click", function (e) {
+    "use strict";
     var target;
     sanitise(e, selector);
     target = $(".users-link-section").offset().top + decallage_y;
     return $("html,body").animate({
-      scrollTop: target
+        scrollTop: target
     }, slide_time);
-  });
+});
 
-  sanitise = function(event, selector) {
+sanitise = function (event, selector) {
+    "use strict";
     event.preventDefault();
     event.stopPropagation();
     if ($(selector).is(":animated")) {
-      $(selector).stop();
-      return $(selector).clearQueue();
+        $(selector).stop();
+        return $(selector).clearQueue();
     }
-  };
-
-}).call(this);
+};
