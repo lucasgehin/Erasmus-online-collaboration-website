@@ -15,54 +15,54 @@
       allDay: false,
       start: date.setHours(date.getHours() + 1),
       author: 'test_student',
-      color: '#6BA5C2'
+      color: '#6ba5c2'
     }, {
       title: 'Evenement 2',
       decription: "Description de l'evenement n°2",
       allDay: false,
       start: date.setHours(date.getHours() + 2),
       author: 'test_teacher',
-      color: '#FFA12F'
+      color: '#ffa12f'
     }, {
       title: 'Evenement 3',
       decription: "Description de l'evenement n°3",
       allDay: false,
       start: date.setHours(date.getHours() + 3),
       author: 'test_teacher',
-      color: '#6BA5C2'
+      color: '#6ba5c2'
     }, {
       title: 'Evenement 4',
       decription: "Description de l'evenement n°4",
       allDay: true,
       author: 'test_student',
-      color: '#6BA5C2'
+      color: '#6ba5c2'
     }, {
       title: 'Evenement 5',
       decription: "Description de l'evenement n°5",
       allDay: false,
       start: date.setHours(date.getHours() + 5),
       author: 'test_admin',
-      color: '#FF5252'
+      color: '#ff5252'
     }, {
       title: 'Evenement 6',
       decription: "Description de l'evenement n°6",
       allDay: true,
       author: 'test_admin',
-      color: '#FF5252'
+      color: '#ff5252'
     }, {
       title: 'Evenement 7',
       decription: "Description de l'evenement n°7",
       allDay: false,
       start: date.setHours(date.getHours() + 7),
       author: 'test_student',
-      color: '#8C8C8C'
+      color: '#8c8c8c'
     }, {
       title: 'Evenement 8',
       decription: "Description de l'evenement n°8",
       allDay: false,
       start: date.setHours(date.getHours() + 8),
       author: 'test_admin',
-      color: '#6BA5C2'
+      color: '#6ba5c2'
     }
   ];
 

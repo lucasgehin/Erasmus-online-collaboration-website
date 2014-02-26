@@ -8,9 +8,10 @@
   "devDependencies": {
     "grunt": "~0.4.2",
     "grunt-contrib-jshint": "~0.6.3",
-    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-uglify": "^0.3.2",
     "jshint": "latest",
-    "grunt-mocha-test": "~0.8.2"
+    "grunt-mocha-test": "~0.8.2",
+    "grunt-contrib-concat": "^0.3.0"
   },
   "dependencies": {
     "express": "3.4.0",

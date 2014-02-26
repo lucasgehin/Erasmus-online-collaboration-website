@@ -187,7 +187,6 @@ event_is_editable = function (event, user) {
 set_event_editable = function (event, user) {
     "use strict";
     var rank_user_event, rank_user_session;
-    console.log(event);
     rank_user_event = event.user.statu.rank;
     rank_user_session = user.statu !== null ? user.statu.rank : undefined;
     event.setDataValue('is_editable', false);
