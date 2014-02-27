@@ -1,8 +1,9 @@
 
 
-var Events, News, Projects, SessionSockets, Sio, Socket_io, Users, event_is_editable, root, set_event_editable;
+var underscore, Events, News, Projects, SessionSockets, Sio, Socket_io, Users, event_is_editable, root, set_event_editable, liste_users;
 
 
+underscore = require('underscore');
 
 SessionSockets = require('session.socket.io');
 
@@ -15,6 +16,9 @@ News = require('./News').News;
 Projects = require('./Projects').Projects;
 
 Events = require('./Events').Events;
+
+
+
 
 
 /*
@@ -165,6 +169,58 @@ Sio = (function () {
                 } else {
                     console.log("Utilisateur non connecté a tenté d'acceder au calendrier. -> utilisateur ignoré.");
                 }
+            });
+
+
+            liste_users = {};
+            Sio.sessionSockets.of('/chat').on('connection', function (err, socket, session) {
+
+                var dansListe, user;
+                user = session !== undefined ? session.user : undefined;
+                if (user) {
+                    dansListe = underscore.has(liste_users, user.username);
+                    if (dansListe === false) {
+                        liste_users[user.username] = user;
+                        socket.broadcast.emit('newusr', user);
+                    }
+                }
+
+                socket.on('get_userlist', function(data, callback) {
+                    var u, username;
+                    console.log("\nget_userslists\n\n");
+
+                    for (username in liste_users) {
+                        if (liste_users.hasOwnProperty(username)) {
+                            u = liste_users[username];
+                            socket.emit('newusr', u);
+                        }
+                    }
+                    if (user) {
+                        dansListe = underscore.has(liste_users, user.username);
+                        if (dansListe === false) {
+                            socket.broadcast.emit('newusr', user);
+                        }
+                    }
+                });
+
+                socket.on('newmsg', function (message) {
+                    var date;
+                    message.user = user;
+                    date = new Date();
+                    message.h = date.getHours();
+                    message.m = date.getMinutes();
+                    socket.emit('newmsge', message);
+                    socket.broadcast.emit('newmsge', message);
+                    console.log("\n\n\nNouveau message dans le chat :  " + message.message + " de " + message.user.username);
+                });
+
+                socket.on('disconnect', function (data, callback) {
+                    if (user) {
+                        console.log("\ndisconnect chat " + user.username + "\n\n");
+                        delete liste_users[user.username];
+                        socket.emit('disusr', user);
+                    }
+                });
             });
 
         });

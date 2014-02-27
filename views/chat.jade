@@ -8,6 +8,8 @@ html
 
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap-theme.css')
+		script(type='text/javascript', src='/socket.io/socket.io.js')
+
 		
 
 	body
@@ -69,32 +71,46 @@ html
 								.well.well-sm
 									|People in this room
 								.liste
-									img(src="/images/Country/#{user.country.name}.jpg" alt="#{user.country.name}")
-									|#{user.username}
-									|#{user.statu.name}
+									#users
 									
 
 
 							.chat_window
-								| Hello
+								.messages
+									.message#msgtpl(style="")
+										//img(src="{{{user.avatar}}}")
+										.info
+										p
+											strong 
+												|{{message.user.username}}
+										p
+											| {{message.message}}
+										span.date
+											| {{message.h}}:{{message.m}}
+
 
 							.room
-								| Home room
+								.well.well-sm
+									| Rooms
+								.liste
+									| Home Room
 
 							.create_room
 								input.form-control(placeholder="New room")
 							.new_message
-								input.form-control(placeholder="Write here your message")
-								button.btn.btn-success(type='button') Send
+								form#form(action="")
+									input#message.form-control(placeholder="Write here your message")
+									//button.btn.btn-success#send(type='submit') Send
 
 		img#ajaxloader(src="/images/ajax-loader.gif", alt='')
 
 
 
-		script(type='text/javascript', src='/javascripts/fullcalendar/lib/jquery.min.js')
+		script(type='text/javascript', src='/javascripts/jquery-1.10.2.min.js')
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
 		script(type='text/javascript', src='/javascripts/chat/main.js')
-		script(type='text/javascript', src='/socket.io/socket.io.js')
+		script(type='text/javascript', src='/javascripts/chat/mustache.js.vendor')
+		script(type='text/javascript', src='/javascripts/chat/controller.js')
 		
 
 
