@@ -1,5 +1,5 @@
 doctype html
-html
+html(ng-app)
 	head
 		title Chat - IpVIOPE
 
@@ -64,52 +64,63 @@ html
 											| Logout
 		.main-container
 			.main-container.container-fluid
-				.row
-					.col-xs-12
-						#chat
+				
+					.row#chat
+
+						.col-xs-3
+							
 							.people
 								.well.well-sm
-									|People in this room
-								.liste
-									#users
-									
-
-
+									| People in this room
+								.liste#users(ng-controller="userController")
+									ul
+										li(ng-repeat="user in liste_users")
+											.user
+												img(ng-src="/images/Country/{{user.country.name}}.jpg", alt="{{user.country.name}}")
+												| &emsp;{{user.username}}
+	
+	
+	
+	
+						.col-xs-6				
+	
+	
 							.chat_window
-								.messages
-									.message#msgtpl(style="")
+								.messages(ng-controller="messageController")
+									.message(ng-repeat="message in liste_messages")
 										//img(src="{{{user.avatar}}}")
 										.info
-										p
-											strong 
-												|{{message.user.username}}
-										p
+											span
+												strong 
+													| {{message.user.username}}
+											span.date
+												| {{message.date}}
+										
+										.content 
 											| {{message.message}}
-										span.date
-											| {{message.h}}:{{message.m}}
-
-
+	
+						.col-xs-3
 							.room
 								.well.well-sm
 									| Rooms
 								.liste
 									| Home Room
-
+	
 							.create_room
 								input.form-control(placeholder="New room")
-							.new_message
-								form#form(action="")
-									input#message.form-control(placeholder="Write here your message")
-									//button.btn.btn-success#send(type='submit') Send
+					.row#new_message
+						.col-xs-12
+							
+								form(ng-controller="messageController", ng-submit="sendMessage()")
+									input.form-control(ng-model="message_typing", placeholder="Type your message here")
+									//button.btn.btn-success(type='submit') Send
 
 		img#ajaxloader(src="/images/ajax-loader.gif", alt='')
 
-
-
 		script(type='text/javascript', src='/javascripts/jquery-1.10.2.min.js')
+		script(type='text/javascript', src='/javascripts/angular.js')
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
-		script(type='text/javascript', src='/javascripts/chat/main.js')
-		script(type='text/javascript', src='/javascripts/chat/mustache.js.vendor')
+		script(type='text/javascript', src='/javascripts/chat/main.js')		
 		script(type='text/javascript', src='/javascripts/chat/controller.js')
 		
 

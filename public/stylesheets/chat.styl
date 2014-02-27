@@ -9,8 +9,7 @@ body
 .logout-btn
 	color red
 
-#chat
-
+.main-container
 	background-color #FFFE
 	padding 1%
 	border-radius 5px
@@ -26,75 +25,92 @@ body
 	width 128px
 	display none
 
-.room
-	width: 200px;
-	position: fixed;
-	top: 72px;
-	right: 0;
-	bottom: 0;
-	display: inline-block;
+.main-container
+	.room
+		position relative
+		width 100%
+		height 100%	
+		border-left: 1px rgba(0, 0, 0, 0.1) solid;
+		padding: 1%;
 	
-	border-left: 1px rgba(0, 0, 0, 0.1) solid;
-	padding: 1%;
-
-
-.people
-	position: fixed;
-	top: 72px;
-	left: 0;
-	bottom: 0;
-	width: 200px;
-	border-right: 1px rgba(0, 0, 0, 0.1) solid;
-	padding: 1%;
-	padding-left 2%
-
-
-.chat_window
-	display: inline-block;
-	padding: 1%;
-	margin-left: 200px
-
-
-.new_message
-	position: fixed;
-	left: 200px
-	right: 200px
-	background-color: #d2d2d2;
-	bottom: 0;
 	
-	height: 40px;
-
-.people_in_room
-	font-size 24px
-	margin-top: 2%;
-
-.create_room
-	position fixed
-	right 1%
-	width 200px
-	bottom 0
-	height 40px
-	background-color: #d2d2d2;
-	border-bottom-right-radius 5px
-	line-height 2
+	.people
+		
+		width 100%
+		height 100%
+		border-right: 1px rgba(0, 0, 0, 0.1) solid
+		padding: 1%;
+		padding-left 2%
 	
-.create_room input
-	width 90%
-	float right
-	margin-right 2%
-	margin-top 1%
-
-.new_message input
-	float left
-	width 90%
-	margin-top 0.3%
-	margin-left 1%
 	
-.new_message button
-	float right
-	display inline-block
-	margin-top 0.3%
-	margin-right 1%
+	.chat_window
+		display: block;
+		
+		//margin-left: 200px
+	
+
+		width 100%
+		.messages
+			width 100%
+
+		
+		   	.message
+				width 100%
+
+				word-wrap break-word
+
+				.info
+					.date
+						float right
+
+		
+	
+	#new_message
+
+		position fixed
+		background-color: #d2d2d2;
+		
+		
+		height: 40px;
+		width: 95%;
+		bottom 0
+	
+	.people_in_room
+		font-size 24px
+		margin-top: 2%;
+	
+	.create_room
+		position fixed
+		right 1%
+		width 200px
+		bottom 0
+		height 40px
+		background-color: #d2d2d2;
+		border-bottom-right-radius 5px
+		line-height 2
+		
+	.create_room input
+		width 90%
+		float right
+		margin-right 2%
+		margin-top 1%
+	
+	.new_message input
+		float left
+		width 90%
+		margin-top 0.3%
+		margin-left 1%
+		
+	.new_message button
+		
+		display inline-block
+		margin-top 0.3%
+		margin-right 1%
+		
+	#users ul
+		list-style-type none
+		padding-left 0
+		border 1px black solid
 	
 
 //responsive = l'un au dessus de l'autre

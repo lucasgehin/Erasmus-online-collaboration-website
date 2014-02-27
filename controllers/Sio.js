@@ -177,38 +177,47 @@ Sio = (function () {
 
                 var dansListe, user;
                 user = session !== undefined ? session.user : undefined;
-                if (user) {
-                    dansListe = underscore.has(liste_users, user.username);
-                    if (dansListe === false) {
+
+                socket.on('register', function (no_data, callback) {
+
+                    if (user) {
                         liste_users[user.username] = user;
                         socket.broadcast.emit('newusr', user);
-                    }
-                }
 
-                socket.on('get_userlist', function(data, callback) {
-                    var u, username;
+                        console.log("\n\n\n\n\n\n");
+                        
+                        for (var username in liste_users) {
+                            if (liste_users.hasOwnProperty(username)) {
+                                console.log(username);
+                            }
+                        }
+
+                        console.log("\n\n\n\n\n\n");
+                    }
+
+                });
+
+                socket.on('get_userlist', function (no_data, callback) {
+                    var u, username, liste_a_envoyer;
                     console.log("\nget_userslists\n\n");
+
+                    liste_a_envoyer = [];
 
                     for (username in liste_users) {
                         if (liste_users.hasOwnProperty(username)) {
-                            u = liste_users[username];
-                            socket.emit('newusr', u);
+                            liste_a_envoyer.push(liste_users[username]);
                         }
                     }
-                    if (user) {
-                        dansListe = underscore.has(liste_users, user.username);
-                        if (dansListe === false) {
-                            socket.broadcast.emit('newusr', user);
-                        }
-                    }
+
+                    callback(null, liste_a_envoyer);
+
                 });
 
                 socket.on('newmsg', function (message) {
                     var date;
                     message.user = user;
                     date = new Date();
-                    message.h = date.getHours();
-                    message.m = date.getMinutes();
+                    message.date = new Date();
                     socket.emit('newmsge', message);
                     socket.broadcast.emit('newmsge', message);
                     console.log("\n\n\nNouveau message dans le chat :  " + message.message + " de " + message.user.username);
@@ -218,7 +227,7 @@ Sio = (function () {
                     if (user) {
                         console.log("\ndisconnect chat " + user.username + "\n\n");
                         delete liste_users[user.username];
-                        socket.emit('disusr', user);
+                        socket.broadcast.emit('disusr', user);
                     }
                 });
             });
