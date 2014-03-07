@@ -1,5 +1,5 @@
 /*jslint browser: true*/
-/*global $, io, angular, load_start, load_end*/
+/*global $, io, angular, moment, load_start, load_end*/
 
 
 Array.prototype.remove = function (from, to) {
@@ -65,25 +65,20 @@ function initControllers() {
 
                 console.log(user);
                 $scope.liste_users[user.id] = user;
-    
+
                 $scope.$apply();
-    
+
             });
             socket.on('leave', function (user) {
-                $scope.liste_users.forEach(function (user_in_list, index) {
-    
-                    if (user.username === user_in_list.username) {
-                        $scope.liste_users.remove(index);
-                    }
-                });
-    
+                delete $scope.liste_users[user.id];
+
                 $scope.$apply();
-    
+
             });
         });
 
         socket.on('reconnect', function () {
-            
+
         });
 
 
@@ -126,6 +121,7 @@ function initControllers() {
                 console.log('')
                 $scope.liste_messages.push(message);
                 $scope.$apply();
+                actualise_date();
             });
         });
 
@@ -133,11 +129,27 @@ function initControllers() {
 
 }
 
-
+function actualise_date () {
+    "use strict";
+    var date,  parsedDate, moment_date, previous;
+    $(".message .date").each(function () {
+        date = $(this);
+        previous =  date.attr('title');
+        if (!previous) {
+            date.attr('title', date.text());
+            previous =  date.text();
+        }
+        parsedDate = new Date(previous);
+        moment_date = moment(parsedDate);
+        date.text(moment_date.fromNow());
+        date.attr('title', parsedDate);
+    });
+}
 
 $(window).load(function () {
     "use strict";
     start();
+    setTimeout(actualise_date, 60000);
 });
 initControllers();
 start();

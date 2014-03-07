@@ -76,11 +76,7 @@ html(ng-app)
 											.user
 												img(ng-src="/images/Country/{{user.country.name}}.jpg", alt="{{user.country.name}}")
 												| &emsp;{{user.username}}
-	
-	
-	
-	
-								
+
 							.room
 								.well.well-sm
 									| Rooms
@@ -99,10 +95,7 @@ html(ng-app)
 												| {{message.date}}
 										
 										.content 
-											| {{message.message}}
-	
-					
-							
+											| {{message.message}}							
 	
 							.create_room
 								input.form-control(placeholder="New room")
@@ -118,6 +111,7 @@ html(ng-app)
 		script(type='text/javascript', src='/javascripts/jquery-1.10.2.min.js')
 		script(type='text/javascript', src='/javascripts/angular.js')
 		script(src="/javascripts/sha3.js")
+		script(src="/javascripts/moment.min.js")
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
 		script(type='text/javascript', src='/javascripts/chat/main.js')		
 		script(type='text/javascript', src='/javascripts/chat/controller.js')

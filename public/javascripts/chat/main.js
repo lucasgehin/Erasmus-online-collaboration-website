@@ -40,4 +40,3 @@ load_end = function () {
         $load_img.fadeOut('slow');
     }
 };
-

@@ -223,34 +223,8 @@ Sio = (function () {
 
                     liste_a_envoyer = {};
 
-                    // function addUser(err, session) {
-
-                    //     if (err) {
-                    //         console.warn(err);
-                    //     } else {
-                    //         user = session !== undefined ? session.user : undefined;
-                    //         console.log(user.username);
-
-                    //         liste_a_envoyer[user.id] = user;
-                    //     }
-                    // }
                     clients = Sio.io.of('/chat').clients();
 
-                    // async.series([
-                    //     function (next) {
-                    //         clients.forEach(function (sock, index) {
-                    //             Sio.sessionSockets.getSession(sock, function (err, session) {
-                    //                 addUser(err, session);
-                    //                 if (index === clients.length - 1) {
-                    //                     next(null);
-                    //                 }
-                    //             });
-                    //         });
-                    //     },
-                    //     function (next) {
-                    //         callback(null, liste_a_envoyer);
-                    //     }
-                    // ]);
                     clients.forEach(function (sock) {
                         if (sock.handshake.session) {
                             u = sock.handshake.session.user;
@@ -260,10 +234,6 @@ Sio = (function () {
 
                     callback(null, liste_a_envoyer);
 
-
-                // });
-
-
                     socket.on('message', function (message) {
                         var date;
                         date = new Date();
@@ -272,28 +242,21 @@ Sio = (function () {
                         console.log("\n\n\nNouveau message dans le chat :  " + message.message + " de " + message.user.username + "\n\n\n");
                         socket.broadcast.emit('message', message);
                         socket.emit('message', message);
-        
+
                     });
-    
-                // socket.on('disconnect', function (data, callback) {
-                //     if (user) {
-                //         console.log("\ndisconnect chat " + user.username + "\n\n");
-                //         //delete liste_users[user.username];
-                //         socket.broadcast.emit('leave', user);
-                //     }
-                // });
-            
+
+                    socket.on('disconnect', function () {
+
+                        console.log("\n\n\tDisconnect chat " + user.username + "\n\n");
+                        socket.broadcast.emit('leave', user);
+                    });
                 });
-
-
             }
-
         });
     };
 
-
-
     return Sio;
+
 })();
 
 
