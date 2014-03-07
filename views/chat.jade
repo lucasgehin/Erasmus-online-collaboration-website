@@ -62,49 +62,57 @@ html(ng-app)
 										span.logout-btn
 											span.icon-remove-sign
 											| Logout
-		.main-container
+		.main-container#chat
 			.main-container.container-fluid
 				.col-xs-12
-					.row
-						#chat
-							.people
-								.well.well-sm
-									| People in this room
-								.liste#users(ng-controller="userController")
-									ul
-										li(ng-repeat="user in liste_users")
-											.user
-												img(ng-src="/images/Country/{{user.country.name}}.jpg", alt="{{user.country.name}}")
-												| &emsp;{{user.username}}
-
-							.room
-								.well.well-sm
-									| Rooms
-								.liste
-									| Home Room
-	
-							.chat_window
-								.messages(ng-controller="messageController")
-									.message(ng-repeat="message in liste_messages")
-										//img(src="{{{user.avatar}}}")
-										.info
-											span
-												strong 
-													| {{message.user.username}}
-											span.date
-												| {{message.date}}
-										
-										.content 
-											| {{message.message}}							
-	
-							.create_room
-								input.form-control(placeholder="New room")
-							.new_message
-					
+					.row#chat-display
+						.col-xs-2
+							.row
+									.people
+										.well.well-sm
+											| In this room
+										.liste#users(ng-controller="userController")
+											ul
+												li(ng-repeat="user in liste_users")
+													.user
+														img(ng-src="/images/Country/{{user.country.name}}.jpg", alt="{{user.country.name}}")
+														| &emsp;{{user.username}}
+						.col-xs-8
+								
+									.chat_window
+										.messages(ng-controller="messageController")
+											.message(ng-repeat="message in liste_messages")
+												//img(src="{{{user.avatar}}}")
+												.info
+													span
+														strong 
+															| {{message.user.username}}
+													span.date
+														| {{message.date}}
+												
+												.content 
+													| {{message.message}}
+						.col-xs-2
 							
-								form(ng-controller="messageController", ng-submit="sendMessage()")
-									input.form-control(ng-model="message_typing", placeholder="Type your message here")
-									//button.btn.btn-success(type='submit') Send
+									.room
+										.well.well-sm
+											| Rooms
+										.liste
+											ul
+												li Home Room
+		
+					.row#chat-tools
+						.col-xs-3
+						.col-xs-6
+								.new_message
+									form(ng-controller="messageController", ng-submit="sendMessage()")
+										input.form-control(ng-model="message_typing", placeholder="Type your message here")
+										//button.btn.btn-success(type='submit') Send
+						.col-xs-3
+								.create_room
+									input.form-control(placeholder="New room")
+						
+								
 
 		img#ajaxloader(src="/images/ajax-loader.gif", alt='')
 

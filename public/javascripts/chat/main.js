@@ -4,9 +4,11 @@ var resize_chat, $load_img, load_count, load_start, load_end;
 
 resize_chat = function () {
     "use strict";
-    var height_chat;
-    height_chat = $(window).height() - $('.navbar').height() * 1.45;
+    var height_chat, height_chat_tools;
+    height_chat = $(window).height() - $('.navbar').height() * 1.55;
+    height_chat_tools = $("#chat-tools").height();
     $("#chat").height(height_chat);
+    $(".people, .room, .chat_window").height(height_chat - (height_chat_tools * 1.5));
 };
 
 resize_chat();
