@@ -16,7 +16,9 @@ function start() {
 
     "use strict";
 
-    socket = io.connect('/chat');
+    socket = io.connect('/chat', {
+        'sync disconnect on unload': true
+    });
 
     load_start();
 
@@ -53,45 +55,38 @@ function initControllers() {
                     $scope.liste_users = data;
                     $scope.$apply();
                 }
-
-
             });
 
         };
 
         socket.on('connect', function () {
-            socket.emit('register');
             $scope.get_userlist();
-        });
+            socket.on('newusr', function (user) {
 
-        socket.on('newusr', function (user) {
-            var trouve = false;
-            $scope.liste_users.forEach(function (user_in_list, index) {
-
-                if (user.username === user_in_list.username) {
-                    $scope.liste_users[index] = user;
-                    trouve = true;
-                }
+                console.log(user);
+                $scope.liste_users[user.id] = user;
+    
+                $scope.$apply();
+    
             });
-            if (!trouve) {
-                $scope.liste_users.push(user);
-            }
-
-            $scope.$apply();
-
-        });
-
-        socket.on('disusr', function (user) {
-            $scope.liste_users.forEach(function (user_in_list, index) {
-
-                if (user.username === user_in_list.username) {
-                    $scope.liste_users.remove(index);
-                }
+            socket.on('leave', function (user) {
+                $scope.liste_users.forEach(function (user_in_list, index) {
+    
+                    if (user.username === user_in_list.username) {
+                        $scope.liste_users.remove(index);
+                    }
+                });
+    
+                $scope.$apply();
+    
             });
-
-            $scope.$apply();
-
         });
+
+        socket.on('reconnect', function () {
+            
+        });
+
+
 
         $scope.disconnect = function () {
             socket.emit('disconnect');
@@ -111,27 +106,39 @@ function initControllers() {
 
         $scope.sendMessage = function () {
 
+            console.log("\n\tEnvoi d'un message\n");
+
             var message = $scope.message_typing;
             message = message.trim();
             if (message !== "") {
-                socket.emit('newmsg', { message: message });
+                socket.emit('message', { 
+                    message: message,
+                    hash: CryptoJS.SHA3(message).toString()
+                });
                 $scope.message_typing = "";
                 $('#new_message input').focus();
             }
         };
 
-        socket.on('newmsge', function (message) {
-            $scope.liste_messages.push(message);
-            $scope.$apply();
+        socket.on('connect', function () {
+
+            socket.on('message', function (message) {
+                console.log('')
+                $scope.liste_messages.push(message);
+                $scope.$apply();
+            });
         });
+
     };
 
 }
 
 
 
-$(document).ready(function () {
+$(window).load(function () {
     "use strict";
+    start();
 });
-start();
 initControllers();
+start();
+

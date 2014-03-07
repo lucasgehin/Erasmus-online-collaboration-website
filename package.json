@@ -22,12 +22,13 @@
     "etherpad-lite-client": "latest",
     "underscore": "*",
     "lodash": "*",
-    "socket.io": "*",
+    "socket.io": "~0.7",
     "request": "*",
     "gzippo": "latest",
     "sequelize": "~1.7.0-rc3",
     "async": "~0.2.10",
-    "session.socket.io": "~0.1.6",
-    "connect": "~2.12.0"
+    "session.socket.io": "latest",
+    "connect": "~2.12.0",
+    "cookie": "^0.1.1"
   }
 }
