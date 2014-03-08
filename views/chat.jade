@@ -81,17 +81,20 @@ html(ng-app)
 								
 									.chat_window
 										.messages(ng-controller="messageController")
-											.message(ng-repeat="message in liste_messages")
-												//img(src="{{{user.avatar}}}")
-												.info
-													span
-														strong 
-															| {{message.user.username}}
-													span.date
-														| {{message.date}}
-												
-												.content 
-													| {{message.message}}
+											.row(ng-repeat="message in liste_messages")
+												.message( ng-class=" message.fromMe ? 'fromMe' : 'fromOther' ")
+													//img(src="{{{user.avatar}}}")
+													.inner
+														.info
+															span
+																strong 
+																	| {{message.user.username}}
+															span.date
+																| {{message.date}}
+														
+														.content 
+															| {{message.message}}
+													
 						.col-xs-2
 							
 									.room

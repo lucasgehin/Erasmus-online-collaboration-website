@@ -1,6 +1,6 @@
 /*jslint browser:true*/
 /*global $*/
-var resize_chat, $load_img, load_count, load_start, load_end;
+var resize_chat, $load_img, load_count, load_start, load_end, can_scroll, previous_scroll_max;
 
 resize_chat = function () {
     "use strict";
@@ -42,3 +42,29 @@ load_end = function () {
         $load_img.fadeOut('slow');
     }
 };
+
+
+/*Scroll automatique*/
+
+$(".chat_window").scroll(function () {
+    "use strict";
+    var elem = $(".chat_window")[0];
+    can_scroll = (elem.scrollTop === elem.scrollTopMax);
+});
+
+previous_scroll_max = 0;
+
+function scrollMsg() {
+    "use strict";
+    var elem, height;
+    elem = $(".chat_window")[0];
+    height = elem.scrollHeight;
+
+    if (can_scroll || previous_scroll_max === 0) {
+        $('.chat_window').clearQueue().animate({
+            scrollTop: height
+        }, 1000);
+        previous_scroll_max = elem.scrollTopMax;
+    }
+
+}

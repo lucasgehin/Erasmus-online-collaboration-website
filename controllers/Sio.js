@@ -210,12 +210,16 @@ Sio = (function () {
             
             if (user) {
 
-                console.log("\n Connexion au chat de " + user.username + " .");
+                console.log("\n Connexion au chat de " + user.username + ".");
                 //console.log(socket.handshake.foo);
 
                 socket.broadcast.emit('newusr', user);
 
-
+                socket.on('whoami', function (no_data, callback) {
+                    try {
+                        callback(user);
+                    } catch (ignore) {}
+                });
 
                 socket.on('get_userlist', function (no_data, callback) {
                     var u, sock, liste_a_envoyer, clients;
@@ -231,25 +235,25 @@ Sio = (function () {
                             liste_a_envoyer[u.id] = u;
                         }
                     });
+                    try {
+                        callback(null, liste_a_envoyer);                        
+                    } catch (ignore) {}
 
-                    callback(null, liste_a_envoyer);
+                });
 
-                    socket.on('message', function (message) {
-                        var date;
-                        date = new Date();
-                        message.user = user;
-                        message.date = new Date();
-                        console.log("\n\n\nNouveau message dans le chat :  " + message.message + " de " + message.user.username + "\n\n\n");
-                        socket.broadcast.emit('message', message);
-                        socket.emit('message', message);
+                socket.on('message', function (message) {
+                    message.user = user;
+                    message.date = new Date();
+                    console.log("\n\n\nNouveau message dans le chat :  " + message.message + " de " + message.user.username + "\n\n\n");
+                    socket.broadcast.emit('message', message);
+                    socket.emit('message', message);
 
-                    });
+                });
 
-                    socket.on('disconnect', function () {
+                socket.on('disconnect', function () {
 
-                        console.log("\n\n\tDisconnect chat " + user.username + "\n\n");
-                        socket.broadcast.emit('leave', user);
-                    });
+                    console.log("\n\n\tDisconnect chat " + user.username + "\n\n");
+                    socket.broadcast.emit('leave', user);
                 });
             }
         });

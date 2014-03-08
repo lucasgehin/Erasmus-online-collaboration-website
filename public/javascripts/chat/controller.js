@@ -10,7 +10,7 @@ Array.prototype.remove = function (from, to) {
 };
 
 
-var socket, userController, messageController;
+var socket, userController, messageController, User;
 
 function start() {
 
@@ -69,12 +69,21 @@ function initControllers() {
                 $scope.$apply();
 
             });
+
+
+
             socket.on('leave', function (user) {
                 delete $scope.liste_users[user.id];
 
                 $scope.$apply();
 
             });
+
+
+            socket.emit('whoami', null, function (user) {
+                User = user;
+            });
+
         });
 
         socket.on('reconnect', function () {
@@ -118,10 +127,13 @@ function initControllers() {
         socket.on('connect', function () {
 
             socket.on('message', function (message) {
-                console.log('')
                 $scope.liste_messages.push(message);
+                if (message.user.id === User.id) {
+                    message.fromMe = true;
+                }
                 $scope.$apply();
                 actualise_date();
+                scrollMsg();
             });
         });
 

@@ -43,6 +43,27 @@ body {
 }
 .chat_window {
   overflow-y: scroll;
+  overflow-x: hidden;
+}
+.chat_window .messages .message {
+  min-width: 40%;
+  max-width: 89%;
+  box-shadow: 0px 0px 5px #808080;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  padding: 1% 2%;
+  word-break: break-all;
+}
+.chat_window .messages .fromMe {
+  margin: 6px 3% 0.5% 0;
+  float: right;
+}
+.chat_window .messages .fromOther {
+  margin: 6px 0 0.5% 3%;
+  float: left;
+}
+.chat_window .messages .date {
+  float: right;
 }
 .people_in_room {
   font-size: 24px;
