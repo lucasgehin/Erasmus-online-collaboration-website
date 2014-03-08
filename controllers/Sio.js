@@ -51,28 +51,55 @@ Sio = (function () {
             transports: ['htmlfile', 'xhr-polling', 'jsonp-polling']
         };
         Sio.io = Socket_io.listen(app, io_options);
-        Sio.sessionSockets = Sio.io;//new SessionSockets(Sio.io, sessionStore, cookieParser);
         Sio.routes();
     };
 
+
+    Sio.getSession = function (handshakeData, callback) {
+        var cookie_string, parsed_cookies, connect_sid;
+
+
+        cookie_string = handshakeData.headers.cookie;
+        parsed_cookies = cookie.parse(cookie_string);
+        connect_sid = parsed_cookies['connect.sid'].split(':')[1].split('.')[0];
+        if (connect_sid) {
+            global.sessionStore.get(connect_sid, function (error, session) {
+                handshakeData.session = session;
+                if (error) {
+                    callback(error, false);
+                } else {
+                    callback(null, true);
+                }
+            });
+        } else {
+            console.log("\n\nCONNECT_SID  pas ok\n\n");
+            callback("Sio.js :: /chat : error at handshake  -> No connect_sid for this socket", false);
+        }
+    };
+
+
     Sio.routes = function () {
-        Sio.sessionSockets.of('/home').on('connection', function (err, socket, session) {
+
+        Sio.io.of('/home').authorization(function (handshakeData, callback) {
+
+            Sio.getSession(handshakeData, callback);
+
+        }).on('connection', function (socket) {
             var user;
 
-            user = session !== undefined ? session.user : undefined;
-            user = user !== undefined ? user.username : undefined;
+            user = socket.handshake.session !== undefined ? socket.handshake.session.user : undefined;
 
-            if (user === undefined) {
+
+            if (!user) {
                 console.log("Demande de connection WS de /home par un anonyme. -> refus");
             } else {
-                console.log("Demande de connection WS de /home par " + user + ". -> ok");
+                console.log("Demande de connection WS de /home par " + user.username + ". -> ok");
 
-
-                socket.emit('message', "Welcome " + user);
+                socket.emit('message', "Welcome " + user.username);
 
                 socket.on("get_users_list", function (no_data, callback) {
 
-                    var id, liste_users_a_envoyer, session_json, sessions, store;
+                    var id, liste_users_a_envoyer, session_json, sessions, session, store;
                     console.log("Sio: Demande de la liste des utilisateurs par " + user);
                     liste_users_a_envoyer = [];
 
@@ -88,7 +115,7 @@ Sio = (function () {
                     Users.find_all(function (err, list_users) {
                         var username, i, j;
 
-                        for (i = 0; i < list_users.length; i++) {
+                        for (i = 0; i < list_users.length; i += 1) {
                             user = list_users[i];
                             user.setDataValue('online', false);
                             for (j = 0; j < sessions.length; j += 1) {
@@ -131,9 +158,13 @@ Sio = (function () {
             }
         });
 
-        Sio.sessionSockets.of('/calendar').on('connection', function (err, socket, session) {
+        Sio.io.of('/calendar').authorization(function (handshakeData, callback) {
 
-            user = session !== undefined ? session.user : undefined;
+            Sio.getSession(handshakeData, callback);
+
+        }).on('connection', function (socket) {
+            var user;
+            user = socket.handshake.session !== undefined ? socket.handshake.session.user : undefined;
 
             if (user) {
                 socket.on("get_events_list", function (no_data, callback) {
@@ -179,35 +210,16 @@ Sio = (function () {
         });
 
 
-        Sio.sessionSockets.of('/chat').authorization(function (handshakeData, callback) {
-            var cookie_string, parsed_cookies, connect_sid;
+        Sio.io.of('/chat').authorization(function (handshakeData, callback) {
 
-            //console.dir(handshakeData);
-            //handshakeData.foo = 'baz';
-
-            cookie_string = handshakeData.headers.cookie;
-            parsed_cookies = cookie.parse(cookie_string);
-            connect_sid = parsed_cookies['connect.sid'].split(':')[1].split('.')[0];
-            if (connect_sid) {
-                global.sessionStore.get(connect_sid, function (error, session) {
-                    handshakeData.session = session;
-                    if (error) {
-                        callback(error, false);
-                    } else {
-                        callback(null, true);
-                    }
-                });
-            } else {
-                console.log("\n\nCONNECT_SID  pas ok\n\n");
-                callback("Sio.js :: /chat : error at handshake  -> No connect_sid for this socket", false);
-            }
+            Sio.getSession(handshakeData, callback);
 
         }).on('connection', function (socket) {
 
-            var user, sock, clients, last_message_hash;
+            var user;
             user = socket.handshake.session !== undefined ? socket.handshake.session.user : undefined;
 
-            
+
             if (user) {
 
                 console.log("\n Connexion au chat de " + user.username + ".");
@@ -222,7 +234,7 @@ Sio = (function () {
                 });
 
                 socket.on('get_userlist', function (no_data, callback) {
-                    var u, sock, liste_a_envoyer, clients;
+                    var u, liste_a_envoyer, clients;
                     console.log("\nget_userslists\n\n");
 
                     liste_a_envoyer = {};
@@ -236,7 +248,7 @@ Sio = (function () {
                         }
                     });
                     try {
-                        callback(null, liste_a_envoyer);                        
+                        callback(null, liste_a_envoyer);
                     } catch (ignore) {}
 
                 });
@@ -286,21 +298,6 @@ set_event_editable = function (event, user) {
 };
 
 
-function getSession(socket, callback) {
-    "use strict";
-    var cookie_string, parsed_cookies, connect_sid;
-    console.log(socket);
-    cookie_string = socket.request.headers.cookie;
-    parsed_cookies = connect.utils.parseCookie(cookie_string);
-    connect_sid = parsed_cookies['connect.sid'];
-    if (connect_sid) {
-        global.sessionStore.get(connect_sid, function (error, session) {
-            callback(error, session);
-        });
-    } else {
-        callback("Sio.js :: getSession  -> No connect_sid for this socket", null);
-    }
-}
 
 exports.Sio = Sio;
 
