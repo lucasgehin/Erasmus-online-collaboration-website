@@ -20,6 +20,10 @@ $(window).on("resize", function () {
 });
 
 
+$(window).load(function () {
+    $(".new_message input").eq(0).focus();
+});
+
 
 
 load_count = 0;
@@ -81,9 +85,7 @@ function scrollMsg(room_name) {
     }
     previous_scroll_max = parseInt(previous_scroll_max, 10);
 
-    console.log(typeof !!can_scroll + "|" + can_scroll);
-    console.log('|' + previous_scroll_max + '|');
-    console.log(can_scroll || previous_scroll_max <= 0);
+
 
     if ((!!can_scroll) || (previous_scroll_max <= 0)) {
         console.log("in");
