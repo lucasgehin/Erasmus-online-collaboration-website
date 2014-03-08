@@ -1,5 +1,5 @@
 /*jslint browser: true*/
-/*global $, io, angular, moment, load_start, load_end*/
+/*global $, io, angular, moment, load_start, load_end, alert, CryptoJS, scrollMsg*/
 
 
 Array.prototype.remove = function (from, to) {
@@ -10,7 +10,7 @@ Array.prototype.remove = function (from, to) {
 };
 
 
-var socket, userController, messageController, User;
+var socket, chatController, messageController, User;
 
 function start() {
 
@@ -41,13 +41,60 @@ function initControllers() {
     /*
         Gère la liste des utilisateurs dans la barre de droite
     */
-    window.userController = function ($scope) {
+
+    chatController = function ($scope) {
 
         $scope.liste_users = [];
+        $scope.liste_rooms = {};
+        $scope.room_joined = {};
+        $scope.active_room = "Global";
 
-        $scope.get_userlist = function () {
+        /*
+            Ces rooms son non suprimables et apparaissent même si elles ne sont pas
+            instanciées dans Socket.io
+        */
 
-            socket.emit('get_userlist', null, function (err, data) {
+        $scope.protected_rooms = ['Global', 'Project1', 'Project2'];
+
+        $scope.is_protected = function (room_name) {
+            var in_array = false;
+            $scope.protected_rooms.forEach(function (value) {
+                if (value === room_name) {
+                    in_array = true;
+                    return false;
+                }
+            });
+
+            return in_array;
+        };
+
+        function get_rooms_list() {
+            socket.emit('get_rooms_list', null, function (list) {
+                console.log(list);
+                var  room_name, short_name;
+                $scope.liste_rooms = {};
+
+                for (room_name in list) {
+                    if (list.hasOwnProperty(room_name) && room_name.length > 5 && room_name.substring(0, 6) === '/chat/') {
+                        short_name = room_name.substring(6); // de 6 à la fin de la chaine
+                        $scope.liste_rooms[short_name] = short_name;
+                    }
+
+                }
+
+                $scope.protected_rooms.forEach(function (room_name) {
+                    $scope.liste_rooms[room_name] = room_name;
+                });
+
+                try {
+                    $scope.$apply();
+                } catch (ignore) {}
+            });
+        }
+
+        function get_userlist(room_name) {
+
+            socket.emit('get_userlist', room_name, function (err, data) {
                 if (err) {
                     console.log(err);
                 } else {
@@ -57,26 +104,31 @@ function initControllers() {
                 }
             });
 
-        };
+        }
 
         socket.on('connect', function () {
-            $scope.get_userlist();
+            get_rooms_list();
+            get_userlist($scope.active_room);
+            $scope.room_joined[$scope.active_room] = $scope.active_room;
+            
             socket.on('newusr', function (user) {
 
-                console.log(user);
-                $scope.liste_users[user.id] = user;
-
+                get_userlist($scope.active_room);
                 $scope.$apply();
 
             });
 
+            socket.on('user_joined_a_room', function (room){
+                $scope.liste_rooms[room] = room;
+                $scope.$apply();
+            });
 
+            setInterval(get_rooms_list, 30000);
 
             socket.on('leave', function (user) {
                 delete $scope.liste_users[user.id];
 
                 $scope.$apply();
-
             });
 
 
@@ -96,28 +148,59 @@ function initControllers() {
             socket.emit('disconnect');
         };
 
-    };
+        $scope.create_room = function ($event, click) {
+            var new_room_name;
+            if (click || $event.which === 13) {
+                new_room_name = $scope.new_room_name;
+                $scope.subscribe(new_room_name);
+                $scope.new_room_name = "";
+            }
+        };
+
+        $scope.subscribe = function (room_name) {
+            socket.emit('subscribe', room_name, function () {
+                $scope.active_room = room_name;
+                $scope.room_joined[room_name] = room_name;
+                get_rooms_list();
+                get_userlist(room_name);
+            });
+
+        };
+
+        $scope.leave = function (room_name, $event) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            socket.emit('unsubscribe', room_name, function () {
+                $scope.active_room = 'Global';
+                get_rooms_list();
+                get_userlist($scope.active_room);
+                delete $scope.room_joined[room_name];
+                $scope.$apply();
+            });
+        };
 
 
-    /*
-        Gère la liste des messages dans la colonne centrale
-    */
-    messageController = function ($scope) {
+        /* 
 
-        $scope.liste_messages = [];
+        Partie Messages 
+
+
+        */
+
+
+        $scope.liste_messages = {};
 
         $scope.message_typing = "";
 
         $scope.sendMessage = function () {
-
-            console.log("\n\tEnvoi d'un message\n");
 
             var message = $scope.message_typing;
             message = message.trim();
             if (message !== "") {
                 socket.emit('message', { 
                     message: message,
-                    hash: CryptoJS.SHA3(message).toString()
+                    hash: CryptoJS.SHA3(message).toString(),
+                    for: $scope.active_room
                 });
                 $scope.message_typing = "";
                 $('#new_message input').focus();
@@ -127,7 +210,10 @@ function initControllers() {
         socket.on('connect', function () {
 
             socket.on('message', function (message) {
-                $scope.liste_messages.push(message);
+                if (!$scope.liste_messages[message.for]) {
+                    $scope.liste_messages[message.for] = [];
+                }
+                $scope.liste_messages[message.for].push(message);
                 if (message.user.id === User.id) {
                     message.fromMe = true;
                 }

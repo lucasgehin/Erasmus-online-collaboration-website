@@ -12,6 +12,9 @@ body {
   border-radius: 5px;
   height: 90%;
 }
+.room-container {
+  padding: 0;
+}
 #ajaxloader {
   position: fixed;
   top: 310px;
@@ -24,15 +27,18 @@ body {
   overflow-y: scroll;
   text-align: center;
 }
+.room .well {
+  margin-bottom: 0;
+}
 .room .liste {
   text-align: left;
-}
-.room .liste ul {
-  padding-left: 10%;
 }
 .people {
   overflow-y: scroll;
   text-align: center;
+}
+.people .well {
+  margin-bottom: 0;
 }
 .people #users {
   text-align: left;
@@ -74,4 +80,19 @@ body {
   display: inline-block;
   margin-top: 0.3%;
   width: 60px;
+}
+.create_room {
+  float: right;
+  width: 65%;
+}
+.input-group-addon {
+  cursor: pointer;
+}
+.leave-room {
+  color: #f00;
+  cursor: pointer;
+  font-size: 1.1em;
+}
+.leave-room:hover {
+  text-shadow: 0 0 4px #f00;
 }

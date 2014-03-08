@@ -225,7 +225,11 @@ Sio = (function () {
                 console.log("\n Connexion au chat de " + user.username + ".");
                 //console.log(socket.handshake.foo);
 
-                socket.broadcast.emit('newusr', user);
+                socket.join('Global'); // join global room
+
+                socket.broadcast.to('Global').emit('newusr', user);
+
+
 
                 socket.on('whoami', function (no_data, callback) {
                     try {
@@ -233,13 +237,37 @@ Sio = (function () {
                     } catch (ignore) {}
                 });
 
-                socket.on('get_userlist', function (no_data, callback) {
+
+                socket.on('subscribe', function (room_name, callback) {
+                    socket.join(room_name);
+                    socket.broadcast.emit('user_joined_a_room', room_name);
+                    callback();
+                });
+                socket.on('unsubscribe', function (room_name, callback) {
+                    socket.leave(room_name);
+                    callback();
+                });
+
+
+                socket.on('get_rooms_list', function (no_data, callback) {
+                    try {
+                        callback(Sio.io.sockets.manager.rooms);
+                    } catch (ignore) {}
+                });
+
+
+
+                socket.on('get_userlist', function (current_room, callback) {
                     var u, liste_a_envoyer, clients;
                     console.log("\nget_userslists\n\n");
 
                     liste_a_envoyer = {};
 
-                    clients = Sio.io.of('/chat').clients();
+                    if (!current_room) {
+                        current_room = 'Global'; // La room principale (globale) s'appelle '' (chaine vide) (défini par socket.io)
+                    }
+
+                    clients = Sio.io.of('/chat').clients(current_room);
 
                     clients.forEach(function (sock) {
                         if (sock.handshake.session) {
@@ -252,6 +280,7 @@ Sio = (function () {
                     } catch (ignore) {}
 
                 });
+
 
                 socket.on('message', function (message) {
                     message.user = user;

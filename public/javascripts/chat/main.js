@@ -8,7 +8,8 @@ resize_chat = function () {
     height_chat = $(window).height() - $('.navbar').height() * 1.55;
     height_chat_tools = $("#chat-tools").height();
     $("#chat").height(height_chat);
-    $(".people, .room, .chat_window").height(height_chat - (height_chat_tools * 1.5));
+    $(".people, .room").height(height_chat - (height_chat_tools * 1.5));
+    $(".chat_window").height(height_chat - (height_chat_tools * 3));
 };
 
 resize_chat();
