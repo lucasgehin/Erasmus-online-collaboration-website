@@ -76,7 +76,7 @@ html(ng-app)
 											li.list-group-item(ng-repeat="user in liste_users")
 												.user
 													img(ng-src="/images/Country/{{user.country.name}}.jpg", alt="{{user.country.name}}")
-													a.infoUser(href="#", rel="popover", data-content=" From {{user.country.name}}", data-original-title="{{user.username}}")
+													a.infoUser(href="#", rel="popover", data-placement="bottom", data-content=" From {{user.country.name}}", data-original-title="{{user.username}}")
 														| &emsp;{{user.username}}
 						.col-xs-8								
 								ul.nav.nav-tabs
