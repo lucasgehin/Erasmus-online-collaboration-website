@@ -76,7 +76,8 @@ html(ng-app)
 											li.list-group-item(ng-repeat="user in liste_users")
 												.user
 													img(ng-src="/images/Country/{{user.country.name}}.jpg", alt="{{user.country.name}}")
-													| &emsp;{{user.username}}
+													a.infoUser(href="#", rel="popover", data-content=" From {{user.country.name}}", data-original-title="{{user.username}}")
+														| &emsp;{{user.username}}
 						.col-xs-8								
 								ul.nav.nav-tabs
 									li(ng-repeat="room in room_joined track by $index", ng-class=" room == active_room ? 'active' : '' ", ng-click="subscribe(room)")

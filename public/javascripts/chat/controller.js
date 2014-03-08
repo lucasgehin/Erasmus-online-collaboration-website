@@ -101,6 +101,7 @@ function initControllers() {
                     console.log(data);
                     $scope.liste_users = data;
                     $scope.$apply();
+                    $(".infoUser").popover();
                 }
             });
 
@@ -115,6 +116,7 @@ function initControllers() {
 
                 get_userlist($scope.active_room);
                 $scope.$apply();
+                $(".infoUser").popover();
 
             });
 
@@ -249,6 +251,8 @@ $(window).load(function () {
     start();
     setTimeout(actualise_date, 60000);
 });
+
+
 initControllers();
 start();
 

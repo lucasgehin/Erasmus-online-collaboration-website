@@ -9,7 +9,6 @@ body
 	color red
 
 #chat
-
 	background-color #FFFE
 	padding 1%
 	border-radius 5px
@@ -44,6 +43,7 @@ body
 .people
 	
 	overflow-y scroll
+	
 
 	text-align center
 
@@ -55,6 +55,11 @@ body
 		ul
 			list-style-type none
 			padding 0
+
+a#infoUser
+	color inherit
+	text-decoration none
+
 
 .chat_window
 	
@@ -90,6 +95,7 @@ body
 	display inline-block
 	margin-top 0.3%
 	width 60px
+
 
 .create_room
 	float right
@@ -161,31 +167,32 @@ that has the .repeated-item class
 @-webkit-keyframes my_animation 
 
 	from 
-	 opacity:1; 
+		opacity 1
+
 	
 	to 
-	 opacity:0; 
+		opacity 0
 	
 
 
  
 @-moz-keyframes my_animation 
 
-from 
- opacity:1; 
-
-to 
- opacity:0; 
-
+	from 
+		opacity 1
+	
+	to 
+		opacity 0
+	
 
 
  
 @-o-keyframes my_animation 
 
-from 
- opacity:1; 
-
-to 
- opacity:0; 
+	from 
+		opacity 1
+	
+	to 
+		opacity 0
 
 
