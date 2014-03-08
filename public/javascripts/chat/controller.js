@@ -44,7 +44,7 @@ function initControllers() {
 
     chatController = function ($scope) {
 
-        $scope.liste_users = [];
+        $scope.liste_users = {};
         $scope.liste_rooms = {};
         $scope.room_joined = {};
         $scope.active_room = "Global";
@@ -219,9 +219,13 @@ function initControllers() {
                 if (message.user.id === User.id) {
                     message.fromMe = true;
                 }
+
+                if (!$scope.liste_users[message.user.id]) {
+                    get_userlist($scope.active_room);
+                }
                 $scope.$apply();
                 actualise_date();
-                scrollMsg();
+                scrollMsg($scope.active_room);
             });
         });
 

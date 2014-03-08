@@ -58,22 +58,26 @@ Sio = (function () {
     Sio.getSession = function (handshakeData, callback) {
         var cookie_string, parsed_cookies, connect_sid;
 
+        try {
 
-        cookie_string = handshakeData.headers.cookie;
-        parsed_cookies = cookie.parse(cookie_string);
-        connect_sid = parsed_cookies['connect.sid'].split(':')[1].split('.')[0];
-        if (connect_sid) {
-            global.sessionStore.get(connect_sid, function (error, session) {
-                handshakeData.session = session;
-                if (error) {
-                    callback(error, false);
-                } else {
-                    callback(null, true);
-                }
-            });
-        } else {
-            console.log("\n\nCONNECT_SID  pas ok\n\n");
-            callback("Sio.js :: /chat : error at handshake  -> No connect_sid for this socket", false);
+            cookie_string = handshakeData.headers.cookie;
+            parsed_cookies = cookie.parse(cookie_string);
+            connect_sid = parsed_cookies['connect.sid'].split(':')[1].split('.')[0];
+            if (connect_sid) {
+                global.sessionStore.get(connect_sid, function (error, session) {
+                    handshakeData.session = session;
+                    if (error) {
+                        callback(error, false);
+                    } else {
+                        callback(null, true);
+                    }
+                });
+            } else {
+                console.log("\n\nCONNECT_SID  pas ok\n\n");
+                callback("Sio.js :: /chat : error at handshake  -> No connect_sid for this socket", false);
+            }
+        } catch (error) {
+            callback(error, false);
         }
     };
 

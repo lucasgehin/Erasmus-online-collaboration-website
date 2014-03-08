@@ -47,25 +47,51 @@ load_end = function () {
 
 /*Scroll automatique*/
 
-$(".chat_window").scroll(function () {
+function rewatch_scroll() {
     "use strict";
-    var elem = $(".chat_window")[0];
-    can_scroll = (elem.scrollTop === elem.scrollTopMax);
-});
+    $(".chat_window").scroll(function () {
+        var $chat_window = $(this)[0];
+        //console.log($chat_window.scrollTop + "|" + $chat_window.scrollTopMax);
+        $($chat_window).attr('can_scroll', ($chat_window.scrollTop === $chat_window.scrollTopMax));
+    });
+}
 
-previous_scroll_max = 0;
 
-function scrollMsg() {
+
+function scrollMsg(room_name) {
     "use strict";
-    var elem, height;
-    elem = $(".chat_window")[0];
-    height = elem.scrollHeight;
 
-    if (can_scroll || previous_scroll_max === 0) {
-        $('.chat_window').clearQueue().animate({
+    var $elem, height, can_scroll, $chat_window;
+    $elem = $(".tab-pane[name='" + room_name + "']");
+    $chat_window = $elem.find('.chat_window')[0];
+
+    rewatch_scroll();
+
+    height = $chat_window.scrollHeight;
+    can_scroll = $($chat_window).attr('can_scroll');
+
+    if (can_scroll === undefined) {
+        can_scroll = false;
+    }
+    can_scroll = (can_scroll === "true");
+
+    previous_scroll_max = $($chat_window).attr('previous_scroll_max');
+    if (!previous_scroll_max) {
+        previous_scroll_max = 0;
+    }
+    previous_scroll_max = parseInt(previous_scroll_max, 10);
+
+    console.log(typeof !!can_scroll + "|" + can_scroll);
+    console.log('|' + previous_scroll_max + '|');
+    console.log(can_scroll || previous_scroll_max <= 0);
+
+    if ((!!can_scroll) || (previous_scroll_max <= 0)) {
+        console.log("in");
+        $($chat_window).clearQueue().animate({
             scrollTop: height
         }, 1000);
-        previous_scroll_max = elem.scrollTopMax;
+        $($chat_window).attr('previous_scroll_max', $chat_window.scrollTopMax);
+
     }
 
 }
