@@ -68,6 +68,7 @@ html(ng-app)
 					.row#chat-display
 						.col-xs-2
 							.row
+									
 									.people
 										.well.well-sm
 											| In this room
@@ -75,8 +76,17 @@ html(ng-app)
 											ul
 												li(ng-repeat="user in liste_users")
 													.user
+														
 														img(ng-src="/images/Country/{{user.country.name}}.jpg", alt="{{user.country.name}}")
-														| &emsp;{{user.username}}
+														a( href="#" id="infoUser" rel="popover" data-content=" From {{user.country.name}}" data-original-title="{{user.username}}")
+															| &emsp;{{user.username}}
+														
+														script
+															$(function (){
+															$("#infoUser").popover();
+															});
+															
+														
 						.col-xs-8
 								
 									.chat_window
