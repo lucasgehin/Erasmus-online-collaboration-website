@@ -75,3 +75,7 @@ body {
   margin-top: 0.3%;
   width: 60px;
 }
+a#infoUser {
+  color: inherit;
+  text-decoration: none;
+}

@@ -163,6 +163,8 @@ $(window).load(function () {
     start();
     setTimeout(actualise_date, 60000);
 });
+
+
 initControllers();
 start();
 
