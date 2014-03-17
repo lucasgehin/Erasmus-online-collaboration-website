@@ -112,6 +112,12 @@ a#infoUser
 	text-shadow 0 0 4px red
 
 
+.message-missed
+	.count
+		color green
+		font-weight bold
+
+
 
 // Angular Animations
 
@@ -136,30 +142,36 @@ a#infoUser
 	are set so that the animation knows what to
 	animate.
 */
-.repeated-item.ng-enter.ng-enter-active, .repeated-item.ng-move.ng-move-active 
-	opacity 1
+
  
 /*
 We're using CSS keyframe animations for when
 the leave event is triggered for the element
 that has the .repeated-item class
 */
-.repeated-item.ng-leave
-	-webkit-animation 0.5s my_animation
-	-moz-animation 0.5s my_animation
-	-o-animation 0.5s my_animation
-	animation 0.5s my_animation
+.ng-enter
+	-webkit-animation 0.6s message_appear
+	-moz-animation 0.6s message_appear
+	-o-animation 0.6s message_appear
+	animation 0.6s message_appear
 
-@keyframes my_animation 
+.ng-leave
+	-webkit-animation 0.6s message_appear  reverse
+	-moz-animation 0.6s message_appear reverse
+	-o-animation 0.6s message_appear reverse
+	animation 0.6s message_appear reverse
 
+
+@keyframes message_appear
 	from 
-		opacity	1
+		opacity	0
 	to 
-		opacity	0 
+		opacity	1 
 
 
 
- 
+
+
 /*
 	Unfortunately each browser vendor requires
 	its own definition of keyframe animation code...

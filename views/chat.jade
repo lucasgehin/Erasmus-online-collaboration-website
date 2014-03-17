@@ -1,5 +1,5 @@
 doctype html
-html(ng-app)
+html(ng-app="chat")
 	head
 		title Chat - IpVIOPE
 
@@ -80,18 +80,22 @@ html(ng-app)
 														| &emsp;{{user.username}}
 						.col-xs-8								
 								ul.nav.nav-tabs
-									li(ng-repeat="room in room_joined track by $index", ng-class=" room == active_room ? 'active' : '' ", ng-click="subscribe(room)")
-										a(href="#{{room}}" data-toggle="tab")
-											| {{room}} 
-											span.leave-room(ng-click="leave(room, $event)", ng-hide="is_protected(room)")
+									li(ng-repeat="(key, room) in room_joined track by $index", ng-class="{ 'active' : room.room_name == active_room}", ng-click="subscribe(room.room_name)")
+										a(href="#{{room.room_name}}", data-toggle="tab" )
+											| {{room.room_name}}
+											span.message-missed(ng-show="room.new_message_count > 0" )
+												| (
+												span.count {{room.new_message_count}}
+												| )
+											span.leave-room(ng-click="leave(room.room_name, $event)", ng-hide="is_protected(room.room_name)")
 												|  &cross;
 								
 								<!-- Tab panes -->
 								.tab-content
-									.tab-pane.fade.in(ng-repeat="room in room_joined track by $index" , ng-class=" room == active_room ? 'active' : '' ", name="{{room}}")
+									.tab-pane.fade.in(ng-repeat="(key, room) in room_joined track by $index" , ng-class=" room.room_name == active_room ? 'active' : '' ", name="{{room.room_name}}")
 										.chat_window
 											.messages
-												.row(ng-repeat="message in liste_messages[room]")
+												.row(ng-repeat="message in liste_messages[room.room_name]")
 													.message( ng-class=" message.fromMe ? 'fromMe' : 'fromOther' ")
 														//img(src="{{{user.avatar}}}")
 														.inner
@@ -111,7 +115,7 @@ html(ng-app)
 									.liste
 										ul.list-group
 											li.list-group-item(ng-repeat="room in liste_rooms")
-												a(href='', ng-click="")
+												a(href='', ng-click="subscribe(room)")
 													{{room}}		
 					.row#chat-tools
 						.col-xs-3
@@ -132,12 +136,16 @@ html(ng-app)
 
 		script(type='text/javascript', src='/javascripts/jquery-1.10.2.min.js')
 		script(type='text/javascript', src='/javascripts/angular.js')
+		script(type='text/javascript', src='/javascripts/angular-animate.js')
 		script(src="/javascripts/sha3.js")
 		script(src="/javascripts/moment.min.js")
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
 		script(type='text/javascript', src='/javascripts/chat/main.js')		
 		script(type='text/javascript', src='/javascripts/chat/controller.js')
 
-		
+		audio#snd-message
+			source(src="/sounds/test.mp3")
+			source(src="/sounds/test.ogg")
+
 
 
