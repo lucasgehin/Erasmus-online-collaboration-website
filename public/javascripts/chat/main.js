@@ -1,6 +1,6 @@
 /*jslint browser:true*/
 /*global $*/
-var resize_chat, $load_img, load_count, load_start, load_end, can_scroll, previous_scroll_max;
+var resize_chat, $load_img, load_count, load_start, load_end, can_scroll, previous_scroll_max, delay;
 
 resize_chat = function () {
     "use strict";
@@ -27,6 +27,7 @@ $(window).load(function () {
 
 
 load_count = 0;
+delay = null;
 
 $load_img = $('#ajaxloader');
 
@@ -36,6 +37,7 @@ load_start = function () {
         $load_img.fadeIn('fast');
     }
     load_count += 1;
+    delay = setTimeout(load_end, 4000);
 };
 
 load_end = function () {

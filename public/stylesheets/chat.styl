@@ -1,7 +1,7 @@
 body
 	padding 0 1%
 
-	background-image url("/images/backgrounds/main-rzd.jpg")
+	background-image url("/images/backgrounds/chat.jpg")
 	background-size cover
 	
 
@@ -9,7 +9,7 @@ body
 	color red
 
 #chat
-	background-color #FFFE
+	background-color rgba(255, 255, 255, 0.5)
 	padding 1%
 	border-radius 5px
 	height 90%
@@ -22,10 +22,10 @@ body
 #ajaxloader
 	position fixed
 	
-	top 310px
-	left 50%
+	top 6px
+	right 116px
 	margin-left -65px
-	width 128px
+	width 41px
 	display none
 
 .room
@@ -73,6 +73,7 @@ a#infoUser
 			max-width 89%
 			box-shadow 0px 0px 5px gray
 			border 1px solid white
+			background-color rgba(255,255,255,0.7)
 			border-radius 5px
 			padding 1% 2%
 			word-break break-all
@@ -112,12 +113,22 @@ a#infoUser
 	text-shadow 0 0 4px red
 
 
+
+
+
 .message-missed
 	.count
 		color green
 		font-weight bold
 
 
+#localVideo
+	position: fixed;
+	top: 1%;
+	left: 50%;
+	video
+		max-width: 100px;
+		/* height: 500px; */
 
 // Angular Animations
 

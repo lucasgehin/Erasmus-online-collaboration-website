@@ -131,6 +131,11 @@ html(ng-app="chat")
 									input.form-control(ng-model="new_room_name", placeholder="New room", ng-keyup="create_room($event)" )
 									span.input-group-addon(ng-click="create_room(null, true)")
 										b &rarr;
+			.conference.container-fluid
+				.col-xs-12
+					.row.remotesVideos
+					.row#localVideo
+
 
 		img#ajaxloader(src="/images/ajax-loader.gif", alt='')
 
@@ -140,7 +145,8 @@ html(ng-app="chat")
 		script(src="/javascripts/sha3.js")
 		script(src="/javascripts/moment.min.js")
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
-		script(type='text/javascript', src='/javascripts/chat/main.js')		
+		script(type="text/javascript", src="/javascripts/chat/simplewebrtc.js")
+		script(type='text/javascript', src='/javascripts/chat/main.js')
 		script(type='text/javascript', src='/javascripts/chat/controller.js')
 
 		audio#snd-message
