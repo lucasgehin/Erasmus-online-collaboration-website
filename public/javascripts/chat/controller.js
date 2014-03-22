@@ -166,18 +166,39 @@ function initControllers() {
             }
         };
 
-        $scope.subscribe = function(room_name) {
-            socket.emit('subscribe', room_name, function() {
-                $scope.active_room = room_name;
+        $scope.subscribe = function (room_name) {
+            socket.emit('subscribe', room_name, function () {
                 $scope.room_joined[room_name] = {
                     room_name : room_name,
                     new_message_count: 0
                 };
+                $scope.active_room = room_name;
                 get_rooms_list();
                 get_userlist(room_name);
+                setTimeout(function () {
+                    actualise_date();
+                }, 200);
             });
 
+
+            //socket.emit('get_messages', room_name, function (err, messages) {
+            //    delete $scope.liste_messages[room_name];
+            //    $scope.liste_messages[room_name] = [];
+            //    for (var i = 0; i < messages.length; i++) {
+            //        messages[i].message = messages[i].content;
+            //        messages[i].fromMe = (messages[i].user.id === User.id);
+            //        $scope.liste_messages[room_name].push( messages[i] );
+            //    }
+            //    scrollMsg(room_name);
+            //
+            //    $scope.$apply();
+            //});
         };
+
+        //socket.on('connect', function(){
+        //    $scope.subscribe('Global');
+        //});
+
 
         $scope.leave = function(room_name, $event) {
             $event.preventDefault();
@@ -185,13 +206,16 @@ function initControllers() {
             if ($scope.calling && room_name === $scope.webrtc.active_room){
                 $scope.end_call();
             }
-            socket.emit('unsubscribe', room_name, function() {
-                $scope.active_room = 'Global';
-                get_rooms_list();
-                get_userlist($scope.active_room);
-                delete $scope.room_joined[room_name];
-                $scope.$apply();
-            });
+            if (!$scope.is_protected(room_name)) {
+
+                socket.emit('unsubscribe', room_name, function() {
+                    $scope.active_room = 'Global';
+                    get_rooms_list();
+                    get_userlist($scope.active_room);
+                    $scope.$apply();
+                });
+            }
+            delete $scope.room_joined[room_name];
         };
 
 
@@ -206,6 +230,11 @@ function initControllers() {
         $scope.liste_messages = {};
 
         $scope.message_typing = "";
+
+        function replaceURLWithHTMLLinks(text) {
+            var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+            return text.replace(exp, "<a class='link_output' href='$1', target='_blanck'>$1</a>"); 
+        }
 
         $scope.sendMessage = function() {
 
@@ -226,8 +255,7 @@ function initControllers() {
 
             socket.on('message', function(message) {
                 if (!$scope.liste_messages[message.for]) {
-                    $scope.liste_messages[message.
-                        for] = [];
+                    $scope.liste_messages[message.for] = [];
                 }
                 if ($scope.active_room !== message.for) {
                     if ($scope.room_joined[message.for]) {
@@ -235,8 +263,8 @@ function initControllers() {
                         room.new_message_count += 1;
                     }
                 }
-                $scope.liste_messages[message.
-                    for].push(message);
+                message.date = new Date();
+                $scope.liste_messages[message.for].push(message);
                 if (message.user.id === User.id) {
                     message.fromMe = true;
                 }
@@ -245,6 +273,10 @@ function initControllers() {
                     get_userlist($scope.active_room);
                 }
                 $scope.$apply();
+                $(".message .content").html(function(i, text){
+                    var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+                    return text.replace(exp, "<a class='link_output' href='$1', target='_blanck'>$1</a>"); 
+                });
                 actualise_date();
                 scrollMsg($scope.active_room);
             });
@@ -355,7 +387,7 @@ function initControllers() {
 function actualise_date() {
     "use strict";
     var date, parsedDate, moment_date, previous;
-    $(".message .date").each(function() {
+    $(".message .date").each(function () {
         date = $(this);
         previous = date.attr('title');
         if (!previous) {

@@ -1,6 +1,6 @@
 
 
-var underscore, Events, News, Projects, SessionSockets, Sio, Socket_io, Users, event_is_editable, root, set_event_editable, liste_users, async;
+var underscore, Events, News, Projects, SessionSockets, Sio, Socket_io, Users, event_is_editable, root, set_event_editable, liste_users, async, Rooms;
 
 
 underscore = require('underscore');
@@ -22,6 +22,8 @@ News = require('./News').News;
 Projects = require('./Projects').Projects;
 
 Events = require('./Events').Events;
+
+Rooms = require('./Rooms').Rooms;
 
 
 
@@ -285,6 +287,16 @@ Sio = (function () {
 
                 });
 
+                socket.on('get_messages', function (room_name, callback) {
+                    
+                    if (room_name) {
+                        Rooms.getMessages(room_name, function (err, list) {
+                            callback(null, list);
+                        });
+                    }
+                });
+
+
 
                 socket.on('message', function (message) {
                     message.user = user;
@@ -292,11 +304,11 @@ Sio = (function () {
                     console.log("\n\n\nNouveau message dans le chat :  " + message.message + " de " + message.user.username + "\n\n\n");
                     socket.broadcast.emit('message', message);
                     socket.emit('message', message);
-
+                    message.content = message.message;
+                    Rooms.addMessage(message.for, message);
                 });
 
                 socket.on('disconnect', function () {
-
                     console.log("\n\n\tDisconnect chat " + user.username + "\n\n");
                     socket.broadcast.emit('leave', user);
                 });

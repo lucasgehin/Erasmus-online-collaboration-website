@@ -90,7 +90,7 @@ function scrollMsg(room_name) {
 
 
     if ((!!can_scroll) || (previous_scroll_max <= 0)) {
-        console.log("in");
+        //console.log("in");
         $($chat_window).clearQueue().animate({
             scrollTop: height
         }, 1000);

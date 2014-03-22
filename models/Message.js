@@ -21,9 +21,7 @@ module.exports = function (sequelize, DataTypes) {
     }, {
         classMethods: {
             associate: function (models) {
-                Message.belongsTo(models.User, {
-                    as: 'author'
-                });
+                Message.belongsTo(models.User);
                 Message.belongsTo(models.Room);
             }
         }

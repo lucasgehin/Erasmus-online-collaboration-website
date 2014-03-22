@@ -98,7 +98,7 @@ html(ng-app="chat")
 												| (
 												span.count {{room.new_message_count}}
 												| )
-											span.leave-room(ng-click="leave(room.room_name, $event)", ng-hide="is_protected(room.room_name)")
+											span.leave-room(ng-click="leave(room.room_name, $event)", ng-hide="false && is_protected(room.room_name)")
 												|  &cross;
 								
 								<!-- Tab panes -->

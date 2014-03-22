@@ -9,14 +9,10 @@ module.exports = function (sequelize, DataTypes) {
     "use strict";
     var Room;
     Room = sequelize.define('Room', {
-        id: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            autoIncrement: true,
-            primaryKey: true
-        },
         name: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            primaryKey: true
         }
     }, {
         classMethods: {
