@@ -107,56 +107,29 @@ $(document).ready(function () {
 
 
 // create our webrtc connection
-var webrtc = new SimpleWebRTC({
+window.webrtc = new SimpleWebRTC({
     // the id/element dom element that will hold "our" video
     localVideoEl: 'local',
     // the id/element dom element that will hold remote videos
     remoteVideosEl: '',
     // immediately ask for camera access
-    autoRequestMedia: true,
+    autoRequestMedia: false,
     debug: false,
     detectSpeakingEvents: true,
     autoAdjustMic: true
 });
 
-var webcamsVisible = false, timeToShow = 500, defaultVideoWith = "100", defaultVideoHeight = "75";
-webrtc.on('readyToCall', function () {
-    //alert("prêt");
-    webrtc.joinRoom('test');
-    //webrtc.mute();
 
-    function next() {
-        var time = timeToShow;
-        $('.conference').find('video').each(function () {
-            $(this).fadeIn(time);
-            time += 250;
-        });
-        
-    }
-
-    if (!webcamsVisible) {
-        $('.conference').animate({
-            height: '85px',
-            'margin-bottom': '1%'
-        }, 600, next);
-        $("#chat").animate({
-            height: '100%'
-        });
-        webcamsVisible = true;
-    } else {
-        next();
-    }
-
-});
+var defaultVideoWith = "100", defaultVideoHeight = "75";
 
 
-webrtc.on('videoAdded', function (video, peer) {
+window.webrtc.on('videoAdded', function (video, peer) {
     console.log('video added', peer);
     var remotes = document.getElementById('remote');
     if (remotes) {
         var d = document.createElement('div');
         d.className = 'videoContainer';
-        d.id = 'container_' + webrtc.getDomId(peer);
+        d.id = 'container_' + window.webrtc.getDomId(peer);
         d.appendChild(video);
         var vol = document.createElement('div');
         vol.id = 'volume_' + peer.id;
@@ -207,7 +180,7 @@ webrtc.on('videoAdded', function (video, peer) {
         time += 250;
     });
 });
-webrtc.on('videoRemoved', function (video, peer) {
+window.webrtc.on('videoRemoved', function (video, peer) {
     console.log('video removed ', peer);
     var remotes = document.getElementById('remote');
     var el = document.getElementById('container_' + webrtc.getDomId(peer));
@@ -215,4 +188,3 @@ webrtc.on('videoRemoved', function (video, peer) {
         remotes.removeChild(el);
     }
 });
-

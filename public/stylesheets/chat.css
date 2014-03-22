@@ -6,6 +6,24 @@ body {
 .logout-btn {
   color: #f00;
 }
+.navbar {
+  z-index: 9000;
+}
+#arrowIndicator {
+  position: absolute;
+  display: none;
+  z-index: 9001;
+  top: 0;
+  left: 50%;
+  margin-left: -0.75em;
+  color: #1778ff;
+  text-shadow: 0 0 100px #fff;
+  font-size: 10em;
+  -webkit-animation: 0.6s attentionWebcam infinite alternate;
+  -moz-animation: 0.6s attentionWebcam infinite alternate;
+  -o-animation: 0.6s attentionWebcam infinite alternate;
+  animation: 0.6s attentionWebcam infinite alternate;
+}
 #chat {
   background-color: rgba(255,255,255,0.5);
   padding: 1%;
@@ -107,6 +125,7 @@ a#infoUser {
 }
 .conference {
   position: relative;
+  opacity: 0;
 }
 .conference #videos {
   position: absolute;
@@ -114,7 +133,7 @@ a#infoUser {
   width: 100%;
 }
 .conference #videos .videoContainer {
-  float: right;
+  display: inline-block;
 }
 .conference #videos .videoContainer .volume_bar {
   width: 1%;
@@ -126,6 +145,7 @@ a#infoUser {
 .conference #local,
 .conference #remote {
   text-align: right;
+  max-height: 85px;
 }
 .conference #remote video {
   display: inline-flex;
@@ -138,6 +158,26 @@ a#infoUser {
   background-color: rgba(0,0,0,0.5);
   width: 100px;
   opacity: 1;
+}
+.conference #mute-container {
+  text-align: center;
+}
+.conference #mute-container #mute {
+  margin: 31%;
+  font-size: 2em;
+}
+.call {
+  color: #008000;
+  cursor: pointer;
+}
+#mute {
+  cursor: pointer;
+}
+.glyphicon-volume-up {
+  color: #008000;
+}
+.glyphicon-volume-off {
+  color: #808080;
 }
 /*
 	We're using CSS transitions for when
@@ -205,6 +245,51 @@ that has the .repeated-item class
 
   100% {
     opacity: 0;
+  }
+}
+@-moz-keyframes attentionWebcam {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: 30px;
+  }
+}
+@-webkit-keyframes attentionWebcam {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: 30px;
+  }
+}
+@-o-keyframes attentionWebcam {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: 30px;
+  }
+}
+@-ms-keyframes attentionWebcam {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: 30px;
+  }
+}
+@keyframes attentionWebcam {
+  0% {
+    top: 0;
+  }
+
+  100% {
+    top: 30px;
   }
 }
 @-moz-keyframes message_appear {

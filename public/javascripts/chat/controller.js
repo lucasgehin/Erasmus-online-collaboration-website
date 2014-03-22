@@ -46,7 +46,7 @@ function initControllers() {
         Gère la liste des utilisateurs dans la barre de droite
     */
 
-    chatController = function($scope) {
+    chatController = function($scope, $window) {
 
         $scope.liste_users = {};
         $scope.liste_rooms = {};
@@ -74,7 +74,7 @@ function initControllers() {
 
         function get_rooms_list() {
             socket.emit('get_rooms_list', null, function(list) {
-                console.log(list);
+                //console.log(list);
                 var room_name, short_name;
                 $scope.liste_rooms = {};
 
@@ -102,7 +102,7 @@ function initControllers() {
                 if (err) {
                     console.log(err);
                 } else {
-                    console.log(data);
+                    //console.log(data);
                     $scope.liste_users = data;
                     $scope.$apply();
                     $(".infoUser").popover();
@@ -246,6 +246,104 @@ function initControllers() {
                 scrollMsg($scope.active_room);
             });
         });
+
+
+
+
+        /*
+
+
+            Partie WebRTC
+
+
+        */
+
+        $scope.calling = false;
+        $scope.webrtc = $window.webrtc;
+
+        $scope.muted = false;
+
+        $scope.call = function (room_name, $event) {
+            $event.stopPropagation();
+            $event.preventDefault();
+
+            if ($scope.calling) {
+                $scope.end_call();
+            } else {
+                $scope.calling = true;
+                $scope.webrtc.startLocalVideo();
+                $("#arrowIndicator").fadeIn('slow');
+            }
+        };
+
+        $scope.end_call = function () {
+            $scope.calling = false;
+            $scope.webrtc.leaveRoom($scope.webrtc.active_room);
+            delete $scope.webrtc.active_room;
+            $scope.webrtc.stopLocalVideo();
+            $('.conference').find('video').fadeOut(function(){
+                $('.conference').animate({
+                    height: '0px',
+                    opacity: 0,
+                    'margin-bottom': '0%'
+                }, 600);
+                $("#chat").animate({
+                    height: '100%'
+                });
+                webcamsVisible = false;
+                $("#remote, #local").empty();
+                $scope.$apply();
+            });
+        };
+
+        var webcamsVisible = false, timeToShow = 500;
+
+        $scope.webrtc.on('readyToCall', function () {
+            $("#arrowIndicator").fadeOut('slow');
+
+            $scope.webrtc.joinRoom($scope.active_room);
+            $scope.webrtc.active_room = $scope.active_room;
+        
+            function next() {
+                var time = timeToShow;
+                $('.conference').find('video').each(function () {
+                    $(this).fadeIn(time);
+                    time += 250;
+                });
+
+                $scope.$apply();
+                
+            }
+        
+            if (!webcamsVisible) {
+                $('.conference').animate({
+                    height: '85px',
+                    opacity: 1,
+                    'margin-bottom': '1%'
+                }, 600, next);
+                $("#chat").animate({
+                    height: '100%'
+                });
+                webcamsVisible = true;
+            } else {
+                next();
+            }
+
+        });
+
+
+        $scope.toggleMute = function () {
+            if (!$scope.muted) {
+                $scope.webrtc.mute();
+                $scope.muted = true;
+
+            } else {
+                $scope.webrtc.unmute();
+                $scope.muted = false;
+            }
+
+            $("#mute").toggleClass("glyphicon-volume-up").toggleClass("glyphicon-volume-off");
+        };
 
     };
 

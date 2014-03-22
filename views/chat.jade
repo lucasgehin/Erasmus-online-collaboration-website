@@ -66,7 +66,11 @@ html(ng-app="chat")
 			.conference.container-fluid
 				.row#videos
 					.col-xs-1#local
-					.col-xs-11#remote
+					.col-xs-1#mute-container
+						span#mute.glyphicon.glyphicon-volume-up(ng-click='toggleMute()')
+							| &nbsp;
+					.col-xs-10
+						#remote
 			.main-container.container-fluid
 				.col-xs-12
 					.row#chat-display
@@ -86,6 +90,9 @@ html(ng-app="chat")
 								ul.nav.nav-tabs
 									li(ng-repeat="(key, room) in room_joined track by $index", ng-class="{ 'active' : room.room_name == active_room}", ng-click="subscribe(room.room_name)")
 										a(href="#{{room.room_name}}", data-toggle="tab" )
+											span.call( title='Begin / Join a videoconference' ng-click="call( room.room_name, $event)", ng-show="(room.room_name != 'Global' && active_room == room.room_name && !calling ) || (webrtc.active_room == room.room_name)")
+												span.glyphicon.glyphicon-earphone(style="color: {{calling ? 'red': 'green'}};")
+													| &nbsp;
 											| {{room.room_name}}
 											span.message-missed(ng-show="room.new_message_count > 0" )
 												| (
@@ -139,6 +146,8 @@ html(ng-app="chat")
 
 
 		img#ajaxloader(src="/images/ajax-loader.gif", alt='')
+		#arrowIndicator
+			span.glyphicon.glyphicon-arrow-up
 
 		script(type='text/javascript', src='/javascripts/jquery-1.10.2.min.js')
 		script(type='text/javascript', src='/javascripts/angular.js')
