@@ -182,6 +182,9 @@ function initControllers() {
         $scope.leave = function(room_name, $event) {
             $event.preventDefault();
             $event.stopPropagation();
+            if ($scope.calling && room_name === $scope.webrtc.active_room){
+                $scope.end_call();
+            }
             socket.emit('unsubscribe', room_name, function() {
                 $scope.active_room = 'Global';
                 get_rooms_list();
