@@ -1,7 +1,14 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-image: url("/images/backgrounds/main-rzd.jpg");
+  background: url("/images/backgrounds/main-rzd.jpg");
+  -webkit-background-size: cover;
+/* pour Chrome et Safari */
+  -moz-background-size: cover;
+/* pour Firefox */
+  -o-background-size: cover;
+/* pour Opera */
   background-size: cover;
+  padding-bottom: 100px;
 }
 body > .container {
   margin-top: 100px;
@@ -11,6 +18,7 @@ body > .container {
 }
 a {
   color: #00b7ff;
+  cursor: pointer;
 }
 .navbar {
   background-color: rgba(255,255,255,0.8) !important;

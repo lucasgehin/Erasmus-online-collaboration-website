@@ -17,22 +17,18 @@ html(ng-app)
 						span.icon-bar
 						span.icon-bar
 						span.icon-bar
-					a.navbar-brand(href='#') IpVIOPE
+					a#titre.navbar-brand(href='#') IpVIOPE
 
-			.collapse.navbar-collapse
-					ul.nav.navbar-nav
-						li
-							button#sign-up-link.btn.btn-success.navbar-btn
-								span.glyphicon.glyphicon-pencil
-								|  Sign up
-						li
-							button#about-link.btn.btn-info.navbar-btn
-								span.glyphicon.glyphicon-info-sign
-								|  About
-						li
-							button#contact-link.btn.btn-info.navbar-btn
-								span.glyphicon.glyphicon-envelope
-								|  Contact
+			#navbar-main.collapse.navbar-collapse
+				ul.nav.navbar-nav
+					li
+						a#about-link(href="#")
+							span.glyphicon.glyphicon-info-sign
+							|  About
+					li
+						a#contact-link(href="#")
+							span.glyphicon.glyphicon-envelope
+							|  Contact
 		.container.border-bottom
 			.row-fluid
 				.page-header.col-xs-12
@@ -84,7 +80,7 @@ html(ng-app)
 							.col-xs-1.col-offset-5
 								a(target='_blank', href='http://www.inholland.nl/inhollandcom/', rel='tooltip', data-original-title='Inholland University of Applied Sciences')
 									img#logo-inh(src='/images/logos/inh.svg', alt='')
-			.row.logos-container
+			#about.row.logos-container
 				.col-xs-4
 					img.logo-function(src='/images/logos/doc.svg', alt="")
 					br
@@ -118,11 +114,11 @@ html(ng-app)
 					| Realtime Calendar
 					br
 					| Pin events to home page
-			#about.row
-				.col-xs-10.col-offset-1
-					h1 Erasmus Intensive Programme
-					h2 	Learning Computer Programming in Virtual Environment
-					h3
+			.row
+				.col-xs-10.col-offset-1(style="width:100%; text-align:justify")
+					h1(style="text-align:center") Erasmus Intensive Programme
+					h2(style="text-align:center") 	Learning Computer Programming in Virtual Environment
+					h3(style="text-align:center")
 						| 13 – 24 May 2013 in Espoo, Finland
 					p
 						b International Intensive Programme organised by:
@@ -137,13 +133,13 @@ html(ng-app)
 						li Università degli Studi di Milano, Italy
 					p
 						| 70 students and 20 teachers from seven partner institutions of higher education will meet at Helsinki Metropolia UAS in Espoo, Finland, in May 2013 to participate in the Erasmus Intensive Programme. The programme will last for two weeks. In those two weeks students from the partner institutions will work together on the topic in international teams. Prior to the two-week programme students are requested to develop an application prototype remotely in international teams. By successfully completing the Intensive Programme, student earns 5 ECTS credits. Besides work a social programme will be offered to all participants.
-					h2
+					h2(style="text-align:center")
 						| Aims and Objectives of the IP
 					p
 						| The computer applications are more numerous and they have become more complex and integrated. The programming work is respectively spread out into many locations globally A change is taking place in the programming paradigm in industry. Virtual working environments are employed in many corporations. All modern systems and devices are based on software development. The computer programming is always concern whenever an application is developed for a tiny embedded device, a smart card or a huge number cruncher or a PC on your desk. It is seen that there is a permanent shortage of qualified programmers and software engineers in many EU countries.
 					p
 						| The objective of this IP is to promote teaching and learning of the fundamentals of computer programming through use of virtual and remote learning environments. The qualifications and skills are learned in international teams partly virtually and partly face-to-face. As learning outcome the IP covers software development skills like building a small application, using pair-programming, and working in international team.
-					h2
+					h2(style="text-align:center")
 						| Working Plan
 					ul
 						li Preliminary assignments in remote international teams before the intensive weeks
@@ -152,23 +148,36 @@ html(ng-app)
 					br
 					br
 			.row.contact
-				.col-xs-6
-					| Contact us
-				.col-xs-6
-					| Created by:
-					ul
-						li Vincent Boulanger								
-						li Lucas Gehin								
-						li Gregory Baton								
-						li Geoffrey Gaillard
-						
+				.row
+					.col-xs-6
+						br
+						| Contact us
+						.row
+							br
+							br
+							.col-xs-12(style="font-size:2em; text-shadow: 0 0 1px black")
+								| ipviope@ipviope.tk
+					.col-xs-6
+						br
+						| Created by
+						.row
+							.col-xs-12
+								ul(style="list-style-type: none;padding:0")
+									li &nbsp;
+									li Vincent Boulanger								
+									li Lucas Gehin								
+									li Gregory Baton								
+									li 
+										a(href="https://plus.google.com/+GeoffreyGaillard", target="_blank")
+											| Geoffrey Gaillard
+							
 				.row
 					.col-xs-12
 						br
 						i © Copyrigths 2013 - Creators and  IUT Charlemagne
 						br
 						br
-						br
+
 
 		
 

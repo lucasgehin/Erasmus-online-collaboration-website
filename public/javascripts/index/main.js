@@ -108,7 +108,7 @@ start = function() {
         start_shake_logos();
     }, 10000);
     slide_time = 600;
-    $("#titre").on("click", function(e) {
+    $("#titre").on("click", function (e) {
         var top;
         e.preventDefault();
         e.stopPropagation();
@@ -117,14 +117,14 @@ start = function() {
             scrollTop: top
         }, slide_time);
     });
-    $("#about-link").on("click", function(e) {
+    $("#about-link").on("click", function (e) {
         var top;
-        top = $("#about").offset().top - 50;
+        top = $("#about").offset().top - 100;
         $("html,body").animate({
             scrollTop: top
         }, slide_time);
     });
-    $("#contact-link").on("click", function(e) {
+    $("#contact-link").on("click", function (e) {
         var top;
         top = $(".contact").eq(0).offset().top;
         $("html,body").animate({
@@ -143,5 +143,7 @@ $(window).on("load", function() {
         if (ie_version >= 11) {
             start();
         }
+    } else {
+        start();
     }
 });
