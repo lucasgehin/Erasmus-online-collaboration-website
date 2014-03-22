@@ -7,7 +7,7 @@ resize_chat = function () {
     var height_chat, height_chat_tools;
     height_chat = $(window).height() - $('.navbar').height() * 1.55;
     height_chat_tools = $("#chat-tools").height();
-    $("#chat").height(height_chat);
+    $("#chat").height("100%");
     $(".people, .room").height(height_chat - (height_chat_tools * 1.5));
     $(".chat_window").height(height_chat - (height_chat_tools * 3));
 };
@@ -99,3 +99,92 @@ function scrollMsg(room_name) {
     }
 
 }
+
+function dynamiseVideo() {
+    "use strict";
+    $('.container-fluid video').resizeOnApproach({
+        elementDefault: 100,
+        elementClosest: 150,
+        triggerDistance: 150
+    });
+}
+
+$(document).ready(function () {
+    "use strict";
+    dynamiseVideo();
+});
+
+
+// create our webrtc connection
+var webrtc = new SimpleWebRTC({
+    // the id/element dom element that will hold "our" video
+    localVideoEl: 'localVideo',
+    // the id/element dom element that will hold remote videos
+    remoteVideosEl: '',
+    // immediately ask for camera access
+    autoRequestMedia: true,
+    debug: false,
+    detectSpeakingEvents: true,
+    autoAdjustMic: false
+});
+
+webcamsVisible = false;
+webrtc.on('readyToCall', function () {
+    //alert("prêt");
+    webrtc.joinRoom('test');
+    webrtc.mute();
+
+    function next() {
+        time = 500;
+        $('.conference video').each(function () {
+            $(this).animate({
+                opacity: '1'
+            }, time);
+            time += 100;
+        });
+        dynamiseVideo();
+    }
+
+    if (!webcamsVisible) {
+        $('.conference').animate({
+            height: '+=110'
+        }, 600, next);
+        $("#chat").animate({
+            height: '100%'
+        });
+        webcamsVisible = true;
+    } else {
+        next();
+    }
+
+});
+
+
+webrtc.on('videoAdded', function (video, peer) {
+    console.log('video added', peer);
+    var remotes = document.getElementById('remotesVideos');
+    if (remotes) {
+        var d = document.createElement('div');
+        d.className = 'videoContainer';
+        d.id = 'container_' + webrtc.getDomId(peer);
+        d.appendChild(video);
+        var vol = document.createElement('div');
+        vol.id = 'volume_' + peer.id;
+        vol.className = 'volume_bar';
+        video.onclick = function () {
+            video.style.width = video.videoWidth + 'px';
+            video.style.height = video.videoHeight + 'px';
+        };
+        d.appendChild(vol);
+        remotes.appendChild(d);
+    }
+});
+webrtc.on('videoRemoved', function (video, peer) {
+    console.log('video removed ', peer);
+    var remotes = document.getElementById('remotesVideos');
+    var el = document.getElementById('container_' + webrtc.getDomId(peer));
+    if (remotes && el) {
+        remotes.removeChild(el);
+    }
+});
+

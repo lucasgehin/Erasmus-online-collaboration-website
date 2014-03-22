@@ -105,13 +105,29 @@ a#infoUser {
   color: #008000;
   font-weight: bold;
 }
-#localVideo {
-  position: fixed;
-  top: 1%;
-  left: 50%;
+.conference {
+  border: 1px #000 solid;
+  position: relative;
+  margin-bottom: 1%;
+  text-align: center;
+  vertical-align: bottom;
 }
-#localVideo video {
-  max-width: 100px;
+.conference .col-xs-12 {
+  position: absolute;
+  bottom: 0;
+}
+.conference #remotesVideos {
+  border: 1px #f00 solid;
+}
+.conference #remotesVideos video {
+  border: 1px #ff0 solid;
+}
+.conference #localVideo {
+  border: 1px #00f solid;
+}
+.conference video {
+  width: 100px;
+  opacity: 0;
 /* height: 500px; */
 }
 /*

@@ -122,12 +122,28 @@ a#infoUser
 		font-weight bold
 
 
-#localVideo
-	position: fixed;
-	top: 1%;
-	left: 50%;
+.conference
+	border 1px black solid
+	position relative
+	//height 110px
+	.col-xs-12
+		position absolute
+		bottom 0
+	#remotesVideos
+		border 1px red solid
+		video
+			border 1px yellow solid
+	#localVideo
+		border 1px blue solid
+			
+				
+
+	margin-bottom 1%
+	text-align center
+	vertical-align bottom
 	video
-		max-width: 100px;
+		width 100px
+		opacity 0
 		/* height: 500px; */
 
 // Angular Animations

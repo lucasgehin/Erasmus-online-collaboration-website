@@ -1,5 +1,5 @@
 /*jslint browser: true*/
-/*global $, io, angular, moment, load_start, load_end, alert, CryptoJS, scrollMsg, SimpleWebRTC*/
+/*global $, io, angular, moment, load_start, load_end, alert, CryptoJS, scrollMsg, SimpleWebRTC, dynamiseVideo*/
 
 
 angular.module('chat', ['ngAnimate']);
@@ -12,7 +12,7 @@ Array.prototype.remove = function(from, to) {
 };
 
 
-var socket, chatController, messageController, User, webrtc;
+var socket, chatController, messageController, User, webrtc, webcamsVisible, time;
 
 function start() {
 
@@ -33,16 +33,7 @@ function start() {
         socket.emit('disconnect_chat', null, null);
     });
 
-
-
-    webrtc = new SimpleWebRTC({
-        // the id/element dom element that will hold "our" video
-        localVideoEl: 'localVideo',
-        // the id/element dom element that will hold remote videos
-        remoteVideosEl: 'remotesVideos',
-        // immediately ask for camera access
-        autoRequestMedia: true
-    });
+    
 
 }
 
