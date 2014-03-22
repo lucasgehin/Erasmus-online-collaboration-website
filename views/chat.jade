@@ -64,11 +64,9 @@ html(ng-app="chat")
 											| Logout
 		.main-container#chat(ng-controller="chatController")
 			.conference.container-fluid
-				.row
-					.col-xs-1
-						video#localVideo
-					.col-xs-11
-						#remotesVideos
+				.row#videos
+					.col-xs-1#local
+					.col-xs-11#remote
 			.main-container.container-fluid
 				.col-xs-12
 					.row#chat-display
@@ -148,11 +146,9 @@ html(ng-app="chat")
 		script(src="/javascripts/sha3.js")
 		script(src="/javascripts/moment.min.js")
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
-		script(type='text/javascript', src='/javascripts/chat/resizeOnApproach.min.js')
 
-		// script(type="text/javascript", src="/javascripts/chat/simplewebrtc.js")
-		script(type="text/javascript", src="http://simplewebrtc.com/latest.js")		
-		
+		script(type="text/javascript", src="/javascripts/chat/simplewebrtc.js")
+
 		script(type='text/javascript', src='/javascripts/chat/main.js')
 		script(type='text/javascript', src='/javascripts/chat/controller.js')
 

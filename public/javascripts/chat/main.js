@@ -100,54 +100,44 @@ function scrollMsg(room_name) {
 
 }
 
-function dynamiseVideo() {
-    "use strict";
-    $('.container-fluid video').resizeOnApproach({
-        elementDefault: 100,
-        elementClosest: 150,
-        triggerDistance: 150
-    });
-}
-
 $(document).ready(function () {
     "use strict";
-    dynamiseVideo();
+    
 });
 
 
 // create our webrtc connection
 var webrtc = new SimpleWebRTC({
     // the id/element dom element that will hold "our" video
-    localVideoEl: 'localVideo',
+    localVideoEl: 'local',
     // the id/element dom element that will hold remote videos
     remoteVideosEl: '',
     // immediately ask for camera access
     autoRequestMedia: true,
     debug: false,
     detectSpeakingEvents: true,
-    autoAdjustMic: false
+    autoAdjustMic: true
 });
 
-webcamsVisible = false;
+var webcamsVisible = false, timeToShow = 500, defaultVideoWith = "100", defaultVideoHeight = "75";
 webrtc.on('readyToCall', function () {
     //alert("prêt");
     webrtc.joinRoom('test');
-    webrtc.mute();
+    //webrtc.mute();
 
     function next() {
-        time = 500;
-        $('.conference video').each(function () {
-            $(this).animate({
-                opacity: '1'
-            }, time);
-            time += 100;
+        var time = timeToShow;
+        $('.conference').find('video').each(function () {
+            $(this).fadeIn(time);
+            time += 250;
         });
-        dynamiseVideo();
+        
     }
 
     if (!webcamsVisible) {
         $('.conference').animate({
-            height: '+=110'
+            height: '85px',
+            'margin-bottom': '1%'
         }, 600, next);
         $("#chat").animate({
             height: '100%'
@@ -162,7 +152,7 @@ webrtc.on('readyToCall', function () {
 
 webrtc.on('videoAdded', function (video, peer) {
     console.log('video added', peer);
-    var remotes = document.getElementById('remotesVideos');
+    var remotes = document.getElementById('remote');
     if (remotes) {
         var d = document.createElement('div');
         d.className = 'videoContainer';
@@ -171,17 +161,55 @@ webrtc.on('videoAdded', function (video, peer) {
         var vol = document.createElement('div');
         vol.id = 'volume_' + peer.id;
         vol.className = 'volume_bar';
+        video.fullscreen = false;
         video.onclick = function () {
-            video.style.width = video.videoWidth + 'px';
-            video.style.height = video.videoHeight + 'px';
+
+            if (!video.fullscreen) {
+                video.fullscreen = true;
+                video.originalOffsetTop = $(video).offset().top;
+                video.originalOffsetLeft = $(video).offset().left;
+                
+                video.style.zIndex = 9999;
+
+                video.style.position = "absolute";
+                $(video).offset({
+                    top: video.originalOffsetTop, 
+                    left: video.originalOffsetLeft
+                });
+                $(video).animate({
+                    width : '100%',
+                    height : video.videoHeight + 'px',
+                    top: 0,
+                    left: 0
+                });
+            } else {
+                video.style.zIndex = 0;
+                $(video).animate({
+                    width : defaultVideoWith + "px",
+                    height : defaultVideoHeight + "px",
+                    top: $('.conference').offset().top - $('.conference').height() + 'px',
+                    left: video.originalOffsetLeft - defaultVideoWith + 'px'
+                }, 400, function () {
+                    video.style.top = 0;
+                    video.style.left = 0;
+                    video.style.position = "relative";
+                    video.fullscreen = false;
+                });
+            }
         };
         d.appendChild(vol);
         remotes.appendChild(d);
     }
+    
+    var time = timeToShow;
+    $('.conference').find('video').each(function () {
+        $(this).fadeIn(time);
+        time += 250;
+    });
 });
 webrtc.on('videoRemoved', function (video, peer) {
     console.log('video removed ', peer);
-    var remotes = document.getElementById('remotesVideos');
+    var remotes = document.getElementById('remote');
     var el = document.getElementById('container_' + webrtc.getDomId(peer));
     if (remotes && el) {
         remotes.removeChild(el);
