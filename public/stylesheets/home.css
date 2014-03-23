@@ -177,9 +177,6 @@ a {
 .modal-dialog {
   width: 80%;
 }
-.modal-body {
-  min-height: 530px;
-}
 .contact {
   color: #fff;
   text-shadow: 0 0 2px #000;

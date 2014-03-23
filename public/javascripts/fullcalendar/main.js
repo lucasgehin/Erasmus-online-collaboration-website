@@ -30,4 +30,5 @@ load_end = function () {
 $(document).ready(function () {
     "use strict";
     load_start();
+    $(".navbar").removeClass('navbar-fixed-top');
 });

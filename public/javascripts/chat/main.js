@@ -102,6 +102,7 @@ function scrollMsg(room_name) {
 
 $(document).ready(function () {
     "use strict";
+    $(".navbar").removeClass('navbar-fixed-top');
     
 });
 

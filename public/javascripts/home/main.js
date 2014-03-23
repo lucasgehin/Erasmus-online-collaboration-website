@@ -58,3 +58,10 @@ sanitise = function (event, selector) {
         return $(selector).clearQueue();
     }
 };
+
+$(document).ready(function () {
+    $('#avatar-field').imgAreaSelect({
+        handles: true,
+        //onSelectEnd: someFunction
+    });
+});
