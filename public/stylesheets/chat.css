@@ -74,22 +74,43 @@ a#infoUser {
   overflow-x: hidden;
 }
 .chat_window .messages .message {
-  min-width: 40%;
+  min-width: 50%;
   max-width: 89%;
-  box-shadow: 0px 0px 5px #808080;
+  box-shadow: 1px 2px 10px #808080;
   border: 1px solid #fff;
   background-color: rgba(255,255,255,0.7);
   border-radius: 5px;
-  padding: 1% 2%;
   word-break: break-all;
 }
 .chat_window .messages .fromMe {
   margin: 6px 3% 0.5% 0;
   float: right;
 }
+.chat_window .messages .fromMe .inner {
+  padding: 0.5% 3% 1% 55px;
+}
+.chat_window .messages .fromMe img {
+  width: 50px;
+  margin-left: -0.5px;
+  margin-top: -0.5px;
+  border-top-left-radius: 5px;
+  box-shadow: 2px 3px 5px #808080;
+  float: left;
+}
 .chat_window .messages .fromOther {
   margin: 6px 0 0.5% 3%;
   float: left;
+}
+.chat_window .messages .fromOther .inner {
+  padding: 0.5% 55px 1% 3%;
+}
+.chat_window .messages .fromOther img {
+  width: 50px;
+  margin-right: -0.5px;
+  margin-top: -0.5px;
+  border-top-right-radius: 5px;
+  box-shadow: -2px 3px 5px #808080;
+  float: right;
 }
 .chat_window .messages .date {
   float: right;

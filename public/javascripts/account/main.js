@@ -129,7 +129,6 @@ function accountController($scope, $http) {
     $scope.update = function () {
 
         convertImgToBase64(document.getElementById('avatar-renderer'), function (url) {
-            
 
             data_hd = url;
             data_thumbnail = document.getElementById('avatar-result').toDataURL('image/jpeg');

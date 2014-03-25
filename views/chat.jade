@@ -62,7 +62,7 @@ html(ng-app="chat")
 											.messages
 												.row(ng-repeat="message in liste_messages[room.room_name]")
 													.message( ng-class=" message.fromMe ? 'fromMe' : 'fromOther' ")
-														//img(src="{{{user.avatar}}}")
+														img(ng-src="{{message.user.image.url_thumbnail}}")
 														.inner
 															.info
 																span
@@ -72,7 +72,8 @@ html(ng-app="chat")
 																	| {{message.date}}
 															
 															.content 
-																| {{message.message}}												
+																| {{message.message}}	
+
 						.col-xs-2.room-container					
 								.room
 									.well.well-sm
