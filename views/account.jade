@@ -5,55 +5,14 @@ html(ng-app)
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap-theme.css')
 		link(rel='stylesheet', href='/stylesheets/imgAreaSelect/imgareaselect-animated.css')
-		link(rel='stylesheet', href='/stylesheets/account.css')
+		link(rel='stylesheet', href='/stylesheets/home.css')
 		script(type='text/javascript', src='/socket.io/socket.io.js')
 
 	body
 
 		include includes/navbar
 
-		.main-container.container-fluid
-			//-ng-controller="Setting_Selection"
-			.row#popup_settings()
-				.col-xs-12
-					.titre My Account
-					form(role="form", ng-controller="accountController", name="accountForm")
-						.row
-							.col-xs-5
 
-								.form-group
-									label(for='password-1-field') Change your password:
-									input.form-control(type="password", id="password-1-field", ng-model="password1", required, placeholder="Your password", ng-value="")
-								.form-group
-									label(for='password-2-field') Repeat your password:
-									input.form-control(type="password", id="password-2-field", ng-model="password2", required, placeholder="Repeate your password", ng-value="")
-								.form-group
-									label(for='mail-field') E-Mail:
-									input.form-control(type="email", id="mail-field", required, ng-model="email", placeholder="Your E-Mail", ng-value="User.email")
-								.form-group
-									label(for="project-field") Your project:
-									select.form-control(id="project-field")
-								.form-group
-									label(for="country-field") Your country:
-									select.form-control(id="country-field")
-							.col-xs-7(id="avatar-container")
-								label(for="avatar-field") Choose an image:
-								input(id="avatar-field", type='file')
-								.row
-									br
-									.col-xs-6(id="avatar-renderer-container")
-										img(id="avatar-renderer")
-									.col-xs-6(id="avatar-result-container")
-										canvas(id="avatar-result",  width="0", height="0")
-								.row
-									button.btn.btn-success(ng-disabled="accountForm.$invalid || (password1 != password2)", ng-click="update()")
-										span.glyphicon.glyphicon-check
-											| &nbsp;
-										| Update
-									br
-									{{password1 != password2 ? 'Paswords differs': ''}}
-
-						.row
 
 
 		img#ajaxloader(src="/images/ajax-loader.gif", alt='')
@@ -62,5 +21,3 @@ html(ng-app)
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
 		script(type='text/javascript', src='/javascripts/home/jquery.imgareaselect.pack.js')
 		script(type='text/javascript', src='/javascripts/angular.js')
-
-		script(type='text/javascript', src='/javascripts/account/main.js')		

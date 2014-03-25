@@ -13,9 +13,6 @@ exports.calendar = require("./calendar").calendar;
 
 exports.chat = require("./chat").chat;
 
-exports.account = require("./account").account;
-exports.accountUpdate = require("./account").accountUpdate;
-
 exports.easteregg = require("./easteregg").easteregg;
 
 

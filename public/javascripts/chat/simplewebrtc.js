@@ -17,7 +17,7 @@ function SimpleWebRTC(opts) {
     var self = this;
     var options = opts || {};
     var config = this.config = {
-            url: 'https://signaling.ipviope.tk:80',
+            url: 'http://signaling.ipviope.tk:80',
             //url: 'http://signaling.simplewebrtc.com:8888',
             debug: false,
             localVideoEl: '',
