@@ -50,7 +50,7 @@ Sio = (function () {
     Sio.init = function (app, sessionStore, cookieParser) {
         var io, io_options;
         io_options = {
-            transports: ['htmlfile', 'xhr-polling', 'jsonp-polling']
+            transports: ['websocket', 'htmlfile', 'xhr-polling', 'jsonp-polling']
         };
         Sio.io = Socket_io.listen(app, io_options);
         Sio.routes();
