@@ -69,7 +69,8 @@ app.get('/home', routes.home);
 app.get('/easteregg', routes.easteregg);
 app.get('/calendar', routes.calendar);
 app.get('/chat', routes.chat);
-app.get('/account', routes.chat);
+app.get('/account', routes.account);
+app.post('/account', routes.accountUpdate);
 
 /*
  Connection des utilisateurs en AJAX car :

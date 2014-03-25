@@ -60,8 +60,5 @@ sanitise = function (event, selector) {
 };
 
 $(document).ready(function () {
-    $('#avatar-field').imgAreaSelect({
-        handles: true,
-        //onSelectEnd: someFunction
-    });
+    
 });

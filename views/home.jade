@@ -144,37 +144,7 @@ html(ng-app)
 							.col-xs-8.rounded.content
 								| {{current_content}}
 
-		.modal.fade#popup_settings(ng-controller="Setting_Selection")
-			.modal-dialog
-				.modal-content
-					.modal-header
-						button.close(data-dismiss="modal", aria-hidden="true")
-								| &times;
-							h4.title Settings
-
-					.modal-body
-						form(role="form")
-							.row
-								.col-xs-5
-
-									.form-group
-										label(for='password-1-field') Password:
-										input.form-control(type="password", id="password-1-field", placeholder="Your password", ng-value="")
-									.form-group
-										label(for='password-2-field') Repeat your password:
-										input.form-control(type="password", id="password-2-field", placeholder="Repeate your password", ng-value="")
-									.form-group
-										label(for='mail-field') E-Mail:
-										input.form-control(type="email", id="mail-field", placeholder="Your E-Mail", ng-value="User.email")
-								.col-xs-7
-									.form-group
-										label(for="project-field") Your project:
-										select.form-control(id="project-field")
-									.form-group
-										label(for="country-field") Your country:
-										select.form-control(id="country-field")
-							.row
-								img(id="avatar-field", src='/images/backgrounds/chat.jpg', width='200px')
+		
 
 
 					.modal-footer
