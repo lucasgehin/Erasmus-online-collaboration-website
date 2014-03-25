@@ -20,7 +20,7 @@ Users = (function () {
     Users.find_all = function (callback) {
         var query;
         query = db.User.findAll({
-            include: [db.Country, db.Status, db.Project]
+            include: [db.Country, db.Status, db.Project, db.Image]
         });
         query.success(function (users) {
             return callback(null, users);
@@ -39,7 +39,7 @@ Users = (function () {
                 where: {
                     id: id
                 },
-                include: [db.Country, db.Status, db.Project]
+                include: [db.Country, db.Status, db.Project, db.Image]
             });
             query.success(function (user) {
                 callback(null, user);
@@ -61,7 +61,7 @@ Users = (function () {
                 where: {
                     username: username_param
                 },
-                include: [db.Status, db.Country, db.Project]
+                include: [db.Status, db.Country, db.Project, db.Image]
             });
             query.success(function (user) {
                 user.status = user.statu;

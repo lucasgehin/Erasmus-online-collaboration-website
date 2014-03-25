@@ -64,17 +64,26 @@ input.onchange = function () {
         }
 
         window.picker = $('#avatar-renderer').imgAreaSelect({
-            handles: true,
+            //handles: true,
             aspectRatio: '1:1',
             fadeSpeed: true,
             show: true,
             instance: true,
+            maxWidth: 100,
+            maxHeight: 100,
+            minHeight: 100,
+            minWidth: 100,
             onInit: function () {
                 var x1, x2, y1, y2;
                 x1 = (img.width / 2) - (img.width / 4);
                 x2 = (img.width / 2) + (img.width / 4);
                 y1 = (img.height / 2) - (img.height / 4);
                 y2 = (img.height / 2) + (img.height / 4);
+                x1 = ((x2 - x1) - 100) / 2 + x1;  // On se rebase sur 100
+                x2 = x1 + 100;
+                y1 = ((y2 - y1) - 100) / 2 + y1;
+                y2 = y1 + 100;
+
                 window.picker.setSelection(
                     x1,
                     y1,
@@ -109,11 +118,18 @@ function convertImgToBase64(image, callback) {
 
 function accountController($scope, $http) {
     "use strict";
+
+    $scope.password1 = 'test';
+    $scope.password2 = 'test';
+    $scope.email = 'test@test.com';
+
+
     var query, data_hd, data_thumbnail;
 
     $scope.update = function () {
 
         convertImgToBase64(document.getElementById('avatar-renderer'), function (url) {
+            
 
             data_hd = url;
             data_thumbnail = document.getElementById('avatar-result').toDataURL('image/jpeg');

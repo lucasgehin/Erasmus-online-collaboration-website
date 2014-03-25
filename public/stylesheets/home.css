@@ -133,11 +133,14 @@ a {
   border: 1px rgba(0,0,0,0.1) solid;
   border-radius: 10px;
   margin: 0;
+  padding: 0;
 }
 .users-link-section .users .content .user img,
 .projects-link-section .users .content .user img,
 .users-link-section .projects .content .user img,
 .projects-link-section .projects .content .user img {
+  margin-top: -2px;
+  margin-left: -1px;
   display: inline;
   max-width: 100px;
   max-height: 100px;

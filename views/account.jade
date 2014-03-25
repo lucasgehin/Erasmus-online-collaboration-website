@@ -12,31 +12,41 @@ html(ng-app)
 
 		include includes/navbar
 
-		.main-container.row
+		.main-container.row(ng-controller="accountController")
 			.col-xs-12
 				.titre My Account
 
-			form.row(name="account_form", ng-controller="accountController")
+			form.row(id="account_form", name="account_form")
 				.col-xs-4
 					.form-group
 						label(for='password1') Your password:
-						input.form-control(id='password1', type="password")
+						input.form-control(id='password1', type="password", ng-model='password1', value="test")
 					.form-group
 						label(for='password2') Your password again:
-						input.form-control(id='password2', type="password")
+						input.form-control(id='password2', type="password", ng-model='password2', value="test")
 					.form-group
 						label(for='email') E-Mail:
-						input.form-control(id='email', type="email")
+						input.form-control(id='email', type="email", ng-model='email', value="test@test.com")
 					.form-group
 						label(for='country') Your Country:
 						select.form-control(id='country')
 					.form-group
 						label(for='project') Your Project:
 						select.form-control(id='project')
+				.col-xs-8#avatar-container
+					.form-group
+						label(for='avatar-field')
+						input.form-control(type="file", id="avatar-field")
+					.col-xs-6#avatar-renderer-container
+						img(id="avatar-renderer")
+					.col-xs-6#avatar-result-container
+						canvas(id="avatar-result")
 
-
-
-
+			.row
+				.col-xs-12(style="text-align: center;")
+					button.btn.btn-success(ng-click="update()", id="submit_btn")
+						span.glyphicon.glyphicon-save
+						| &nbsp; Save
 
 
 

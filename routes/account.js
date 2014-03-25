@@ -22,20 +22,33 @@ exports.editAccount = function (req, res) {
         res.redirect("/");
     } else {
 
-        var pass, mail, img_hd, img_thumb, response;
+        var pass, mail, img_hd, img_thumb, response, body;
 
         pass = req.body.pass;
-        mail = req.body.mail;
+        mail = req.body.email;
         img_hd = req.body.img_hd;
         img_thumb = req.body.img_thumbnail;
 
         db.User.find(req.session.user.id).success(function (user) {
-            user.pass = pass;
-            user.mail = mail;
-            // user.
 
-            console.log(user);
-            user.save().success(function (user) {
+            db.Image.findOrCreate({
+                UserId: user.id
+            }).success(function (image) {
+                console.log("Image : " + image);
+                image.updateAttributes({
+                    url_hd: img_hd,
+                    url_thumbnail: img_thumb
+                }).success(function (image) {
+                    image.setUser(user);
+                });
+            }).error(function (err) {
+                console.log(err);
+            });
+
+            user.updateAttributes({
+                password: pass,
+                mail: mail
+            }).success(function (user) {
                 console.log("success");
                 response = JSON.stringify({
                     ok: true
@@ -43,6 +56,7 @@ exports.editAccount = function (req, res) {
                 res.end(response);
             }).error(function (err) {
                 console.log("error");
+                console.log(err);
                 response = JSON.stringify({
                     ok: false,
                     err: err

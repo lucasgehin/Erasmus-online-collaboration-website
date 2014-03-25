@@ -21,6 +21,9 @@ a {
   background-color: rgba(255,255,255,0.8);
   border-radius: 10px;
 }
+#submit_btn {
+  margin-bottom: 3%;
+}
 #avatar-container,
 #avatar-result-container,
 #avatar-renderer-container {
@@ -67,21 +70,6 @@ a {
 }
 .modal-dialog {
   width: 80%;
-}
-.contact {
-  color: #fff;
-  text-shadow: 0 0 2px #000;
-  text-align: center;
-  margin: auto;
-  background-color: #333;
-  border-bottom-right-radius: 20px;
-  border-bottom-left-radius: 20px;
-  margin-bottom: 100px;
-  margin-top: -10px;
-  padding: 20px 0;
-}
-.contact ul {
-  list-style-type: none;
 }
 #ajaxloader {
   position: fixed;
