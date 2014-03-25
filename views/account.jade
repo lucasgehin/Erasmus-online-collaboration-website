@@ -5,12 +5,37 @@ html(ng-app)
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap-theme.css')
 		link(rel='stylesheet', href='/stylesheets/imgAreaSelect/imgareaselect-animated.css')
-		link(rel='stylesheet', href='/stylesheets/home.css')
-		script(type='text/javascript', src='/socket.io/socket.io.js')
+		link(rel='stylesheet', href='/stylesheets/account.css')
+		
 
 	body
 
 		include includes/navbar
+
+		.main-container.row
+			.col-xs-12
+				.titre My Account
+
+			form.row(name="account_form", ng-controller="accountController")
+				.col-xs-4
+					.form-group
+						label(for='password1') Your password:
+						input.form-control(id='password1', type="password")
+					.form-group
+						label(for='password2') Your password again:
+						input.form-control(id='password2', type="password")
+					.form-group
+						label(for='email') E-Mail:
+						input.form-control(id='email', type="email")
+					.form-group
+						label(for='country') Your Country:
+						select.form-control(id='country')
+					.form-group
+						label(for='project') Your Project:
+						select.form-control(id='project')
+
+
+
 
 
 
@@ -21,3 +46,4 @@ html(ng-app)
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
 		script(type='text/javascript', src='/javascripts/home/jquery.imgareaselect.pack.js')
 		script(type='text/javascript', src='/javascripts/angular.js')
+		script(type='text/javascript', src='/javascripts/account/main.js')

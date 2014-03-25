@@ -1,0 +1,93 @@
+.red {
+  border: 1px #f00 solid;
+}
+body {
+  position: relative;
+  padding: auto;
+  padding: 0 20px 0 20px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url("/images/backgrounds/main-rzd.jpg");
+  background-size: cover;
+}
+a {
+  color: #00b7ff;
+}
+.nav li {
+  margin-right: 10px;
+}
+.main-container {
+  margin-top: 5%;
+  padding: 0 30px 0 30px;
+  background-color: rgba(255,255,255,0.8);
+  border-radius: 10px;
+}
+#avatar-container,
+#avatar-result-container,
+#avatar-renderer-container {
+  text-align: center;
+}
+#avatar-renderer-container {
+  height: 240px;
+}
+#avatar-result {
+  border: 3px #fff solid;
+  box-shadow: 0 0 5px #808080;
+}
+.titre {
+  margin-top: 4%;
+  margin-bottom: 1%;
+  font-size: xx-large;
+  font-weight: bold;
+  text-shadow: 0 0 1px #808080;
+}
+.settings-btn {
+  color: #fff;
+}
+.logout-btn {
+  color: #f00;
+}
+.separation-right {
+  border-right: 1px #808080 solid;
+}
+.separation-left {
+  border-left: 1px #808080 solid;
+}
+.separation-top {
+  border-top: 1px #808080 solid;
+}
+.separation-bottom {
+  border-bottom: 1px #808080 solid;
+}
+.border-bottom-round {
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.rounded {
+  border-radius: 20px;
+}
+.modal-dialog {
+  width: 80%;
+}
+.contact {
+  color: #fff;
+  text-shadow: 0 0 2px #000;
+  text-align: center;
+  margin: auto;
+  background-color: #333;
+  border-bottom-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  margin-bottom: 100px;
+  margin-top: -10px;
+  padding: 20px 0;
+}
+.contact ul {
+  list-style-type: none;
+}
+#ajaxloader {
+  position: fixed;
+  top: 310px;
+  left: 50%;
+  margin-left: -65px;
+  width: 128px;
+  display: none;
+}
