@@ -50,9 +50,10 @@ Sio = (function () {
     Sio.init = function (app, sessionStore, cookieParser) {
         var io, io_options;
         io_options = {
-            transports: [/*'websocket',*/'htmlfile', 'xhr-polling', 'jsonp-polling']
+            transports: [/*'websocket',*/ 'htmlfile', 'xhr-polling', 'jsonp-polling']
         };
         Sio.io = Socket_io.listen(app, io_options);
+        Sio.io.set('log level', 1);
         Sio.routes();
     };
 
@@ -144,21 +145,23 @@ Sio = (function () {
                 });
 
                 socket.on("get_news_list", function (no_data, callback) {
-                    console.log("Sio: Demande de la liste des news par " + user);
+                    console.log("Sio: Demande de la liste des news par " + user.username);
                     News.find_all(function (err, list) {
                         callback(err, list);
                     });
                 });
                 socket.on("get_projects_list", function (no_data, callback) {
-                    console.log("Sio: Demande de la liste des projets par " + user);
+                    console.log("Sio: Demande de la liste des projets par " + user.username);
                     Projects.find_all(function (err, list) {
                         callback(err, list);
                     });
                 });
                 socket.on("get_events_next", function (no_data, callback) {
-                    console.log("Sio: Demande de la liste des events les plus proches par " + user);
+                    console.log("Sio: Demande de la liste des events les plus proches par " + user.username);
                     Events.find_next_events(function (err, list) {
                         callback(err, list);
+                        console.log("\n\n EVENTS: \n\n" + JSON.stringify(list));
+
                     });
                 });
             }

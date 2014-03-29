@@ -10,7 +10,9 @@ exports.calendar = function (req, res) {
     if (!req.session || !req.session.connected) {
         res.redirect("/");
     } else {
-        res.render('calendar');
+        res.render('calendar', {
+            user: req.session.user
+        });
     }
 };
 

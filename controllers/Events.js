@@ -83,7 +83,18 @@ Events = (function () {
     };
 
     Events.find_next_events = function (callback) {
-        callback(null);
+
+        var query;
+        query = db.Event.findAll({
+            where: ['end >= NOW()']
+        });
+        query.success(function (list) {
+            callback(null, list);
+        });
+        query.error(function (err) {
+            console.log("Events@find_next_events: " + err);
+            callback(err, null);
+        });
     };
 
     Events.update = function (event, callback) {

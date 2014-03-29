@@ -111,12 +111,12 @@ this.News_Management = function ($scope) {
                 News_list = response;
             }
             if (News_list.length === 0) {
-                News_list.push(JSON.stringify({
+                News_list.push({
                     id: -1,
                     title: "There is nothing here yet :(",
-                    content: "Add a message",
+                    content: "You can add a news by clicking 'Add a message'",
                     createdAt: new Date()
-                }));
+                });
             }
             $scope.$apply();
             $('.news-date').each(function () {
@@ -124,7 +124,7 @@ this.News_Management = function ($scope) {
                 date = new Date(date);
                 date = moment(date).fromNow();
                 $(this).text(date);
-                console.log(date);
+
             });
         });
     };
@@ -163,19 +163,26 @@ this.Events_Management = function ($scope) {
         load_start();
         socket.emit('get_events_next', null, function (err, response) {
             load_end();
+            console.log('Events:');
             console.log(response);
             if (response !== null) {
                 Events_list = response;
             }
             if (Events_list.length === 0) {
-                Events_list.push(JSON.stringify({
+                Events_list.push({
                     id: -1,
                     title: "Nothing planed today ! :D",
                     content: "You can add an event in the calendar if you want.",
                     createdAt: new Date()
-                }));
+                });
             }
             $scope.$apply();
+            $('.event-date').each(function () {
+                var date = $(this).text();
+                date = new Date(date);
+                date = moment(date).fromNow();
+                $(this).text(date);
+            });
         });
     };
     socket.on('connect', function () {
@@ -277,3 +284,22 @@ this.Project_Manager = function ($scope) {
         $scope.get_projects();
     });
 };
+
+
+angular.module('home', []).
+    filter('htmlToPlaintext', function () {
+        "use strict";
+        var parser = document.createElement('div');
+        return function (text) {
+            var str = String(text).replace(/<[^>]+>/gm, '');
+            //str = str.replace(/<script[^>]*>([\S\s]*?)<\/script>/gmi, '');
+            str = str.replace(/<\/?\w(?:[^"'>]|"[^"]*"|'[^']*')*>/gmi, '');
+            parser.innerHTML = str;
+            str = parser.textContent;
+            parser.textContent = '';
+            if (!str || str === 'null') {
+                str = '';
+            }
+            return str;
+        };
+    });

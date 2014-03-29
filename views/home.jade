@@ -1,6 +1,6 @@
 // home.jade
 doctype html
-html(ng-app)
+html(ng-app="home")
 	head
 		title Home - IpVIOPE
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')
@@ -30,7 +30,7 @@ html(ng-app)
 												| {{item.createdAt}}
 											td.news-by
 												//-| by {{item.user.username}}
-								p.list-group-item-text.news-content {{item.content | limitTo: 100}}
+								p.list-group-item-text.news-content {{item.content | htmlToPlaintext | limitTo: 155}}
 						button.btn.btn-info(ng-disabled="more()", ng-click="show_all()")
 							span.glyphicon.glyphicon-plus.
 								More
@@ -45,14 +45,13 @@ html(ng-app)
 									table
 										tr
 											td
-												h4 {{item.title | limitTo: 30}}
-											td.news-date
+												h4(style="color: {{item.color}}") {{item.title | limitTo: 30}}
+											td.event-date
 												| {{item.createdAt}}
-											td.news-by by {{item.user.username}}
-								p.list-group-item-text.news-content {{item.description | limitTo: 100}}
+											td.event-by by {{item.user.username}}
+								p.list-group-item-text.event-content {{item.description | htmlToPlaintext | limitTo: 155}}
 						button.btn.btn-info(ng-disabled="more()", ng-click="show_all()")
-							span.glyphicon.glyphicon-plus.
-								More
+							span.glyphicon.glyphicon-plus More
 
 			.pinned-docs-section.row-fluid.section
 				.titre.
@@ -139,40 +138,7 @@ html(ng-app)
 							.col-xs-8.rounded.content
 								| {{current_content}}
 
-		.modal.fade#popup_settings(ng-controller="Setting_Selection")
-			.modal-dialog
-				.modal-content
-					.modal-header
-						button.close(data-dismiss="modal", aria-hidden="true")
-								| &times;
-							h4.title Settings
 
-					.modal-body
-						form(role="form")
-							.row
-								.col-xs-5
-
-									.form-group
-										label(for='password-1-field') Password:
-										input.form-control(type="password", id="password-1-field", placeholder="Your password", ng-value="")
-									.form-group
-										label(for='password-2-field') Repeat your password:
-										input.form-control(type="password", id="password-2-field", placeholder="Repeate your password", ng-value="")
-									.form-group
-										label(for='mail-field') E-Mail:
-										input.form-control(type="email", id="mail-field", placeholder="Your E-Mail", ng-value="User.email")
-								.col-xs-7
-									.form-group
-										label(for="project-field") Your project:
-										select.form-control(id="project-field")
-									.form-group
-										label(for="country-field") Your country:
-										select.form-control(id="country-field")
-							.row
-								img(id="avatar-field", src='/images/backgrounds/chat.jpg', width='200px')
-
-
-					.modal-footer
 
 		include includes/footer
 
