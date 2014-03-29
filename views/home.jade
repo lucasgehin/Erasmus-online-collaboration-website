@@ -100,14 +100,14 @@ html(ng-app)
 								tr
 									td
 										img(ng-src='{{user.image.url_thumbnail}}', alt='')
-									td
+									td.info-user
+										.connected(ng-show="user.online")
 										| @{{user.username}}
 										br
 										| {{user.firstname}} {{user.name}}
 										br
 										.country
 											img(ng-src='/images/Country/{{user.country.name}}.jpg', alt='Country')
-										.connected(ng-show="user.online")
 
 
 		.modal.fade#popup-news(ng-controller="popup_news")
