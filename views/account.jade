@@ -10,14 +10,57 @@ html(ng-app)
 
 	body
 
-		include includes/navbar
+		// inlcudes/navbar.jade
+		.navbar.navbar-default.navbar-fixed-top(role='navigation')
+			.container-fluid
+				.navbar-header
+					button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-main')
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand(href='/home') IpVIOPE
+
+		#navbar-main.collapse.navbar-collapse
+			ul.nav.navbar-nav
+				li
+					a(href='#')
+						span.glyphicon.glyphicon-pencil
+						|  Documents
+				li
+					a(href='/chat', target='_blank')
+						span.glyphicon.glyphicon-facetime-video
+						|  Chat
+				li
+					a(href='/calendar', target='_blank')
+						span.glyphicon.glyphicon-calendar
+						|  Calendar
+
+				
+			ul.nav.navbar-nav.navbar-right
+				li.dropdown
+					a.dropdown-toggle(href='#', data-toggle='dropdown')  Settings <b class='caret'> </b>
+					ul.dropdown-menu
+						li
+							a(href='/account') My Account
+						li.divider
+						li
+							a(href='#') Help
+						li
+							a(href='#') Report a bug
+						li.divider
+						li
+							a(href='logout')
+								span.logout-btn
+									span.icon-remove-sign
+									| Logout
 
 		.main-container.row(ng-controller="accountController")
-			.col-xs-12
-				.titre My Account
+			
 
 			form.row(id="account_form", name="account_form")
 				.col-xs-4
+					.titre My Account
 					.form-group
 						label(for='password1') Your password:
 						input.form-control(id='password1', type="password", ng-model='password1', value="test")
@@ -26,19 +69,24 @@ html(ng-app)
 						input.form-control(id='password2', type="password", ng-model='password2', value="test")
 					.form-group
 						label(for='email') E-Mail:
-						input.form-control(id='email', type="email", ng-model='email', value="test@test.com")
+						input.form-control(id='email', type="email", ng-model='email', ng-init="email='#{user.mail}'")
 					.form-group
 						label(for='country') Your Country:
-						select.form-control(id='country')
+						select.form-control(id='country', ng-model="country", required)
+							each country in countries
+								- var selected = (country.id == user.country.id)
+								option(value='#{country.id}', ng-selected='country.id == user.country.id')= country.name
 					.form-group
 						label(for='project') Your Project:
-						select.form-control(id='project')
+						select.form-control(id='project', ng-model="project", required)
+							each project in projects
+								option(value='#{project.id}', ng-selected='project.id == user.project.id')= project.name
 				.col-xs-8#avatar-container
 					.form-group
 						label(for='avatar-field')
-						input.form-control(type="file", id="avatar-field")
+						input.form-control(type="file", id="avatar-field", value="Choisisez une image")
 					.col-xs-6#avatar-renderer-container
-						img(id="avatar-renderer")
+						img(id="avatar-renderer", src="#{user.image ? user.image.url_hd : '#'}")
 					.col-xs-6#avatar-result-container
 						canvas(id="avatar-result")
 
@@ -54,6 +102,6 @@ html(ng-app)
 
 		script(type='text/javascript', src='/javascripts/jquery-1.10.2.js')
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
-		script(type='text/javascript', src='/javascripts/home/jquery.imgareaselect.pack.js')
+		script(type='text/javascript', src='/javascripts/account/jquery.imgareaselect.pack.js')
 		script(type='text/javascript', src='/javascripts/angular.js')
 		script(type='text/javascript', src='/javascripts/account/main.js')

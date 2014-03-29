@@ -1,5 +1,5 @@
-/*jlint browser: true */
-/*global $ */
+/*jlint browser:true */
+/*global $ , document, moment*/
 
 var decallage_y, sanitise, selector, slide_time;
 
@@ -59,9 +59,6 @@ sanitise = function (event, selector) {
     }
 };
 
-$(document).ready(function () {
-    $('#avatar-field').imgAreaSelect({
-        handles: true,
-        //onSelectEnd: someFunction
-    });
+$(window).load(function () {
+    "use strict";
 });

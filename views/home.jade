@@ -4,7 +4,7 @@ html(ng-app)
 	head
 		title Home - IpVIOPE
 		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap.css')
-		link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap-theme.css')
+		//-link(rel='stylesheet', href='/javascripts/bootstrap/css/bootstrap-theme.css')
 		link(rel='stylesheet', href='/stylesheets/home.css')
 		script(type='text/javascript', src='/socket.io/socket.io.js')
 
@@ -16,18 +16,20 @@ html(ng-app)
 			.news-section.row.header-top
 				.col-xs-6
 					.titre
-						| What's new ?
+						| What's new?
 					.content(ng-controller="News_Management")
 						.list-group
 							a.list-group-item(ng-repeat="item in list() | limitTo: 4", href="#", ng-click="show(item)")
 								.list-group-item-heading
+									img(alt='', src="{{item.user.image ? item.user.image.url_thumbnail : ''}}")
 									table
 										tr
 											td
 												h4 {{item.title | limitTo: 30}}
 											td.news-date
 												| {{item.createdAt}}
-											td.news-by by {{item.user.username}}
+											td.news-by
+												//-| by {{item.user.username}}
 								p.list-group-item-text.news-content {{item.content | limitTo: 100}}
 						button.btn.btn-info(ng-disabled="more()", ng-click="show_all()")
 							span.glyphicon.glyphicon-plus.
@@ -106,14 +108,6 @@ html(ng-app)
 										.country
 											img(ng-src='/images/Country/{{user.country.name}}.jpg', alt='Country')
 										.connected(ng-show="user.online")
-										
-											
-
-
-
-
-
-
 
 
 		.modal.fade#popup-news(ng-controller="popup_news")
@@ -140,7 +134,8 @@ html(ng-app)
 									li(ng-repeat="item in list()", ng-class="{ active: item.active}") 
 										a(href="#", ng-click="show_new( item )" )
 											| {{item.title}}
-											p(style='float:right;') {{item.createdAt}} by {{item.user.username}}
+											p(style='float:right;') {{item.createdAt}}
+											p(style='float:right;') by {{item.user.username}}
 							.col-xs-8.rounded.content
 								| {{current_content}}
 
@@ -191,15 +186,16 @@ html(ng-app)
 		img#ajaxloader(src="/images/ajax-loader.gif", alt='')
 
 
-		//  Scripts se chargeants après le document 
+		//-  Scripts se chargeants après le document 
 		script(type='text/javascript', src='/javascripts/jquery-1.10.2.js')
 		//- script(type='text/javascript', src='/javascripts/jquery.flippy.min.js')
 		script(type='text/javascript', src='/javascripts/bootstrap/js/bootstrap.js')
 		//- script(type='text/javascript', src='/javascripts/jquery-ui-1.10.3.custom.min-only-shake.js')
-		// Chargement de nos scripts finaux
+		//- Chargement de nos scripts finaux
 		script(type='text/javascript', src='/javascripts/angular.js')
 		script(type='text/javascript', src='/javascripts/home/main.js')
 		script(type='text/javascript', src='/javascripts/home/controller.js')
+		script(type='text/javascript', src='/javascripts/moment.min.js')
 
 		
 
@@ -221,7 +217,7 @@ html(ng-app)
 			(function() {
 				var good_advice_malard;
 				good_advice_malard = "\n  IF YOU ARE TIRED OR CURIOUS\n	          _.._\n             /   o\\__,\n             \\  -.___/\n              \\  \\\n         (\\____)  \\\n     |\_(         ))\n_____|   (_        /________\n     _\\____(______/__\n       ______\n\nYOU SHOULD TRY THE KONAMI CODE\n";
-				return console.log(good_advice_malard);
+				console.log(good_advice_malard);
 			})();
 			
 			

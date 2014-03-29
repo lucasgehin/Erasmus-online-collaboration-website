@@ -11,7 +11,18 @@ exports.account = function (req, res) {
     if (!req.session || !req.session.connected) {
         res.redirect("/");
     } else {
-        res.render('account');
+        var projects, countries;
+        db.Project.findAll().success(function (list) {
+            projects = list;
+            db.Country.findAll().success(function (list) {
+                countries = list;
+                res.render('account', {
+                    user: req.session.user,
+                    projects: projects,
+                    countries: countries
+                });
+            });
+        });
     }
 };
 
@@ -22,10 +33,12 @@ exports.editAccount = function (req, res) {
         res.redirect("/");
     } else {
 
-        var pass, mail, img_hd, img_thumb, response, body;
+        var pass, mail, img_hd, img_thumb, response, body, project, country;
 
         pass = req.body.pass;
         mail = req.body.email;
+        project = req.body.project;
+        country = req.body.country;
         img_hd = req.body.img_hd;
         img_thumb = req.body.img_thumbnail;
 
@@ -45,14 +58,29 @@ exports.editAccount = function (req, res) {
                 console.log(err);
             });
 
-            user.updateAttributes({
-                password: pass,
-                mail: mail
-            }).success(function (user) {
+            var query;
+
+            if (pass && pass !== '') {
+                query = user.updateAttributes({
+                    password: pass,
+                    mail: mail,
+                    ProjectId: project,
+                    CountryId: country
+                });
+            } else {
+                query = user.updateAttributes({
+                    mail: mail,
+                    ProjectId: project,
+                    CountryId: country
+                });
+            }
+
+            query.success(function (user) {
                 console.log("success");
                 response = JSON.stringify({
                     ok: true
                 });
+                req.session.destroy();
                 res.end(response);
             }).error(function (err) {
                 console.log("error");

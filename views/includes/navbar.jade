@@ -7,7 +7,7 @@
 				span.icon-bar
 				span.icon-bar
 				span.icon-bar
-			a.navbar-brand(href='#') IpVIOPE
+			a.navbar-brand(href='/home') IpVIOPE
 
 	#navbar-main.collapse.navbar-collapse
 		ul.nav.navbar-nav
@@ -42,21 +42,22 @@
 				a#users-link(href='#')
 					span.glyphicon.glyphicon-user
 					|   Users
+		
+		img.navbar-right(alt="", src="#{user.image ? user.image.url_thumbnail : ''}")
 		ul.nav.navbar-nav.navbar-right
 			li.dropdown
 				a.dropdown-toggle(href='#', data-toggle='dropdown')  Settings <b class='caret'> </b>
-
-					ul.dropdown-menu
-						li
-							a(href='/account') My Account
-						li.divider
-						li
-							a(href='#') Help
-						li
-							a(href='#') Report a bug
-						li.divider
-						li
-							a(href='logout')
-								span.logout-btn
-									span.icon-remove-sign
-									| Logout
+				ul.dropdown-menu
+					li
+						a(href='/account') My Account
+					li.divider
+					li
+						a(href='#') Help
+					li
+						a(href='#') Report a bug
+					li.divider
+					li
+						a(href='logout')
+							span.logout-btn
+								span.icon-remove-sign
+								| Logout

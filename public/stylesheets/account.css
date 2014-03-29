@@ -32,6 +32,10 @@ a {
 #avatar-renderer-container {
   height: 240px;
 }
+#avatar-renderer {
+  max-height: 300px;
+  max-width: 300px;
+}
 #avatar-result {
   border: 3px #fff solid;
   box-shadow: 0 0 5px #808080;

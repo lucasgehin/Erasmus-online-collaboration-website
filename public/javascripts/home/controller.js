@@ -1,5 +1,5 @@
 /*jslint browser: true*/
-/*global $, jQuery, io, angular*/
+/*global $, jQuery, io, angular, moment*/
 
 var $load_img, Documents_list, Events_list, News_list, Projects_list, Users_list, load_count, sanitize, socket, load_start, load_end;
 
@@ -119,6 +119,13 @@ this.News_Management = function ($scope) {
                 }));
             }
             $scope.$apply();
+            $('.news-date').each(function () {
+                var date = $(this).text();
+                date = new Date(date);
+                date = moment(date).fromNow();
+                $(this).text(date);
+                console.log(date);
+            });
         });
     };
     socket.on('connect', function () {

@@ -15,7 +15,8 @@ exports.home = function (req, res) {
     } else {
         options = {
             title: "Welcome - IpVIOPE",
-            lorem: get_lorem(10000)
+            lorem: get_lorem(10000),
+            user: req.session.user
         };
         res.render('home', options);
     }

@@ -6,14 +6,23 @@ body {
   padding: auto;
   padding: 0 20px 0 20px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background-image: url("/images/backgrounds/main-rzd.jpg");
+  background: url("/images/backgrounds/amphitheater-small.jpg") no-repeat center center fixed;
   background-size: cover;
 }
 a {
   color: #00b7ff;
 }
-.nav li {
+.navbar {
+  background-color: rgba(255,255,255,0.9) !important;
+}
+.navbar .nav li {
   margin-right: 10px;
+}
+.navbar img {
+  width: 50px;
+  margin-top: 1px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px #808080;
 }
 .divider-vertical {
   height: 50px;
@@ -24,7 +33,7 @@ a {
 .main-container {
   margin-top: 0px;
   padding: 0 30px 0 30px;
-  background-color: rgba(255,255,255,0.8);
+  background-color: rgba(255,255,255,0.9);
   border-radius: 10px;
 }
 .header-top {
@@ -38,9 +47,6 @@ a {
 .header-top .list-group-item {
   text-align: left;
 }
-.header-top .list-group-item table {
-  width: 100%;
-}
 .header-top .list-group-item table td {
   width: 50%;
   vertical-align: middle;
@@ -52,8 +58,20 @@ a {
   text-align: right;
 }
 .header-top .list-group-item table .news-by {
-  width: 25%;
+  width: 100%;
   white-space: no-wrap;
+}
+.header-top .list-group-item img {
+  float: right;
+  width: 84px;
+  margin: -10px -14.5px 0 0;
+  box-shadow: 0px 0px 5px #808080;
+}
+.header-top .list-group-item:first-child > .list-group-item-heading > img {
+  border-top-right-radius: 5px;
+}
+.header-top .list-group-item:last-child > .list-group-item-heading > img {
+  border-bottom-right-radius: 5px;
 }
 .header-top .list-group-item-text {
   text-align: justify;

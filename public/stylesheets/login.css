@@ -1,6 +1,6 @@
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-  background: url("/images/backgrounds/main-rzd.jpg");
+  background: url("/images/backgrounds/amphitheater-small.jpg") no-repeat center center fixed;
   -webkit-background-size: cover;
 /* pour Chrome et Safari */
   -moz-background-size: cover;
@@ -12,7 +12,7 @@ body {
 }
 body > .container {
   margin-top: 100px;
-  background-color: rgba(255,255,255,0.75);
+  background-color: rgba(255,255,255,0.9);
   box-shadow: 0 0 10px;
   border-radius: 25px;
 }
@@ -21,7 +21,7 @@ a {
   cursor: pointer;
 }
 .navbar {
-  background-color: rgba(255,255,255,0.8) !important;
+  background-color: rgba(255,255,255,0.9) !important;
 }
 .navbar li {
   margin-right: 10px;
@@ -37,6 +37,7 @@ a {
 }
 .page-header h1 small {
   text-shadow: none;
+  color: #dd4814;
 }
 .log_form {
   margin-top: 95px;

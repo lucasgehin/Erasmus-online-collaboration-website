@@ -8,20 +8,24 @@ Exception = require('./Exception').Exception;
 
 
 /*
-
     Controlleur gérant les News
  */
 
 News = (function () {
 
     "use strict";
-    
+
     function News() {}
 
     News.find_all = function (callback) {
         var query;
         query = db.News.findAll({
-            include: [db.User]
+            include: [
+                {
+                    model: db.User,
+                    include: [ db.Image]
+                }
+            ]
         });
         query.success(function (news) {
             callback(null, news);

@@ -14,7 +14,50 @@ html(ng-app="chat")
 
 	body
 		
-		include includes/navbar
+		// inlcudes/navbar.jade
+		.navbar.navbar-default.navbar-fixed-top(role='navigation')
+			.container-fluid
+				.navbar-header
+					button.navbar-toggle(type='button', data-toggle='collapse', data-target='#navbar-main')
+						span.sr-only Toggle navigation
+						span.icon-bar
+						span.icon-bar
+						span.icon-bar
+					a.navbar-brand(href='/home') IpVIOPE
+
+			#navbar-main.collapse.navbar-collapse
+				ul.nav.navbar-nav
+					li
+						a(href='#')
+							span.glyphicon.glyphicon-pencil
+							|  Documents
+					li
+						a(href='/chat', target='_blank')
+							span.glyphicon.glyphicon-facetime-video
+							|  Chat
+					li
+						a(href='/calendar', target='_blank')
+							span.glyphicon.glyphicon-calendar
+							|  Calendar
+
+					
+				ul.nav.navbar-nav.navbar-right
+					li.dropdown
+						a.dropdown-toggle(href='#', data-toggle='dropdown')  Settings <b class='caret'> </b>
+						ul.dropdown-menu
+							li
+								a(href='/account') My Account
+							li.divider
+							li
+								a(href='#') Help
+							li
+								a(href='#') Report a bug
+							li.divider
+							li
+								a(href='logout')
+									span.logout-btn
+										span.icon-remove-sign
+										| Logout
 
 		.main-container#chat(ng-controller="chatController")
 			.conference.container-fluid
