@@ -9,9 +9,12 @@ exports.login = require("./login").login;
 
 exports.home = require("./home").home;
 
+exports.documents = require("./documents").documents;
+
 exports.calendar = require("./calendar").calendar;
 
 exports.chat = require("./chat").chat;
+
 
 exports.account = require("./account").account;
 exports.editAccount = require("./account").editAccount;

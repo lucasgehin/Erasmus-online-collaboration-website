@@ -33,7 +33,7 @@ html(ng-app)
 		#navbar-main.collapse.navbar-collapse
 			ul.nav.navbar-nav
 				li
-					a(href='#')
+					a(href='/documents', target='_blank')
 						span.glyphicon.glyphicon-pencil
 						|  Documents
 				li
@@ -88,7 +88,7 @@ html(ng-app)
 							
 					.modal-footer(ng-hide="disabled")
 						button.save(ng-click="edit()").btn.btn-success
-							| Modify
+							| Modify	
 
 
 		.modal.fade#popup-edit-event(ng-controller="popup_edit_event", data-backdrop="static", data-keyboard="false")

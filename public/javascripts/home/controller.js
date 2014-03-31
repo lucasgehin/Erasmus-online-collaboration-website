@@ -84,8 +84,10 @@ this.User_Manager = function ($scope) {
                 Users_list = response;
             }
             console.log("User list saved");
+            console.log(response);
             load_end();
             $scope.$apply();
+
         });
     };
     return socket.on('connect', function () {
@@ -93,7 +95,56 @@ this.User_Manager = function ($scope) {
     });
 };
 
-this.News_Management = function ($scope) {
+
+this.Documents_Management = function ($scope, $sce) {
+    "use strict";
+    $scope.list = function () {
+        return Documents_list;
+    };
+
+    $scope.get_documents_list = function () {
+        console.log("Getting documents list");
+        //load_start();
+        socket.emit('get_documents_list', null, function (err, response) {
+            //load_end();
+            console.log(response);
+            if (response !== null) {
+                Documents_list = response;
+            }
+            if (Documents_list.length === 0 || err) {
+                Documents_list.push({
+                    id: -1,
+                    title: "There is nothing here yet :(",
+                    content: "You can add a document in the 'Documents' section.'",
+                    createdAt: new Date()
+                });
+            }
+            $scope.$apply();
+            //$('.document-date').each(function () {
+            //    var date = $(this).text();
+            //    date = new Date(date);
+            //    date = moment(date).fromNow();
+            //    $(this).text(date);
+            //});
+        });
+    };
+    socket.on('connect', function () {
+        $scope.get_documents_list();
+    });
+    $scope.show = function (item) {
+        var popup, scope;
+        popup = document.querySelector("#popup-document");
+        scope = angular.element(popup).scope();
+        scope.item = item;
+        scope.date = moment(item.createdAt).fromNow();
+        scope.title = item.title;
+        scope.content = $sce.trustAsHtml(item.content);
+        $(popup).modal();
+    };
+};
+
+
+this.News_Management = function ($scope, $sce) {
     "use strict";
     $scope.list = function () {
         return News_list;
@@ -135,8 +186,10 @@ this.News_Management = function ($scope) {
         var popup, scope;
         popup = document.querySelector("#popup-news");
         scope = angular.element(popup).scope();
+        scope.item = item;
+        scope.date = moment(item.createdAt).fromNow();
         scope.title = item.title;
-        scope.content = item.content;
+        scope.content = $sce.trustAsHtml(item.content);
         $(popup).modal();
     };
     $scope.show_all = function () {
@@ -150,7 +203,7 @@ this.News_Management = function ($scope) {
     };
 };
 
-this.Events_Management = function ($scope) {
+this.Events_Management = function ($scope, $sce) {
     "use strict";
     $scope.list = function () {
         return Events_list;
@@ -171,13 +224,13 @@ this.Events_Management = function ($scope) {
             if (Events_list.length === 0) {
                 Events_list.push({
                     id: -1,
-                    title: "Nothing planed today ! :D",
-                    content: "You can add an event in the calendar if you want.",
+                    title: "Nothing planed today ! &#9786;",
+                    description: "You can add an event in the calendar if you want.",
                     createdAt: new Date()
                 });
             }
             $scope.$apply();
-            $('.event-date').each(function () {
+            $('.event-date span').each(function () {
                 var date = $(this).text();
                 date = new Date(date);
                 date = moment(date).fromNow();
@@ -190,16 +243,28 @@ this.Events_Management = function ($scope) {
     });
     $scope.show = function (item) {
         var popup, scope;
-        popup = document.querySelector("#popup-news");
+        popup = document.querySelector("#popup-events");
         scope = angular.element(popup).scope();
+        scope.item = item;
         scope.title = item.title;
-        scope.content = item.content;
+        scope.content = $sce.trustAsHtml(item.description);
+        $('.show-event-date').empty();
+        $('.show-event-date').eq(0).text(item.start);
+        $('.show-event-date').eq(1).text(item.end);
         $(popup).modal();
+        setTimeout(function () {
+            $('.show-event-date').each(function () {
+                var date = $(this).text();
+                date = new Date(date);
+                date = moment(date).fromNow();
+                $(this).text(date);
+            });
+        }, 50);
         return null;
     };
     $scope.show_all = function () {
         var popup, scope;
-        popup = document.querySelector("#popup-news-all");
+        popup = document.querySelector("#popup-events-all");
         scope = angular.element(popup).scope();
         if (!scope.is_initialized) {
             scope.initalize();
@@ -225,6 +290,7 @@ this.popup_news = function ($scope) {
     $scope.title = "";
     $scope.content = "";
     $scope.date = "";
+    $scope.user = {};
 };
 
 this.popup_news_all = function ($scope) {
@@ -237,14 +303,40 @@ this.popup_news_all = function ($scope) {
     $scope.initalize = function () {
         News_list[0].active = true;
         $scope.activated = News_list[0];
+        $scope.user = News_list[0].user;
+        $scope.date = News_list[0].createdAt;
         $scope.is_initialized = true;
+        setTimeout(function () {
+            // body...
+            $('.news-all-date').delay(2000).each(function () {
+                var date = $(this).text();
+                date = new Date(date);
+                date = moment(date).fromNow();
+                $(this).text(date);
+            });
+        }, 500);
 
     };
     $scope.show_new = function (item) {
         $scope.current_content = item.content;
+        $scope.user = item.user;
+        delete $scope.date;
+        $('.news-all-date').empty();
+        $('.news-all-date').text(item.createdAt);
         $scope.activated.active = false;
         $scope.activated = item;
         $scope.activated.active = true;
+
+        setTimeout(function () {
+
+            $('.news-all-date').each(function () {
+                var date = $(this).text();
+
+                date = new Date(date);
+                date = moment(date).fromNow();
+                $(this).text(date);
+            });
+        }, 20);
     };
     $scope.show = function () {
         var self;
@@ -258,11 +350,77 @@ this.popup_news_all = function ($scope) {
 
 };
 
-this.popup_settings = function ($scope) {
+this.popup_events = function ($scope) {
     "use strict";
     $scope.title = "";
     $scope.content = "";
+    $scope.date = "";
+    $scope.user = {};
 };
+
+this.popup_events_all = function ($scope, $sce) {
+    "use strict";
+    $scope.list = function () {
+        return Events_list;
+    };
+    $scope.is_initialized = false;
+    $scope.current_content = '';
+    $scope.initalize = function () {
+        Events_list[0].active = true;
+        $scope.activated = Events_list[0];
+        $scope.user = Events_list[0].user;
+        $scope.date = Events_list[0].createdAt;
+        $scope.is_initialized = true;
+        setTimeout(function () {
+            $('.events-all-date').delay(2000).each(function () {
+                var date = $(this).text();
+                date = new Date(date);
+                date = moment(date).fromNow();
+                $(this).text(date);
+            });
+        }, 20);
+    };
+    $scope.show_new = function (item) {
+        $scope.current_content = $sce.trustAsHtml(item.description);
+        $scope.user = item.user;
+        $scope.activated.active = false;
+        $scope.activated = item;
+        $scope.activated.active = true;
+
+        $('.events-all-date').eq(0).empty().text(item.start);
+        $('.events-all-date').eq(1).empty().text(item.end);
+
+        setTimeout(function () {
+            $('.events-all-date').each(function () {
+                var date = $(this).text();
+                date = new Date(date);
+                date = moment(date).fromNow();
+                $(this).text(date);
+            });
+        }, 20);
+    };
+    $scope.show = function () {
+        var self;
+        self = document.querySelector("#popup-events-all");
+        $("html, body").animate({
+            "scrollTop": 0
+        }, 500);
+        $scope.current_content = $sce.trustAsHtml($scope.activated.description);
+        $('.events-all-date').eq(0).empty().text($scope.activated.start);
+        $('.events-all-date').eq(1).empty().text($scope.activated.end);
+        $(self).modal();
+        // setTimeout(function () {
+        //     $('.events-all-date').each(function () {
+        //         var date = $(this).text();
+        //         date = new Date(date);
+        //         date = moment(date).fromNow();
+        //         $(this).text(date);
+        //     });
+        // }, 1000);
+    };
+
+};
+
 
 this.Project_Manager = function ($scope) {
     "use strict";
@@ -286,7 +444,7 @@ this.Project_Manager = function ($scope) {
 };
 
 
-angular.module('home', []).
+angular.module('home', ['ngAnimate']).
     filter('htmlToPlaintext', function () {
         "use strict";
         var parser = document.createElement('div');

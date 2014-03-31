@@ -14,7 +14,7 @@ Password = require('password-hash');
  */
 
 Users = (function () {
-    
+
     function Users() {}
 
     Users.find_all = function (callback) {

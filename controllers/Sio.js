@@ -26,9 +26,6 @@ Events = require('./Events').Events;
 Rooms = require('./Rooms').Rooms;
 
 
-
-
-
 /*
 
         Gestion des WebSockets
@@ -144,6 +141,40 @@ Sio = (function () {
 
                 });
 
+                socket.on("get_documents_list", function (no_data, callback) {
+                    console.log("Sio: Demande de la liste des documents par " + user.username);
+                    //News.find_all(function (err, list) {
+                    //    callback(err, list);
+                    //});
+
+                    var fake_docs = [
+                        {
+                            id: -1,
+                            title: "To all students",
+                            content: "Each student should present their identity card (or equivalent) as soon as they arrive.",
+                            important: true
+                        },
+                        {
+                            id: -1,
+                            title: "Welcome in Portugal",
+                            content: "Welcome to all students",
+                            important: true
+                        },
+                        {
+                            id: -1,
+                            title: "Schedule of the ERASMUS contest",
+                            content: "Please look at the calendar",
+                            important: true
+                        },
+                        {
+                            id: -1,
+                            title: "Usefull information",
+                            content: "You'll find bellow a list of museums, railway sations, tourism spots, etc...",
+                            important: true
+                        },
+                    ];
+                    callback(null, fake_docs); // TODO
+                });
                 socket.on("get_news_list", function (no_data, callback) {
                     console.log("Sio: Demande de la liste des news par " + user.username);
                     News.find_all(function (err, list) {
@@ -314,6 +345,61 @@ Sio = (function () {
                 socket.on('disconnect', function () {
                     console.log("\n\n\tDisconnect chat " + user.username + "\n\n");
                     socket.broadcast.emit('leave', user);
+                });
+            }
+        });
+
+        Sio.io.of('/documents').authorization(function (handshakeData, callback) {
+
+            Sio.getSession(handshakeData, callback);
+
+        }).on('connection', function (socket) {
+
+            var user;
+            user = socket.handshake.session !== undefined ? socket.handshake.session.user : undefined;
+
+
+            if (user) {
+
+                console.log("\n Connexion aux documents de " + user.username + ".");
+                //console.log(socket.handshake.foo);
+                socket.on("get_documents_list", function (no_data, callback) {
+                    console.log("Sio: Demande de la liste des documents par " + user.username);
+                    //News.find_all(function (err, list) {
+                    //    callback(err, list);
+                    //});
+
+                    var fake_docs = [
+                        {
+                            id: -1,
+                            title: "To all students",
+                            content: "Each student should present their identity card (or equivalent) as soon as they arrive.",
+                            important: true,
+                            date: new Date()
+                        },
+                        {
+                            id: -1,
+                            title: "Welcome in Portugal",
+                            content: "Welcome to all students",
+                            important: true,
+                            date: new Date()
+                        },
+                        {
+                            id: -1,
+                            title: "Schedule of the ERASMUS contest",
+                            content: "Please look at the calendar",
+                            important: true,
+                            date: new Date()
+                        },
+                        {
+                            id: -1,
+                            title: "Usefull information",
+                            content: "You'll find bellow a list of museums, railway sations, tourism spots, etc...",
+                            important: true,
+                            date: new Date()
+                        },
+                    ];
+                    callback(null, fake_docs); // TODO
                 });
             }
         });

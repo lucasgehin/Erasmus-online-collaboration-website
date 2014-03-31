@@ -21,7 +21,7 @@ html(ng-app="home")
 						.list-group
 							a.list-group-item(ng-repeat="item in list() | limitTo: 4", href="#", ng-click="show(item)")
 								.list-group-item-heading
-									img(alt='', src="{{item.user.image ? item.user.image.url_thumbnail : ''}}")
+									img(alt='', ng-src="{{item.user.image ? item.user.image.url_thumbnail : ''}}")
 									table
 										tr
 											td
@@ -41,23 +41,35 @@ html(ng-app="home")
 					.content(ng-controller="Events_Management")
 						.list-group
 							a.list-group-item(ng-repeat="item in list() | limitTo: 4", href="#", ng-click="show(item)")
-								.list-group-item-heading
-									table
+								.list-group-item-heading()
+									table.table-events
 										tr
 											td
-												h4(style="color: {{item.color}}") {{item.title | limitTo: 30}}
+												h4(style="color: {{item.color}}") {{item.title | htmlToPlaintext | limitTo: 30}}
 											td.event-date
-												| {{item.createdAt}}
-											td.event-by by {{item.user.username}}
+												span {{item.start}}
+												|  &rarr; 
+												span {{item.end}}
+											//- td.event-by by {{item.user.username}}
 								p.list-group-item-text.event-content {{item.description | htmlToPlaintext | limitTo: 155}}
 						button.btn.btn-info(ng-disabled="more()", ng-click="show_all()")
 							span.glyphicon.glyphicon-plus More
 
-			.pinned-docs-section.row-fluid.section
-				.titre.
-					Pinned documents
-				.content
-					| Content
+			.important-docs-section.row-fluid.section
+				.col-xs-12.documents(ng-controller='Documents_Management')
+					.navbar.navbar-default
+						.navbar-header
+							.navbar-brand Important documents
+						.collapse.navbar-collapse
+								form.navbar-form.navbar-left(role='search')
+									.form-group
+										input.form-control(type='text', placeholder='Filter documents', ng-model='filter')
+					.content
+						span.col-xs-3.document.clearbackground(ng-repeat='document in list() | filter:filter')
+							.inner
+								.document-title
+									b {{document.title}}
+								| {{document.content | limitTo: 200}}
 
 			.projects-link-section.row-fluid.section
 				.col-xs-12.projects(ng-controller='Project_Manager')
@@ -69,7 +81,7 @@ html(ng-app="home")
 									.form-group
 										input.form-control(type='text', placeholder='Filter projects', ng-model='filter')
 					.content
-						span.col-xs-3.projects(ng-repeat='project in list() | filter:filter')
+						span.col-xs-3.project.clearbackground(ng-repeat='project in list() | filter:filter')
 							table
 								tr
 									td
@@ -94,19 +106,23 @@ html(ng-app="home")
 									.form-group
 										input.form-control(type='text', placeholder='Filter users', ng-model='filter')
 					.content
-						span.col-xs-3.user(ng-repeat='user in list() | filter:filter')
+						span.col-xs-3.user.clearbackground(ng-repeat='user in list() | filter:filter')
 							table
 								tr
 									td
-										img(ng-src='{{user.image.url_thumbnail}}', alt='')
+										img(ng-src="{{user.image ? user.image.url_thumbnail : ''}}", alt='')
 									td.info-user
 										.connected(ng-show="user.online")
-										| @{{user.username}}
-										br
-										| {{user.firstname}} {{user.name}}
-										br
 										.country
 											img(ng-src='/images/Country/{{user.country.name}}.jpg', alt='Country')
+										div.username @{{user.username}}
+										| {{user.firstname}} {{user.name}}
+										| {{user.mail}}
+										div.user-status {{user.statu.name}}
+										div.user-project {{user.project.name}}
+							.popover
+								img(alt='', ng-src="{{user.image ? user.image.url_hd : ''}}")
+
 
 
 		.modal.fade#popup-news(ng-controller="popup_news")
@@ -116,7 +132,13 @@ html(ng-app="home")
 						button.close(data-dismiss="modal", aria-hidden="true")
 							| &times;
 						h4.title {{title}}
-					.modal-body {{content}}
+					.modal-body
+						.row(style='text-align:center') 
+							| By 
+							span.show-news-user <b>{{item.user.username}}</b>
+							| , 
+							span.show-news-date {{date}}
+						.row(ng-bind-html="content")
 					.modal-footer
 
 		.modal.fade#popup-news-all(ng-controller="popup_news_all")
@@ -133,10 +155,56 @@ html(ng-app="home")
 									li(ng-repeat="item in list()", ng-class="{ active: item.active}") 
 										a(href="#", ng-click="show_new( item )" )
 											| {{item.title}}
-											p(style='float:right;') {{item.createdAt}}
-											p(style='float:right;') by {{item.user.username}}
+											//p(style='float:right;') {{item.createdAt}}
+											//p(style='float:right;') by {{item.user.username}}
 							.col-xs-8.rounded.content
-								| {{current_content}}
+								.row(style="text-align: right")
+									| By <b>{{user.username}}</b>, 
+									span.news-all-date {{date}}
+								.row
+									| {{current_content}}
+
+		.modal.fade#popup-events(ng-controller="popup_events")
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(data-dismiss="modal", aria-hidden="true")
+							| &times;
+						h4.title(style="color:{{item.color}}") {{title}}
+					.modal-body
+						.row(style='box-shadow: 0 0 5px {{item.color}}; margin-top: -21px; height: 2px; background-color:{{item.color}}')
+						.row(style='text-align:center; font-weight: bold') 
+							span.show-event-date {{item.start}}
+							|  &rarr; 
+							span.show-event-date {{item.end}}
+							br
+							br
+						.row(ng-bind-html="content")
+					.modal-footer
+
+		.modal.fade#popup-events-all(ng-controller="popup_events_all")
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(data-dismiss="modal", aria-hidden="true")
+							| &times;
+						h4.title Next Events List
+					.modal-body
+						.row
+							.col-xs-4.separation-right.list
+								ul.nav.nav-pills.nav-stacked
+									li(ng-repeat="item in list()", ng-class="{active: item.active}") 
+										a(href="#", ng-click="show_new( item )" )
+											| {{item.title}}
+											//p(style='float:right;') {{item.createdAt}}
+											//p(style='float:right;') by {{item.user.username}}
+							.col-xs-8.rounded.content
+								.row(style="text-align: right")
+									span.events-all-date
+									| &rarr;
+									span.events-all-date
+								.row.events-content(ng-bind-html="current_content")
+
 
 
 
@@ -159,6 +227,7 @@ html(ng-app="home")
 		//- script(type='text/javascript', src='/javascripts/jquery-ui-1.10.3.custom.min-only-shake.js')
 		//- Chargement de nos scripts finaux
 		script(type='text/javascript', src='/javascripts/angular.js')
+		script(type='text/javascript', src='/javascripts/angular-animate.js')
 		script(type='text/javascript', src='/javascripts/home/main.js')
 		script(type='text/javascript', src='/javascripts/home/controller.js')
 		script(type='text/javascript', src='/javascripts/moment.min.js')
@@ -170,8 +239,7 @@ html(ng-app="home")
 				var kkeys = [], konami = "38,38,40,40,37,39,37,39,66,65";
 				window.addEventListener("keydown", function(e){
 					kkeys.push( e.keyCode );
-					if ( kkeys.toString().indexOf( konami ) >= 0 ) {
-						
+					if ( kkeys.toString().indexOf( konami ) >= 0 ) {						
 						window.location = "/easteregg";
 					}
 				}, true);

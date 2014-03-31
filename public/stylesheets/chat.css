@@ -1,5 +1,7 @@
+@import url("http://fonts.googleapis.com/css?family=Ubuntu");
 body {
   padding: 0 1%;
+  font: 14px 'Ubuntu', "Lucida Grande", Helvetica, Arial, sans-serif;
   background-image: url("/images/backgrounds/chat.jpg");
   background-size: cover;
 }

@@ -86,7 +86,8 @@ Events = (function () {
 
         var query;
         query = db.Event.findAll({
-            where: ['end >= NOW()']
+            where: ['end >= NOW()'],
+            order: 'end ASC'
         });
         query.success(function (list) {
             callback(null, list);

@@ -23,7 +23,7 @@ $("#docs-link").on("click", function (e) {
     "use strict";
     var target;
     sanitise(e, selector);
-    target = $(".pinned-docs-section").offset().top + decallage_y;
+    target = $(".important-docs-section").offset().top + decallage_y;
     return $("html, body").animate({
         scrollTop: target
     }, slide_time);

@@ -1,3 +1,5 @@
+@import url(http://fonts.googleapis.com/css?family=Ubuntu)
+
 body_padding = 20px
 
 .red
@@ -7,7 +9,7 @@ body
 	position relative
 	padding auto
 	padding 0 body_padding 0 body_padding
-	font 14px  "Lucida Grande", Helvetica, Arial, sans-serif
+	font 14px  'Ubuntu', "Lucida Grande", Helvetica, Arial, sans-serif
 	background url("/images/backgrounds/amphitheater-small.jpg") no-repeat center center fixed
 	background-size cover
 
@@ -53,17 +55,21 @@ margin_section = 30px 0 30px 0
 		padding-top 30px		
 	.list-group-item		
 		text-align left
+		.table-events
+			width 100%
 		table
 			//width 100%
 			td
 				width 50%
 				vertical-align middle
-			.news-date
-				width 25%
+			.news-date, .event-date
+				width 100%
 				font-style italic
 				color gray
 				text-align right
-			.news-by				
+			.event-date
+				float right
+			.news-by, .event-by	
 				width 100%
 				white-space no-wrap
 		img
@@ -95,7 +101,7 @@ margin_section = 30px 0 30px 0
 .titre
 	font-size xx-large
 	font-weight bold
-	text-shadow 0 0 1px gray
+	//text-shadow 0 0 1px gray
 
 .settings-btn
 	color white
@@ -130,17 +136,16 @@ radius = 20px
 largeur = 150px
 haut = 100px
 
-.users-link-section, .projects-link-section
+.users-link-section, .projects-link-section, .important-docs-section
 	padding 0
-	.users, .projects
-		
+	.users, .projects, .documents
 
 		text-align center
 
 		.navbar-inner
 			text-align left
 		.content
-			min-height 500px
+			height 500px // Attention redéfini en dessous pour .projects-link-section, .important-docs-section
 			text-align center
 			//overflow-y scroll
 
@@ -148,11 +153,12 @@ haut = 100px
 				//margin-left 30px
 			tr
 				vertical-align top
-			.user						
+			.user, .project	, .document			
 				text-align left
 				min-height haut
 				max-height haut
 				border 1px rgba(0, 0, 0, 0.1) solid
+				background-color rgba(255,255,255, 0.9)
 				border-radius 10px
 				margin 0
 				padding 0
@@ -167,7 +173,8 @@ haut = 100px
 					border-bottom-left-radius 10px
 					box-shadow 0px 0px 5px lightgreen
 				.info-user
-					width 100%					
+					width 100%
+					padding-left 2%					
 
 				.connected
 					background-color green
@@ -178,13 +185,29 @@ haut = 100px
 					border-top-right-radius 10px
 					margin-right -1px
 					margin-top -1px
+				.username
+					width 100%
+					text-align center
+					font-weight bold
 
+		.document
+			> .inner
+				width 100%
+				padding 1%
+			.document-title
+				width 100%
+				text-align center
 		.project-name
 			font-size larger
 			text-decoration underline
 			font-weight bold
 		.country
-			display inline
+			float right
+			margin-right 5px
+
+.projects-link-section, .important-docs-section
+	.content
+		max-height 300px
 
 .users-link-section .users .content .user .country img 
 	display: inline;
@@ -227,4 +250,36 @@ haut = 100px
 	margin-left -65px
 	width 128px
 	display none
-	
+
+.clearbackground
+	background rgb(255,255,255) /* Old browsers */
+	background url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlNWU1ZTUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+")
+	background -moz-linear-gradient(top, rgba(255,255,255,1) 0%, rgba(229,229,229,1) 100%) /* FF3.6+ */
+	background -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(229,229,229,1))) /* Chrome,Safari4+ */
+	background -webkit-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%) /* Chrome10+,Safari5.1+ */
+	background -o-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%) /* Opera 11.10+ */
+	background -ms-linear-gradient(top, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%) /* IE10+ */
+	background linear-gradient(to bottom, rgba(255,255,255,1) 0%,rgba(229,229,229,1) 100%) /* W3C */
+	//filter progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ) /* IE6-8 */
+.clearbackground:hover
+	box-shadow 0 0 5px gray
+	cursor pointer
+
+.ng-enter
+	-webkit-animation 0.6s message_appear
+	-moz-animation 0.6s message_appear
+	-o-animation 0.6s message_appear
+	animation 0.6s message_appear
+
+.ng-leave
+	-webkit-animation 0.6s message_appear  reverse
+	-moz-animation 0.6s message_appear reverse
+	-o-animation 0.6s message_appear reverse
+	animation 0.6s message_appear reverse
+
+
+@keyframes message_appear
+	from 
+		opacity	0
+	to 
+		opacity	1

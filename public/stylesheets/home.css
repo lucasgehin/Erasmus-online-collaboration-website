@@ -1,3 +1,4 @@
+@import url("http://fonts.googleapis.com/css?family=Ubuntu");
 .red {
   border: 1px #f00 solid;
 }
@@ -5,7 +6,7 @@ body {
   position: relative;
   padding: auto;
   padding: 0 20px 0 20px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px 'Ubuntu', "Lucida Grande", Helvetica, Arial, sans-serif;
   background: url("/images/backgrounds/amphitheater-small.jpg") no-repeat center center fixed;
   background-size: cover;
 }
@@ -47,17 +48,25 @@ a {
 .header-top .list-group-item {
   text-align: left;
 }
+.header-top .list-group-item .table-events {
+  width: 100%;
+}
 .header-top .list-group-item table td {
   width: 50%;
   vertical-align: middle;
 }
-.header-top .list-group-item table .news-date {
-  width: 25%;
+.header-top .list-group-item table .news-date,
+.header-top .list-group-item table .event-date {
+  width: 100%;
   font-style: italic;
   color: #808080;
   text-align: right;
 }
-.header-top .list-group-item table .news-by {
+.header-top .list-group-item table .event-date {
+  float: right;
+}
+.header-top .list-group-item table .news-by,
+.header-top .list-group-item table .event-by {
   width: 100%;
   white-space: no-wrap;
 }
@@ -90,7 +99,6 @@ a {
 .titre {
   font-size: xx-large;
   font-weight: bold;
-  text-shadow: 0 0 1px #808080;
 }
 .settings-btn {
   color: #fff;
@@ -119,42 +127,87 @@ a {
 }
 /* ----------------- */
 .users-link-section,
-.projects-link-section {
+.projects-link-section,
+.important-docs-section {
   padding: 0;
 }
 .users-link-section .users,
 .projects-link-section .users,
+.important-docs-section .users,
 .users-link-section .projects,
-.projects-link-section .projects {
+.projects-link-section .projects,
+.important-docs-section .projects,
+.users-link-section .documents,
+.projects-link-section .documents,
+.important-docs-section .documents {
   text-align: center;
 }
 .users-link-section .users .navbar-inner,
 .projects-link-section .users .navbar-inner,
+.important-docs-section .users .navbar-inner,
 .users-link-section .projects .navbar-inner,
-.projects-link-section .projects .navbar-inner {
+.projects-link-section .projects .navbar-inner,
+.important-docs-section .projects .navbar-inner,
+.users-link-section .documents .navbar-inner,
+.projects-link-section .documents .navbar-inner,
+.important-docs-section .documents .navbar-inner {
   text-align: left;
 }
 .users-link-section .users .content,
 .projects-link-section .users .content,
+.important-docs-section .users .content,
 .users-link-section .projects .content,
-.projects-link-section .projects .content {
-  min-height: 500px;
+.projects-link-section .projects .content,
+.important-docs-section .projects .content,
+.users-link-section .documents .content,
+.projects-link-section .documents .content,
+.important-docs-section .documents .content {
+  height: 500px;
   text-align: center;
 }
 .users-link-section .users .content tr,
 .projects-link-section .users .content tr,
+.important-docs-section .users .content tr,
 .users-link-section .projects .content tr,
-.projects-link-section .projects .content tr {
+.projects-link-section .projects .content tr,
+.important-docs-section .projects .content tr,
+.users-link-section .documents .content tr,
+.projects-link-section .documents .content tr,
+.important-docs-section .documents .content tr {
   vertical-align: top;
 }
 .users-link-section .users .content .user,
 .projects-link-section .users .content .user,
+.important-docs-section .users .content .user,
 .users-link-section .projects .content .user,
-.projects-link-section .projects .content .user {
+.projects-link-section .projects .content .user,
+.important-docs-section .projects .content .user,
+.users-link-section .documents .content .user,
+.projects-link-section .documents .content .user,
+.important-docs-section .documents .content .user,
+.users-link-section .users .content .project,
+.projects-link-section .users .content .project,
+.important-docs-section .users .content .project,
+.users-link-section .projects .content .project,
+.projects-link-section .projects .content .project,
+.important-docs-section .projects .content .project,
+.users-link-section .documents .content .project,
+.projects-link-section .documents .content .project,
+.important-docs-section .documents .content .project,
+.users-link-section .users .content .document,
+.projects-link-section .users .content .document,
+.important-docs-section .users .content .document,
+.users-link-section .projects .content .document,
+.projects-link-section .projects .content .document,
+.important-docs-section .projects .content .document,
+.users-link-section .documents .content .document,
+.projects-link-section .documents .content .document,
+.important-docs-section .documents .content .document {
   text-align: left;
   min-height: 100px;
   max-height: 100px;
   border: 1px rgba(0,0,0,0.1) solid;
+  background-color: rgba(255,255,255,0.9);
   border-radius: 10px;
   margin: 0;
   padding: 0;
@@ -162,8 +215,31 @@ a {
 }
 .users-link-section .users .content .user img,
 .projects-link-section .users .content .user img,
+.important-docs-section .users .content .user img,
 .users-link-section .projects .content .user img,
-.projects-link-section .projects .content .user img {
+.projects-link-section .projects .content .user img,
+.important-docs-section .projects .content .user img,
+.users-link-section .documents .content .user img,
+.projects-link-section .documents .content .user img,
+.important-docs-section .documents .content .user img,
+.users-link-section .users .content .project img,
+.projects-link-section .users .content .project img,
+.important-docs-section .users .content .project img,
+.users-link-section .projects .content .project img,
+.projects-link-section .projects .content .project img,
+.important-docs-section .projects .content .project img,
+.users-link-section .documents .content .project img,
+.projects-link-section .documents .content .project img,
+.important-docs-section .documents .content .project img,
+.users-link-section .users .content .document img,
+.projects-link-section .users .content .document img,
+.important-docs-section .users .content .document img,
+.users-link-section .projects .content .document img,
+.projects-link-section .projects .content .document img,
+.important-docs-section .projects .content .document img,
+.users-link-section .documents .content .document img,
+.projects-link-section .documents .content .document img,
+.important-docs-section .documents .content .document img {
   margin-top: -2px;
   margin-left: -1px;
   display: inline;
@@ -175,14 +251,61 @@ a {
 }
 .users-link-section .users .content .user .info-user,
 .projects-link-section .users .content .user .info-user,
+.important-docs-section .users .content .user .info-user,
 .users-link-section .projects .content .user .info-user,
-.projects-link-section .projects .content .user .info-user {
+.projects-link-section .projects .content .user .info-user,
+.important-docs-section .projects .content .user .info-user,
+.users-link-section .documents .content .user .info-user,
+.projects-link-section .documents .content .user .info-user,
+.important-docs-section .documents .content .user .info-user,
+.users-link-section .users .content .project .info-user,
+.projects-link-section .users .content .project .info-user,
+.important-docs-section .users .content .project .info-user,
+.users-link-section .projects .content .project .info-user,
+.projects-link-section .projects .content .project .info-user,
+.important-docs-section .projects .content .project .info-user,
+.users-link-section .documents .content .project .info-user,
+.projects-link-section .documents .content .project .info-user,
+.important-docs-section .documents .content .project .info-user,
+.users-link-section .users .content .document .info-user,
+.projects-link-section .users .content .document .info-user,
+.important-docs-section .users .content .document .info-user,
+.users-link-section .projects .content .document .info-user,
+.projects-link-section .projects .content .document .info-user,
+.important-docs-section .projects .content .document .info-user,
+.users-link-section .documents .content .document .info-user,
+.projects-link-section .documents .content .document .info-user,
+.important-docs-section .documents .content .document .info-user {
   width: 100%;
+  padding-left: 2%;
 }
 .users-link-section .users .content .user .connected,
 .projects-link-section .users .content .user .connected,
+.important-docs-section .users .content .user .connected,
 .users-link-section .projects .content .user .connected,
-.projects-link-section .projects .content .user .connected {
+.projects-link-section .projects .content .user .connected,
+.important-docs-section .projects .content .user .connected,
+.users-link-section .documents .content .user .connected,
+.projects-link-section .documents .content .user .connected,
+.important-docs-section .documents .content .user .connected,
+.users-link-section .users .content .project .connected,
+.projects-link-section .users .content .project .connected,
+.important-docs-section .users .content .project .connected,
+.users-link-section .projects .content .project .connected,
+.projects-link-section .projects .content .project .connected,
+.important-docs-section .projects .content .project .connected,
+.users-link-section .documents .content .project .connected,
+.projects-link-section .documents .content .project .connected,
+.important-docs-section .documents .content .project .connected,
+.users-link-section .users .content .document .connected,
+.projects-link-section .users .content .document .connected,
+.important-docs-section .users .content .document .connected,
+.users-link-section .projects .content .document .connected,
+.projects-link-section .projects .content .document .connected,
+.important-docs-section .projects .content .document .connected,
+.users-link-section .documents .content .document .connected,
+.projects-link-section .documents .content .document .connected,
+.important-docs-section .documents .content .document .connected {
   background-color: #008000;
   width: 20px;
   height: 20px;
@@ -192,19 +315,89 @@ a {
   margin-right: -1px;
   margin-top: -1px;
 }
+.users-link-section .users .content .user .username,
+.projects-link-section .users .content .user .username,
+.important-docs-section .users .content .user .username,
+.users-link-section .projects .content .user .username,
+.projects-link-section .projects .content .user .username,
+.important-docs-section .projects .content .user .username,
+.users-link-section .documents .content .user .username,
+.projects-link-section .documents .content .user .username,
+.important-docs-section .documents .content .user .username,
+.users-link-section .users .content .project .username,
+.projects-link-section .users .content .project .username,
+.important-docs-section .users .content .project .username,
+.users-link-section .projects .content .project .username,
+.projects-link-section .projects .content .project .username,
+.important-docs-section .projects .content .project .username,
+.users-link-section .documents .content .project .username,
+.projects-link-section .documents .content .project .username,
+.important-docs-section .documents .content .project .username,
+.users-link-section .users .content .document .username,
+.projects-link-section .users .content .document .username,
+.important-docs-section .users .content .document .username,
+.users-link-section .projects .content .document .username,
+.projects-link-section .projects .content .document .username,
+.important-docs-section .projects .content .document .username,
+.users-link-section .documents .content .document .username,
+.projects-link-section .documents .content .document .username,
+.important-docs-section .documents .content .document .username {
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+}
+.users-link-section .users .document > .inner,
+.projects-link-section .users .document > .inner,
+.important-docs-section .users .document > .inner,
+.users-link-section .projects .document > .inner,
+.projects-link-section .projects .document > .inner,
+.important-docs-section .projects .document > .inner,
+.users-link-section .documents .document > .inner,
+.projects-link-section .documents .document > .inner,
+.important-docs-section .documents .document > .inner {
+  width: 100%;
+  padding: 1%;
+}
+.users-link-section .users .document .document-title,
+.projects-link-section .users .document .document-title,
+.important-docs-section .users .document .document-title,
+.users-link-section .projects .document .document-title,
+.projects-link-section .projects .document .document-title,
+.important-docs-section .projects .document .document-title,
+.users-link-section .documents .document .document-title,
+.projects-link-section .documents .document .document-title,
+.important-docs-section .documents .document .document-title {
+  width: 100%;
+  text-align: center;
+}
 .users-link-section .users .project-name,
 .projects-link-section .users .project-name,
+.important-docs-section .users .project-name,
 .users-link-section .projects .project-name,
-.projects-link-section .projects .project-name {
+.projects-link-section .projects .project-name,
+.important-docs-section .projects .project-name,
+.users-link-section .documents .project-name,
+.projects-link-section .documents .project-name,
+.important-docs-section .documents .project-name {
   font-size: larger;
   text-decoration: underline;
   font-weight: bold;
 }
 .users-link-section .users .country,
 .projects-link-section .users .country,
+.important-docs-section .users .country,
 .users-link-section .projects .country,
-.projects-link-section .projects .country {
-  display: inline;
+.projects-link-section .projects .country,
+.important-docs-section .projects .country,
+.users-link-section .documents .country,
+.projects-link-section .documents .country,
+.important-docs-section .documents .country {
+  float: right;
+  margin-right: 5px;
+}
+.projects-link-section .content,
+.important-docs-section .content {
+  max-height: 300px;
 }
 .users-link-section .users .content .user .country img {
   display: inline;
@@ -238,4 +431,82 @@ a {
   margin-left: -65px;
   width: 128px;
   display: none;
+}
+.clearbackground {
+  background: #fff;
+/* Old browsers */
+  background: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiA/Pgo8c3ZnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgdmlld0JveD0iMCAwIDEgMSIgcHJlc2VydmVBc3BlY3RSYXRpbz0ibm9uZSI+CiAgPGxpbmVhckdyYWRpZW50IGlkPSJncmFkLXVjZ2ctZ2VuZXJhdGVkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgeDE9IjAlIiB5MT0iMCUiIHgyPSIwJSIgeTI9IjEwMCUiPgogICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIxIi8+CiAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNlNWU1ZTUiIHN0b3Atb3BhY2l0eT0iMSIvPgogIDwvbGluZWFyR3JhZGllbnQ+CiAgPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEiIGhlaWdodD0iMSIgZmlsbD0idXJsKCNncmFkLXVjZ2ctZ2VuZXJhdGVkKSIgLz4KPC9zdmc+");
+  background: -moz-linear-gradient(top, #fff 0%, #e5e5e5 100%);
+/* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fff), color-stop(100%, #e5e5e5));
+/* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #fff 0%, #e5e5e5 100%);
+/* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #fff 0%, #e5e5e5 100%);
+/* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #fff 0%, #e5e5e5 100%);
+/* IE10+ */
+  background: linear-gradient(to bottom, #fff 0%, #e5e5e5 100%);
+/* W3C */
+}
+.clearbackground:hover {
+  box-shadow: 0 0 5px #808080;
+  cursor: pointer;
+}
+.ng-enter {
+  -webkit-animation: 0.6s message_appear;
+  -moz-animation: 0.6s message_appear;
+  -o-animation: 0.6s message_appear;
+  animation: 0.6s message_appear;
+}
+.ng-leave {
+  -webkit-animation: 0.6s message_appear reverse;
+  -moz-animation: 0.6s message_appear reverse;
+  -o-animation: 0.6s message_appear reverse;
+  animation: 0.6s message_appear reverse;
+}
+@-moz-keyframes message_appear {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes message_appear {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+@-o-keyframes message_appear {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+@-ms-keyframes message_appear {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes message_appear {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
 }
