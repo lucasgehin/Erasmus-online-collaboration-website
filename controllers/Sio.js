@@ -58,6 +58,7 @@ Sio = (function () {
     };
 
     Sio.etherpadApiKey = "208da60e58e52e342dd544f4fe56e19abbbe029f8663dae6a9ec2d25ac440c49";
+    //Sio.etherpadApiKey = "aefd7156c2c46d2471a99773f11bbcb348a58e5e522464ee2e667545c4d55567";
 
     Sio.buildEtherpadUrl = function (methode) {
         return 'http://localhost:9001/api/1/' + methode + '?apikey=' + Sio.etherpadApiKey + '&';
