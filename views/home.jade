@@ -32,8 +32,11 @@ html(ng-app="home")
 												//-| by {{item.user.username}}
 								p.list-group-item-text.news-content {{item.content | htmlToPlaintext | limitTo: 155}}
 						button.btn.btn-info(ng-disabled="more()", ng-click="show_all()")
+							span.glyphicon.glyphicon-asterisk.
+							| &emsp; More
+						button.btn.btn-success(ng-click="add()", ng-show="'#{user.statu.name}' != 'Student'")
 							span.glyphicon.glyphicon-plus.
-								More
+							| &emsp; Add
 
 				.col-xs-6
 					.titre
@@ -53,7 +56,8 @@ html(ng-app="home")
 											//- td.event-by by {{item.user.username}}
 								p.list-group-item-text.event-content {{item.description | htmlToPlaintext | limitTo: 155}}
 						button.btn.btn-info(ng-disabled="more()", ng-click="show_all()")
-							span.glyphicon.glyphicon-plus More
+							span.glyphicon.glyphicon-asterisk
+							| &emsp;More
 
 			br
 			.important-docs-section.row-fluid.section
@@ -66,7 +70,7 @@ html(ng-app="home")
 									.form-group
 										input.form-control(type='text', placeholder='Filter documents', ng-model='filter')
 					.content
-						span.col-xs-3.document.clearbackground(ng-repeat='document in list() | filter:filter')
+						span.col-xs-3.document.clearbackground(ng-repeat='document in list() | filter:filter', ng-click="show(document)")
 							.inner
 								.document-title
 									b {{document.title}}
@@ -82,7 +86,7 @@ html(ng-app="home")
 									.form-group
 										input.form-control(type='text', placeholder='Filter projects', ng-model='filter')
 					.content
-						span.col-xs-3.project.clearbackground(ng-repeat='project in list() | filter:filter')
+						span.col-xs-3.project.clearbackground(ng-repeat='project in list() | filter:filter', ng-click='show(project)')
 							table
 								tr
 									td
@@ -141,6 +145,9 @@ html(ng-app="home")
 							span.show-news-date {{date}}
 						.row(ng-bind-html="content")
 					.modal-footer
+						button.btn.btn-primary
+							span.glyphicon.glyphicon-pencil
+							| &emsp; Edit
 
 		.modal.fade#popup-news-all(ng-controller="popup_news_all")
 			.modal-dialog
@@ -164,6 +171,10 @@ html(ng-app="home")
 									span.news-all-date {{date}}
 								.row
 									| {{current_content}}
+					.modal-footer
+						button.btn.btn-primary
+							span.glyphicon.glyphicon-pencil
+							| &emsp; Edit
 
 		.modal.fade#popup-events(ng-controller="popup_events")
 			.modal-dialog
@@ -207,6 +218,27 @@ html(ng-app="home")
 								.row.events-content(ng-bind-html="current_content")
 
 
+
+		.modal.fade#popup-document
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(data-dismiss="modal", aria-hidden="true")
+							| &times;
+						h4.title
+					.modal-body.content
+					.modal-footer
+
+		.modal.fade#popup-project
+			.modal-dialog
+				.modal-content
+					.modal-header
+						button.close(data-dismiss="modal", aria-hidden="true")
+							| &times;
+						h4.title(style="color:{{item.color}}")
+					.modal-body
+						.row.content
+					.modal-footer
 
 
 		include includes/footer

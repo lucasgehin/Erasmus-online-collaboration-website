@@ -132,14 +132,11 @@ this.Documents_Management = function ($scope, $sce) {
         $scope.get_documents_list();
     });
     $scope.show = function (item) {
-        var popup, scope;
-        popup = document.querySelector("#popup-document");
-        scope = angular.element(popup).scope();
-        scope.item = item;
-        scope.date = moment(item.createdAt).fromNow();
-        scope.title = item.title;
-        scope.content = $sce.trustAsHtml(item.content);
-        $(popup).modal();
+        var $popup;
+        $popup = $("#popup-document");
+        $popup.find(".title").text(item.title);
+        $popup.find(".content").html(item.content);
+        $popup.modal('show');
     };
 };
 
@@ -441,6 +438,14 @@ this.Project_Manager = function ($scope) {
     socket.on('connect', function () {
         $scope.get_projects();
     });
+
+    $scope.show = function (project) {
+        var $popup = $("#popup-project");
+
+        $popup.find(".title").text(project.name + " - From " + project.country.name );
+        $popup.find(".content").text(project.description);
+        $popup.modal('show');
+    };
 };
 
 

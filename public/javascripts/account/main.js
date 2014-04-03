@@ -104,8 +104,6 @@ input.onchange = function () {
         addModififer();
     };
 
-
-    
 };
 
 function convertImgToBase64(image, callback) {
@@ -163,4 +161,9 @@ $(window).load(function () {
         $img.width($img.width());
         setTimeout(addModififer, 600);
     }
+
+    $("#project").find('option').attr('selected', 'false');
+    $("#country").find('option').attr('selected', 'false');
+    $("#project").find('option').eq(-2).attr('selected', 'true');
+    $("#country").find('option').eq(-2).attr('selected', 'true');
 });

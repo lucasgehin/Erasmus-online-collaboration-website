@@ -157,7 +157,7 @@ this.Documents_Management = function ($scope, $sce) {
     $scope.edit = function  (doc) {
         //console.warn(doc);
         window.open("http://localhost:9001/p/" + doc.name);
-        //window.open("http://docs.ipviope.tk/p/" + doc.name);
+        //window.open("https://docs.ipviope.tk/p/" + doc.name);
     };
 };
 
