@@ -19,7 +19,7 @@
     "stylus": "*",
     "mysql": "*",
     "password-hash": "*",
-    "etherpad-lite-client": "latest",
+    "etherpad-lite-client": "0.7.x",
     "underscore": "*",
     "lodash": "*",
     "request": "*",

@@ -1,12 +1,13 @@
 
 
-var underscore, Events, News, Projects, SessionSockets, Sio, Socket_io, Users, event_is_editable, root, set_event_editable, liste_users, async, Rooms;
+var underscore, Events, News, Projects, SessionSockets, Sio, Socket_io, Users, event_is_editable, root, set_event_editable, liste_users, async, Rooms, request;
 
 
 underscore = require('underscore');
 
 async = require("async");
 
+var exec = require('child_process').exec;
 //SessionSockets = require('session.socket.io');
 
 Socket_io = require('socket.io');
@@ -24,6 +25,8 @@ Projects = require('./Projects').Projects;
 Events = require('./Events').Events;
 
 Rooms = require('./Rooms').Rooms;
+
+request = require('request');
 
 
 /*
@@ -52,6 +55,12 @@ Sio = (function () {
         Sio.io = Socket_io.listen(app, io_options);
         Sio.io.set('log level', 1);
         Sio.routes();
+    };
+
+    Sio.etherpadApiKey = "208da60e58e52e342dd544f4fe56e19abbbe029f8663dae6a9ec2d25ac440c49";
+
+    Sio.buildEtherpadUrl = function (methode) {
+        return 'http://localhost:9001/api/1/' + methode + '?apikey=' + Sio.etherpadApiKey + '&';
     };
 
 
@@ -362,45 +371,116 @@ Sio = (function () {
             if (user) {
 
                 console.log("\n Connexion aux documents de " + user.username + ".");
+                //console.log(user);
                 //console.log(socket.handshake.foo);
-                socket.on("get_documents_list", function (no_data, callback) {
+                socket.on("get_group_documents", function (no_data, callback) {
                     console.log("Sio: Demande de la liste des documents par " + user.username);
                     //News.find_all(function (err, list) {
                     //    callback(err, list);
                     //});
+                    var groupMapper = new String(user.project.id);
+                    console.log("Group Mapper: " + groupMapper);
+                    var group, data, pad;
+                    request(Sio.buildEtherpadUrl('createGroupIfNotExistsFor') + 'groupMapper=' + groupMapper , function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            data = JSON.parse(body);
+                            group = data;
+                        }
 
-                    var fake_docs = [
-                        {
-                            id: -1,
-                            title: "To all students",
-                            content: "Each student should present their identity card (or equivalent) as soon as they arrive.",
-                            important: true,
-                            date: new Date()
-                        },
-                        {
-                            id: -1,
-                            title: "Welcome in Portugal",
-                            content: "Welcome to all students",
-                            important: true,
-                            date: new Date()
-                        },
-                        {
-                            id: -1,
-                            title: "Schedule of the ERASMUS contest",
-                            content: "Please look at the calendar",
-                            important: true,
-                            date: new Date()
-                        },
-                        {
-                            id: -1,
-                            title: "Usefull information",
-                            content: "You'll find bellow a list of museums, railway sations, tourism spots, etc...",
-                            important: true,
-                            date: new Date()
-                        },
-                    ];
-                    callback(null, fake_docs); // TODO
+
+                        console.log(group);
+                        if (!user.etherpad) {
+                            user.etherpad = {};
+                        }
+                        user.etherpad.groupID = group.data.groupID;
+
+
+                        var docs = [];
+
+                        var listOfPads;
+                        request(Sio.buildEtherpadUrl('listPads') + 'groupID=' +  group.data.groupID, function (err, response, body) {
+                            if (err) {
+                                console.log(err);
+                            } else {
+                                data = JSON.parse(body);
+                                listOfPads = data;
+                            }
+                            console.log(listOfPads);
+                            var padID, revisionsCount;
+                            async.each(listOfPads.data.padIDs, function (padID, next) {
+
+                                request(Sio.buildEtherpadUrl('getRevisionsCount') + 'padID=' + padID, function (err, response, body) {
+                                    revisionsCount = JSON.parse(body);
+                                    console.log(revisionsCount);
+                                    if (revisionsCount.message === 'ok') {
+                                        revisionsCount = revisionsCount.data.revisions;
+                                    } else {
+                                        revisionsCount = 0;
+                                    }
+                                    console.log('revisions: ' + revisionsCount);
+                                    request(Sio.buildEtherpadUrl('getHTML') + 'padID=' + padID + '&rev=' + revisionsCount, function (err, response, body) {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            data = JSON.parse(body);
+                                            if (data.message === 'ok') {
+                                                pad = {};
+                                                pad.name = padID.split('$')[1];
+                                                pad.content = data.data.html;
+                                                pad.user = user;
+                                                if (padID.split('.')[0] === 'g') {
+                                                    pad.isProjectPad = true;
+                                                }
+                                                //console.log(pad);
+                                                docs.push(pad);
+                                            }
+                                        }
+                                        next();
+                                    });
+                                });
+                            }, function (error) {
+                                console.log("fin des appels");
+                                callback(null, docs); // TODO
+                            });
+                        });
+                    });
                 });
+
+
+                socket.on("get_public_documents", function (no_data, callback) {
+                    console.log("Sio: Demande de la liste des autres documents par " + user.username);
+                    //News.find_all(function (err, list) {
+                    //    callback(err, list);
+                    //});
+
+                    var data, pad, docs, listOfPads, command;
+                    docs = [];
+
+                    // extrait les pads publiques directement depuis MySQL (etherpad e permet pas de le faire au travers de l'api)
+                    command = "mysql -uetherpad -petherpad etherpad -e 'select store.key from store'   | grep -Eo '^pad:[^:]+'   | sed -e 's/pad://'   | sort   | uniq -c   | sort -rn   | awk '{if ($1!=\"2\") {print $2 }}'";
+
+                    exec(command, function (err, stdout, stderr) {
+                        console.log('\tEXEC');
+                        docs = stdout.split('\n');
+
+                        callback(null, docs);
+                    });
+
+                });
+
+                socket.on('createGroupPad', function (name, callback) {
+                    request(Sio.buildEtherpadUrl('createGroupPad') + 'groupID=' + user.etherpad.groupID + '&padName=' + name, function (err, response, body) {
+                        if (err) {
+                            console.log(err);
+                        } else {
+                            var data = JSON.parse(body);
+                            console.log(data);
+                        }
+                    });
+                });
+    
             }
         });
     };

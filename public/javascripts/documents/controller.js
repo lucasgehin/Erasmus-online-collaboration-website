@@ -1,5 +1,5 @@
 /*jslint browser: true*/
-/*global $, jQuery, io, angular, moment*/
+/*global $, jQuery, io, angular, moment, prompt*/
 
 var $load_img, Documents_list, load_count, sanitize, socket, load_start, load_end;
 
@@ -58,6 +58,15 @@ sanitize = function (event, jqueryObject) {
 
 
 
+$("#createGroupPad").on('click', function (event) {
+    "use strict";
+    var name = prompt('Enter new document name:');
+    socket.emit('createGroupPad', name, function (err, response) {
+        console.log(err);
+        console.log(response);
+    });
+});
+
 
 
 this.Documents_Management = function ($scope, $sce) {
@@ -75,7 +84,7 @@ this.Documents_Management = function ($scope, $sce) {
     $scope.get_documents_list = function () {
         console.log("Getting documents list");
         //load_start();
-        socket.emit('get_documents_list', null, function (err, response) {
+        socket.emit('get_group_documents', null, function (err, response) {
             //load_end();
             console.log(response);
             if (response !== null) {
@@ -91,17 +100,13 @@ this.Documents_Management = function ($scope, $sce) {
                     important: true
                 });
             }
-            //$('.document-date').each(function () {
-            //    var date = $(this).text();
-            //    date = new Date(date);
-            //    date = moment(date).fromNow();
-            //    $(this).text(date);
-            //});
             var important, myproject, student;
             for (var i = 0; i < Documents_list.length; i++) {
                 important = Documents_list[i].important;
-                myproject = Documents_list[i].myproject;
-                student = Documents_list[i].student;
+                myproject = Documents_list[i].isProjectPad;
+                console.log(myproject);
+                student = Documents_list[i].user.statu.name === User.type;
+                console.log(student);
                 if (important) {
                     $scope.importants.push(Documents_list[i]);
                 } else if ( myproject && student) {
@@ -114,17 +119,44 @@ this.Documents_Management = function ($scope, $sce) {
             };
             $scope.$apply();
         });
+        socket.emit('get_public_documents', null, function (err, response) {
+            //load_end();
+            console.log(response);
+            if (response !== null) {
+                $scope.others = [];
+                for (var i = 0; i < response.length-1; i++) {
+                    $scope.others.push({
+                        name: response[i],
+                    });
+                };
+            }
+            if ($scope.others.length === 0 || err) {
+                $scope.others.push({
+                    id: -1,
+                    name: "There is nothing here yet :(",
+                    //content: "You can add a document in the 'Documents' section.'",
+                    createdAt: new Date(),
+                });
+            }             
+
+            $scope.$apply();
+        });
     };
     socket.on('connect', function () {
         $scope.get_documents_list();
     });
     $scope.show = function (doc) {
         var popup;
-        $scope.selected.title = doc.title;
-        $scope.selected.date = doc.date;
-        $scope.selected.content = $sce.trustAsHtml(doc.content);
+        $scope.selected = doc;
+        //$scope.selected.date = doc.date;
+        $scope.selected.contentHTML = $sce.trustAsHtml(doc.content);
         popup = document.querySelector("#popup-view");
         $(popup).modal();
+    };
+
+    $scope.edit = function  (doc) {
+        //console.warn(doc);
+        window.open("http://localhost:9001/p/" + doc.name);
     };
 };
 
